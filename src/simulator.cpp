@@ -4,7 +4,7 @@
 #include <CGL/vector3D.h>
 #include <nanogui/nanogui.h>
 
-#include "clothSimulator.h"
+#include "simulator.h"
 
 #include "camera.h"
 #include "cloth.h"
