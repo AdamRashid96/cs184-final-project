@@ -1,9 +1,9 @@
 ext/nanogui/CMakeFiles/nanogui-obj.dir/src/theme.cpp.o: \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/src/theme.cpp \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/include/nanogui/theme.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/include/nanogui/common.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/Core \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/util/DisableStupidWarnings.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/src/theme.cpp \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/include/nanogui/theme.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/include/nanogui/common.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/Core \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/util/DisableStupidWarnings.h \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/new \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/__config \
   /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/pthread.h \
@@ -84,7 +84,7 @@ ext/nanogui/CMakeFiles/nanogui-obj.dir/src/theme.cpp.o: \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/type_traits \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/limits \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/__undef_macros \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/util/Macros.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/util/Macros.h \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/complex \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/stdexcept \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/iosfwd \
@@ -231,7 +231,7 @@ ext/nanogui/CMakeFiles/nanogui-obj.dir/src/theme.cpp.o: \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/bitset \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/__bit_reference \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/istream \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/util/MKL_support.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/util/MKL_support.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/12.0.0/include/mmintrin.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/12.0.0/include/emmintrin.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/12.0.0/include/xmmintrin.h \
@@ -240,125 +240,125 @@ ext/nanogui/CMakeFiles/nanogui-obj.dir/src/theme.cpp.o: \
   /Library/Developer/CommandLineTools/usr/lib/clang/12.0.0/include/tmmintrin.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/12.0.0/include/smmintrin.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/12.0.0/include/popcntintrin.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/util/Constants.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/util/Meta.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/util/ForwardDeclarations.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/util/StaticAssert.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/util/XprHelper.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/util/Memory.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/NumTraits.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/MathFunctions.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/GenericPacketMath.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/MathFunctionsImpl.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/arch/Default/ConjHelper.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/arch/SSE/PacketMath.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/arch/SSE/MathFunctions.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/arch/SSE/Complex.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/arch/SSE/TypeCasting.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/arch/CUDA/Half.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/arch/CUDA/PacketMathHalf.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/arch/CUDA/TypeCasting.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/arch/Default/Settings.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/functors/TernaryFunctors.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/functors/BinaryFunctors.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/functors/UnaryFunctors.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/functors/NullaryFunctors.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/functors/StlFunctors.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/functors/AssignmentFunctors.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/arch/CUDA/Complex.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/IO.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/DenseCoeffsBase.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/DenseBase.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/../plugins/BlockMethods.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/MatrixBase.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/../plugins/CommonCwiseUnaryOps.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/../plugins/CommonCwiseBinaryOps.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/../plugins/MatrixCwiseUnaryOps.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/../plugins/MatrixCwiseBinaryOps.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/EigenBase.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/Product.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/CoreEvaluators.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/AssignEvaluator.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/Assign.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/ArrayBase.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/../plugins/ArrayCwiseUnaryOps.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/../plugins/ArrayCwiseBinaryOps.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/util/BlasUtil.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/DenseStorage.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/NestByValue.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/ReturnByValue.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/NoAlias.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/PlainObjectBase.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/Matrix.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/Array.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/CwiseTernaryOp.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/CwiseBinaryOp.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/CwiseUnaryOp.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/CwiseNullaryOp.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/CwiseUnaryView.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/SelfCwiseBinaryOp.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/Dot.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/StableNorm.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/Stride.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/MapBase.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/Map.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/Ref.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/Block.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/VectorBlock.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/Transpose.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/DiagonalMatrix.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/Diagonal.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/DiagonalProduct.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/Redux.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/Visitor.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/Fuzzy.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/Swap.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/CommaInitializer.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/GeneralProduct.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/Solve.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/Inverse.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/SolverBase.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/PermutationMatrix.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/Transpositions.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/TriangularMatrix.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/SelfAdjointView.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/products/GeneralBlockPanelKernel.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/products/Parallelizer.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/ProductEvaluators.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/products/GeneralMatrixVector.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/products/GeneralMatrixMatrix.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/SolveTriangular.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/products/GeneralMatrixMatrixTriangular.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/products/SelfadjointMatrixVector.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/products/SelfadjointMatrixMatrix.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/products/SelfadjointProduct.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/products/SelfadjointRank2Update.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/products/TriangularMatrixVector.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/products/TriangularMatrixMatrix.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/products/TriangularSolverMatrix.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/products/TriangularSolverVector.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/BandMatrix.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/CoreIterators.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/ConditionEstimator.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/BooleanRedux.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/Select.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/VectorwiseOp.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/Random.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/Replicate.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/Reverse.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/ArrayWrapper.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/GlobalFunctions.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/eigen/Eigen/src/Core/util/ReenableStupidWarnings.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/util/Constants.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/util/Meta.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/util/ForwardDeclarations.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/util/StaticAssert.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/util/XprHelper.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/util/Memory.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/NumTraits.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/MathFunctions.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/GenericPacketMath.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/MathFunctionsImpl.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/arch/Default/ConjHelper.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/arch/SSE/PacketMath.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/arch/SSE/MathFunctions.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/arch/SSE/Complex.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/arch/SSE/TypeCasting.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/arch/CUDA/Half.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/arch/CUDA/PacketMathHalf.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/arch/CUDA/TypeCasting.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/arch/Default/Settings.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/functors/TernaryFunctors.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/functors/BinaryFunctors.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/functors/UnaryFunctors.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/functors/NullaryFunctors.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/functors/StlFunctors.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/functors/AssignmentFunctors.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/arch/CUDA/Complex.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/IO.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/DenseCoeffsBase.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/DenseBase.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/../plugins/BlockMethods.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/MatrixBase.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/../plugins/CommonCwiseUnaryOps.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/../plugins/CommonCwiseBinaryOps.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/../plugins/MatrixCwiseUnaryOps.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/../plugins/MatrixCwiseBinaryOps.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/EigenBase.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/Product.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/CoreEvaluators.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/AssignEvaluator.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/Assign.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/ArrayBase.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/../plugins/ArrayCwiseUnaryOps.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/../plugins/ArrayCwiseBinaryOps.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/util/BlasUtil.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/DenseStorage.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/NestByValue.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/ReturnByValue.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/NoAlias.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/PlainObjectBase.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/Matrix.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/Array.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/CwiseTernaryOp.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/CwiseBinaryOp.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/CwiseUnaryOp.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/CwiseNullaryOp.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/CwiseUnaryView.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/SelfCwiseBinaryOp.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/Dot.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/StableNorm.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/Stride.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/MapBase.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/Map.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/Ref.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/Block.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/VectorBlock.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/Transpose.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/DiagonalMatrix.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/Diagonal.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/DiagonalProduct.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/Redux.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/Visitor.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/Fuzzy.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/Swap.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/CommaInitializer.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/GeneralProduct.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/Solve.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/Inverse.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/SolverBase.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/PermutationMatrix.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/Transpositions.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/TriangularMatrix.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/SelfAdjointView.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/products/GeneralBlockPanelKernel.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/products/Parallelizer.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/ProductEvaluators.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/products/GeneralMatrixVector.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/products/GeneralMatrixMatrix.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/SolveTriangular.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/products/GeneralMatrixMatrixTriangular.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/products/SelfadjointMatrixVector.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/products/SelfadjointMatrixMatrix.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/products/SelfadjointProduct.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/products/SelfadjointRank2Update.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/products/TriangularMatrixVector.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/products/TriangularMatrixMatrix.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/products/TriangularSolverMatrix.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/products/TriangularSolverVector.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/BandMatrix.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/CoreIterators.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/ConditionEstimator.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/BooleanRedux.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/Select.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/VectorwiseOp.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/Random.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/Replicate.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/Reverse.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/ArrayWrapper.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/GlobalFunctions.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/util/ReenableStupidWarnings.h \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/array \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/__split_buffer \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/include/nanogui/object.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/include/nanogui/opengl.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/glad/include/glad/glad.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/glad/include/KHR/khrplatform.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/glfw/include/GLFW/glfw3.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/include/nanogui/object.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/include/nanogui/opengl.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/glad/include/glad/glad.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/glad/include/KHR/khrplatform.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/glfw/include/GLFW/glfw3.h \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/stddef.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/OpenGL.framework/Headers/gl.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/nanovg/src/nanovg.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/include/nanogui/entypo.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/nanogui_resources.h
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/nanovg/src/nanovg.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/include/nanogui/entypo.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/nanogui_resources.h

@@ -1,6 +1,6 @@
 CGL/src/CMakeFiles/CGL.dir/base64.cpp.o: \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/CGL/src/base64.cpp \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/CGL/include/CGL/base64.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/CGL/src/base64.cpp \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/CGL/include/CGL/base64.h \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/string \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/__config \
   /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/pthread.h \

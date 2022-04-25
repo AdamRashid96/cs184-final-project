@@ -1,4 +1,4 @@
-# Install script for directory: /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui
+# Install script for directory: /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -39,7 +39,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/ext_build/glfw/cmake_install.cmake")
+  include("/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/ext_build/glfw/cmake_install.cmake")
 
 endif()
 

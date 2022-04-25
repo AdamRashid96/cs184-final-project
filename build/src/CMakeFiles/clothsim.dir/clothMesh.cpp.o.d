@@ -1,6 +1,6 @@
 src/CMakeFiles/clothsim.dir/clothMesh.cpp.o: \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/src/clothMesh.cpp \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/src/clothMesh.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/clothMesh.cpp \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/clothMesh.h \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/__config \
   /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/pthread.h \
@@ -138,11 +138,11 @@ src/CMakeFiles/clothsim.dir/clothMesh.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/i386/_limits.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/sys/syslimits.h \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/__split_buffer \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/CGL/include/CGL/CGL.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/CGL/include/CGL/misc.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/CGL/include/CGL/CGL.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/CGL/include/CGL/misc.h \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/cmath \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/src/pointMass.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/CGL/include/CGL/vector3D.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/pointMass.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/CGL/include/CGL/vector3D.h \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/ostream \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/ios \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/__locale \

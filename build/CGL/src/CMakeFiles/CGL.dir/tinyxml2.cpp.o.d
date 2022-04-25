@@ -1,6 +1,6 @@
 CGL/src/CMakeFiles/CGL.dir/tinyxml2.cpp.o: \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/CGL/src/tinyxml2.cpp \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/CGL/include/CGL/tinyxml2.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/CGL/src/tinyxml2.cpp \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/CGL/include/CGL/tinyxml2.h \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/cctype \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/__config \
   /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/pthread.h \

@@ -53,10 +53,10 @@ RM = /usr/local/Cellar/cmake/3.22.1/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1
+CMAKE_SOURCE_DIR = /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build
+CMAKE_BINARY_DIR = /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build
 
 # Include any dependencies generated for this target.
 include ext/nanogui/CMakeFiles/nanogui.dir/depend.make
@@ -74,51 +74,51 @@ nanogui_OBJECTS =
 
 # External object files for target nanogui
 nanogui_EXTERNAL_OBJECTS = \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/ext/nanovg/src/nanovg.c.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/ext/glad/src/glad.c.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/darwin.mm.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/nanogui_resources.cpp.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/glutil.cpp.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/common.cpp.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/widget.cpp.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/theme.cpp.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/layout.cpp.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/screen.cpp.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/label.cpp.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/window.cpp.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/popup.cpp.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/checkbox.cpp.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/button.cpp.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/popupbutton.cpp.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/combobox.cpp.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/progressbar.cpp.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/slider.cpp.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/messagedialog.cpp.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/textbox.cpp.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/imagepanel.cpp.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/imageview.cpp.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/vscrollpanel.cpp.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/colorwheel.cpp.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/colorpicker.cpp.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/graph.cpp.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/stackedwidget.cpp.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/tabheader.cpp.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/tabwidget.cpp.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/glcanvas.cpp.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/serializer.cpp.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/context.c.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/init.c.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/input.c.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/monitor.c.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/vulkan.c.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/window.c.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/cocoa_init.m.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/cocoa_joystick.m.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/cocoa_monitor.m.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/cocoa_window.m.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/cocoa_time.c.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/posix_tls.c.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/nsgl_context.m.o"
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/ext/nanovg/src/nanovg.c.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/ext/glad/src/glad.c.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/darwin.mm.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/nanogui_resources.cpp.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/glutil.cpp.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/common.cpp.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/widget.cpp.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/theme.cpp.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/layout.cpp.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/screen.cpp.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/label.cpp.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/window.cpp.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/popup.cpp.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/checkbox.cpp.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/button.cpp.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/popupbutton.cpp.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/combobox.cpp.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/progressbar.cpp.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/slider.cpp.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/messagedialog.cpp.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/textbox.cpp.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/imagepanel.cpp.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/imageview.cpp.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/vscrollpanel.cpp.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/colorwheel.cpp.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/colorpicker.cpp.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/graph.cpp.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/stackedwidget.cpp.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/tabheader.cpp.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/tabwidget.cpp.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/glcanvas.cpp.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/CMakeFiles/nanogui-obj.dir/src/serializer.cpp.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/context.c.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/init.c.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/input.c.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/monitor.c.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/vulkan.c.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/window.c.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/cocoa_init.m.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/cocoa_joystick.m.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/cocoa_monitor.m.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/cocoa_window.m.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/cocoa_time.c.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/posix_tls.c.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/nsgl_context.m.o"
 
 ext/nanogui/libnanogui.dylib: ext/nanogui/CMakeFiles/nanogui-obj.dir/ext/nanovg/src/nanovg.c.o
 ext/nanogui/libnanogui.dylib: ext/nanogui/CMakeFiles/nanogui-obj.dir/ext/glad/src/glad.c.o
@@ -167,19 +167,19 @@ ext/nanogui/libnanogui.dylib: ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_obj
 ext/nanogui/libnanogui.dylib: ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/nsgl_context.m.o
 ext/nanogui/libnanogui.dylib: ext/nanogui/CMakeFiles/nanogui.dir/build.make
 ext/nanogui/libnanogui.dylib: ext/nanogui/CMakeFiles/nanogui.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Linking CXX shared library libnanogui.dylib"
-	cd /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/nanogui.dir/link.txt --verbose=$(VERBOSE)
-	cd /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui && strip -u -r /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/libnanogui.dylib
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Linking CXX shared library libnanogui.dylib"
+	cd /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/nanogui.dir/link.txt --verbose=$(VERBOSE)
+	cd /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui && strip -u -r /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/libnanogui.dylib
 
 # Rule to build all files generated by this target.
 ext/nanogui/CMakeFiles/nanogui.dir/build: ext/nanogui/libnanogui.dylib
 .PHONY : ext/nanogui/CMakeFiles/nanogui.dir/build
 
 ext/nanogui/CMakeFiles/nanogui.dir/clean:
-	cd /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui && $(CMAKE_COMMAND) -P CMakeFiles/nanogui.dir/cmake_clean.cmake
+	cd /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui && $(CMAKE_COMMAND) -P CMakeFiles/nanogui.dir/cmake_clean.cmake
 .PHONY : ext/nanogui/CMakeFiles/nanogui.dir/clean
 
 ext/nanogui/CMakeFiles/nanogui.dir/depend:
-	cd /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1 /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/CMakeFiles/nanogui.dir/DependInfo.cmake --color=$(COLOR)
+	cd /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/CMakeFiles/nanogui.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : ext/nanogui/CMakeFiles/nanogui.dir/depend
 

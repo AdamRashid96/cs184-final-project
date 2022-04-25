@@ -1,8 +1,8 @@
 CGL/src/CMakeFiles/CGL.dir/vector3D.cpp.o: \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/CGL/src/vector3D.cpp \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/CGL/include/CGL/vector3D.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/CGL/include/CGL/CGL.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/CGL/include/CGL/misc.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/CGL/src/vector3D.cpp \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/CGL/include/CGL/vector3D.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/CGL/include/CGL/CGL.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/CGL/include/CGL/misc.h \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/cmath \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/__config \
   /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/pthread.h \

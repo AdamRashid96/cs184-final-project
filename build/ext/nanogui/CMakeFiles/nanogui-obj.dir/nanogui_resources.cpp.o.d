@@ -1,5 +1,5 @@
 ext/nanogui/CMakeFiles/nanogui-obj.dir/nanogui_resources.cpp.o: \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/nanogui_resources.cpp \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/nanogui_resources.cpp \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/stdint.h \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/__config \
   /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/pthread.h \

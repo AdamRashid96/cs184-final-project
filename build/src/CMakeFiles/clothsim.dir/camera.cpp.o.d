@@ -1,6 +1,6 @@
 src/CMakeFiles/clothsim.dir/camera.cpp.o: \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/src/camera.cpp \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/src/camera.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/camera.cpp \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/camera.h \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/iostream \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/__config \
   /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/pthread.h \
@@ -225,17 +225,17 @@ src/CMakeFiles/clothsim.dir/camera.cpp.o: \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/__bsd_locale_defaults.h \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/bitset \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/__bit_reference \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/CGL/include/CGL/matrix3x3.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/CGL/include/CGL/CGL.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/CGL/include/CGL/misc.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/CGL/include/CGL/matrix3x3.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/CGL/include/CGL/CGL.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/CGL/include/CGL/misc.h \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/cmath \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/CGL/include/CGL/vector3D.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/src/misc/camera_info.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/src/misc/collada_info.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/CGL/include/CGL/vector3D.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/misc/camera_info.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/misc/collada_info.h \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/vector \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/__split_buffer \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/CGL/include/CGL/matrix4x4.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/CGL/include/CGL/vector4D.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/CGL/include/CGL/matrix4x4.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/CGL/include/CGL/vector4D.h \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/fstream \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/filesystem \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/stack \

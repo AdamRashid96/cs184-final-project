@@ -35,7 +35,7 @@ const string CLOTH = "cloth";
 
 const unordered_set<string> VALID_KEYS = {SPHERE, PLANE, CLOTH};
 
-ClothSimulator *app = nullptr;
+Simulator *app = nullptr;
 GLFWwindow *window = nullptr;
 Screen *screen = nullptr;
 
@@ -470,13 +470,14 @@ int main(int argc, char **argv) {
   createGLContexts();
 
   // Initialize the Cloth object
-  cloth.buildGrid();
-  cloth.buildClothMesh();
+  std::cout << "Trying to build cloth " << project_root << std::endl;
+  // cloth.buildGrid();
+  // cloth.buildClothMesh();
 
-  // Initialize the ClothSimulator object
-  app = new ClothSimulator(project_root, screen);
-  app->loadCloth(&cloth);
-  app->loadClothParameters(&cp);
+  // Initialize the Simulator object
+  app = new Simulator(project_root, screen);
+  // app->loadCloth(&cloth);
+  // app->loadClothParameters(&cp);
   app->loadCollisionObjects(&objects);
   app->init();
 

@@ -1,5 +1,5 @@
 ext/nanogui/CMakeFiles/nanogui-obj.dir/ext/nanovg/src/nanovg.c.o: \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/nanovg/src/nanovg.c \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/nanovg/src/nanovg.c \
   /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/stdlib.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/Availability.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/AvailabilityInternal.h \
@@ -80,11 +80,11 @@ ext/nanogui/CMakeFiles/nanogui-obj.dir/ext/nanovg/src/nanovg.c.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/strings.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/secure/_strings.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/secure/_string.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/nanovg/src/nanovg.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/nanovg/src/fontstash.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/nanovg/src/stb_truetype.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/nanovg/src/nanovg.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/nanovg/src/fontstash.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/nanovg/src/stb_truetype.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/assert.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/nanovg/src/stb_image.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/nanovg/src/stb_image.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/12.0.0/include/stdarg.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/12.0.0/include/stddef.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/12.0.0/include/__stddef_max_align_t.h

@@ -13,10 +13,10 @@ using namespace nanogui;
 struct UserShader;
 enum ShaderTypeHint { WIREFRAME = 0, NORMALS = 1, PHONG = 2 };
 
-class ClothSimulator {
+class Simulator {
 public:
-  ClothSimulator(std::string project_root, Screen *screen);
-  ~ClothSimulator();
+  Simulator(std::string project_root, Screen *screen);
+  ~Simulator();
 
   void init();
 

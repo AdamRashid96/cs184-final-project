@@ -57,10 +57,10 @@ RM = /usr/local/Cellar/cmake/3.22.1/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1
+CMAKE_SOURCE_DIR = /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build
+CMAKE_BINARY_DIR = /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -132,14 +132,14 @@ install/strip/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	cd /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build && $(CMAKE_COMMAND) -E cmake_progress_start /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/CMakeFiles /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/CGL//CMakeFiles/progress.marks
-	cd /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CGL/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/CMakeFiles 0
+	cd /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build && $(CMAKE_COMMAND) -E cmake_progress_start /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/CMakeFiles /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/CGL//CMakeFiles/progress.marks
+	cd /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CGL/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CGL/clean
+	cd /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CGL/clean
 .PHONY : clean
 
 # The main clean target
@@ -148,17 +148,17 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CGL/preinstall
+	cd /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CGL/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CGL/preinstall
+	cd /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CGL/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Help Target
@@ -184,6 +184,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

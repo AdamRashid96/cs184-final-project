@@ -63,7 +63,7 @@ void load_cubemap(int frame_idx, GLuint handle, const std::vector<std::string>& 
   }
 }
 
-void ClothSimulator::load_textures() {
+void Simulator::load_textures() {
   glGenTextures(1, &m_gl_texture_1);
   glGenTextures(1, &m_gl_texture_2);
   glGenTextures(1, &m_gl_texture_3);
@@ -93,7 +93,7 @@ void ClothSimulator::load_textures() {
   std::cout << "Loaded cubemap texture" << std::endl;
 }
 
-void ClothSimulator::load_shaders() {
+void Simulator::load_shaders() {
   std::set<std::string> shader_folder_contents;
   bool success = FileUtils::list_files_in_directory(m_project_root + "/shaders", shader_folder_contents);
   if (!success) {
@@ -154,7 +154,7 @@ void ClothSimulator::load_shaders() {
   }
 }
 
-ClothSimulator::ClothSimulator(std::string project_root, Screen *screen)
+Simulator::Simulator(std::string project_root, Screen *screen)
 : m_project_root(project_root) {
   this->screen = screen;
   
@@ -165,7 +165,7 @@ ClothSimulator::ClothSimulator(std::string project_root, Screen *screen)
   glEnable(GL_DEPTH_TEST);
 }
 
-ClothSimulator::~ClothSimulator() {
+Simulator::~Simulator() {
   for (auto shader : shaders) {
     shader.nanogui_shader->free();
   }
@@ -180,17 +180,17 @@ ClothSimulator::~ClothSimulator() {
   if (collision_objects) delete collision_objects;
 }
 
-void ClothSimulator::loadCloth(Cloth *cloth) { this->cloth = cloth; }
+void Simulator::loadCloth(Cloth *cloth) { this->cloth = cloth; }
 
-void ClothSimulator::loadClothParameters(ClothParameters *cp) { this->cp = cp; }
+void Simulator::loadClothParameters(ClothParameters *cp) { this->cp = cp; }
 
-void ClothSimulator::loadCollisionObjects(vector<CollisionObject *> *objects) { this->collision_objects = objects; }
+void Simulator::loadCollisionObjects(vector<CollisionObject *> *objects) { this->collision_objects = objects; }
 
 /**
  * Initializes the cloth simulation and spawns a new thread to separate
  * rendering from simulation.
  */
-void ClothSimulator::init() {
+void Simulator::init() {
 
   // Initialize GUI
   screen->setSize(default_window_size);
@@ -208,14 +208,14 @@ void ClothSimulator::init() {
 
   Vector3D avg_pm_position(0, 0, 0);
 
-  for (auto &pm : cloth->point_masses) {
-    avg_pm_position += pm.position / cloth->point_masses.size();
-  }
+  // for (auto &pm : cloth->point_masses) {
+  //   avg_pm_position += pm.position / cloth->point_masses.size();
+  // }
 
   CGL::Vector3D target(avg_pm_position.x, avg_pm_position.y / 2,
                        avg_pm_position.z);
   CGL::Vector3D c_dir(0., 0., 0.);
-  canonical_view_distance = max(cloth->width, cloth->height) * 0.9;
+  canonical_view_distance = max(1, 1) * 0.9;
   scroll_rate = canonical_view_distance / 10;
 
   view_distance = canonical_view_distance * 2;
@@ -236,17 +236,17 @@ void ClothSimulator::init() {
   canonicalCamera.configure(camera_info, screen_w, screen_h);
 }
 
-bool ClothSimulator::isAlive() { return is_alive; }
+bool Simulator::isAlive() { return is_alive; }
 
-void ClothSimulator::drawContents() {
+void Simulator::drawContents() {
   glEnable(GL_DEPTH_TEST);
 
   if (!is_paused) {
     vector<Vector3D> external_accelerations = {gravity};
 
-    for (int i = 0; i < simulation_steps; i++) {
-      cloth->simulate(frames_per_sec, simulation_steps, cp, external_accelerations, collision_objects);
-    }
+    // for (int i = 0; i < simulation_steps; i++) {
+    //   cloth->simulate(frames_per_sec, simulation_steps, cp, external_accelerations, collision_objects);
+    // }
   }
 
   // Bind the active shader
@@ -269,46 +269,46 @@ void ClothSimulator::drawContents() {
   shader.setUniform("u_model", model);
   shader.setUniform("u_view_projection", viewProjection);
 
-  switch (active_shader.type_hint) {
-  case WIREFRAME:
-    shader.setUniform("u_color", color, false);
-    drawWireframe(shader);
-    break;
-  case NORMALS:
-    drawNormals(shader);
-    break;
-  case PHONG:
+  // switch (active_shader.type_hint) {
+  // case WIREFRAME:
+  //   shader.setUniform("u_color", color, false);
+  //   drawWireframe(shader);
+  //   break;
+  // case NORMALS:
+  //   drawNormals(shader);
+  //   break;
+  // case PHONG:
   
-    // Others
-    Vector3D cam_pos = camera.position();
-    shader.setUniform("u_color", color, false);
-    shader.setUniform("u_cam_pos", Vector3f(cam_pos.x, cam_pos.y, cam_pos.z), false);
-    shader.setUniform("u_light_pos", Vector3f(0.5, 2, 2), false);
-    shader.setUniform("u_light_intensity", Vector3f(3, 3, 3), false);
-    shader.setUniform("u_texture_1_size", Vector2f(m_gl_texture_1_size.x, m_gl_texture_1_size.y), false);
-    shader.setUniform("u_texture_2_size", Vector2f(m_gl_texture_2_size.x, m_gl_texture_2_size.y), false);
-    shader.setUniform("u_texture_3_size", Vector2f(m_gl_texture_3_size.x, m_gl_texture_3_size.y), false);
-    shader.setUniform("u_texture_4_size", Vector2f(m_gl_texture_4_size.x, m_gl_texture_4_size.y), false);
-    // Textures
-    shader.setUniform("u_texture_1", 1, false);
-    shader.setUniform("u_texture_2", 2, false);
-    shader.setUniform("u_texture_3", 3, false);
-    shader.setUniform("u_texture_4", 4, false);
+  //   // Others
+  //   Vector3D cam_pos = camera.position();
+  //   shader.setUniform("u_color", color, false);
+  //   shader.setUniform("u_cam_pos", Vector3f(cam_pos.x, cam_pos.y, cam_pos.z), false);
+  //   shader.setUniform("u_light_pos", Vector3f(0.5, 2, 2), false);
+  //   shader.setUniform("u_light_intensity", Vector3f(3, 3, 3), false);
+  //   shader.setUniform("u_texture_1_size", Vector2f(m_gl_texture_1_size.x, m_gl_texture_1_size.y), false);
+  //   shader.setUniform("u_texture_2_size", Vector2f(m_gl_texture_2_size.x, m_gl_texture_2_size.y), false);
+  //   shader.setUniform("u_texture_3_size", Vector2f(m_gl_texture_3_size.x, m_gl_texture_3_size.y), false);
+  //   shader.setUniform("u_texture_4_size", Vector2f(m_gl_texture_4_size.x, m_gl_texture_4_size.y), false);
+  //   // Textures
+  //   shader.setUniform("u_texture_1", 1, false);
+  //   shader.setUniform("u_texture_2", 2, false);
+  //   shader.setUniform("u_texture_3", 3, false);
+  //   shader.setUniform("u_texture_4", 4, false);
     
-    shader.setUniform("u_normal_scaling", m_normal_scaling, false);
-    shader.setUniform("u_height_scaling", m_height_scaling, false);
+  //   shader.setUniform("u_normal_scaling", m_normal_scaling, false);
+  //   shader.setUniform("u_height_scaling", m_height_scaling, false);
     
-    shader.setUniform("u_texture_cubemap", 5, false);
-    drawPhong(shader);
-    break;
-  }
+  //   shader.setUniform("u_texture_cubemap", 5, false);
+  //   drawPhong(shader);
+  //   break;
+  // }
 
   for (CollisionObject *co : *collision_objects) {
     co->render(shader);
   }
 }
 
-void ClothSimulator::drawWireframe(GLShader &shader) {
+void Simulator::drawWireframe(GLShader &shader) {
   int num_structural_springs =
       2 * cloth->num_width_points * cloth->num_height_points -
       cloth->num_width_points - cloth->num_height_points;
@@ -360,7 +360,7 @@ void ClothSimulator::drawWireframe(GLShader &shader) {
   shader.drawArray(GL_LINES, 0, num_springs * 2);
 }
 
-void ClothSimulator::drawNormals(GLShader &shader) {
+void Simulator::drawNormals(GLShader &shader) {
   int num_tris = cloth->clothMesh->triangles.size();
 
   MatrixXf positions(4, num_tris * 3);
@@ -392,7 +392,7 @@ void ClothSimulator::drawNormals(GLShader &shader) {
   shader.drawArray(GL_TRIANGLES, 0, num_tris * 3);
 }
 
-void ClothSimulator::drawPhong(GLShader &shader) {
+void Simulator::drawPhong(GLShader &shader) {
   int num_tris = cloth->clothMesh->triangles.size();
 
   MatrixXf positions(4, num_tris * 3);
@@ -444,9 +444,9 @@ void ClothSimulator::drawPhong(GLShader &shader) {
 // functions that have to be recreated here.
 // ----------------------------------------------------------------------------
 
-void ClothSimulator::resetCamera() { camera.copy_placement(canonicalCamera); }
+void Simulator::resetCamera() { camera.copy_placement(canonicalCamera); }
 
-Matrix4f ClothSimulator::getProjectionMatrix() {
+Matrix4f Simulator::getProjectionMatrix() {
   Matrix4f perspective;
   perspective.setZero();
 
@@ -467,7 +467,7 @@ Matrix4f ClothSimulator::getProjectionMatrix() {
   return perspective;
 }
 
-Matrix4f ClothSimulator::getViewMatrix() {
+Matrix4f Simulator::getViewMatrix() {
   Matrix4f lookAt;
   Matrix3f R;
 
@@ -499,7 +499,7 @@ Matrix4f ClothSimulator::getViewMatrix() {
 // EVENT HANDLING
 // ----------------------------------------------------------------------------
 
-bool ClothSimulator::cursorPosCallbackEvent(double x, double y) {
+bool Simulator::cursorPosCallbackEvent(double x, double y) {
   if (left_down && !middle_down && !right_down) {
     if (ctrl_down) {
       mouseRightDragged(x, y);
@@ -518,7 +518,7 @@ bool ClothSimulator::cursorPosCallbackEvent(double x, double y) {
   return true;
 }
 
-bool ClothSimulator::mouseButtonCallbackEvent(int button, int action,
+bool Simulator::mouseButtonCallbackEvent(int button, int action,
                                               int modifiers) {
   switch (action) {
   case GLFW_PRESS:
@@ -553,20 +553,20 @@ bool ClothSimulator::mouseButtonCallbackEvent(int button, int action,
   return false;
 }
 
-void ClothSimulator::mouseMoved(double x, double y) { y = screen_h - y; }
+void Simulator::mouseMoved(double x, double y) { y = screen_h - y; }
 
-void ClothSimulator::mouseLeftDragged(double x, double y) {
+void Simulator::mouseLeftDragged(double x, double y) {
   float dx = x - mouse_x;
   float dy = y - mouse_y;
 
   camera.rotate_by(-dy * (PI / screen_h), -dx * (PI / screen_w));
 }
 
-void ClothSimulator::mouseRightDragged(double x, double y) {
+void Simulator::mouseRightDragged(double x, double y) {
   camera.move_by(mouse_x - x, y - mouse_y, canonical_view_distance);
 }
 
-bool ClothSimulator::keyCallbackEvent(int key, int scancode, int action,
+bool Simulator::keyCallbackEvent(int key, int scancode, int action,
                                       int mods) {
   ctrl_down = (bool)(mods & GLFW_MOD_CONTROL);
 
@@ -600,16 +600,16 @@ bool ClothSimulator::keyCallbackEvent(int key, int scancode, int action,
   return true;
 }
 
-bool ClothSimulator::dropCallbackEvent(int count, const char **filenames) {
+bool Simulator::dropCallbackEvent(int count, const char **filenames) {
   return true;
 }
 
-bool ClothSimulator::scrollCallbackEvent(double x, double y) {
+bool Simulator::scrollCallbackEvent(double x, double y) {
   camera.move_forward(y * scroll_rate);
   return true;
 }
 
-bool ClothSimulator::resizeCallbackEvent(int width, int height) {
+bool Simulator::resizeCallbackEvent(int width, int height) {
   screen_w = width;
   screen_h = height;
 
@@ -617,7 +617,7 @@ bool ClothSimulator::resizeCallbackEvent(int width, int height) {
   return true;
 }
 
-void ClothSimulator::initGUI(Screen *screen) {
+void Simulator::initGUI(Screen *screen) {
   Window *window;
   
   window = new Window(screen, "Simulation");

@@ -1,8 +1,8 @@
-# Install script for directory: /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1
+# Install script for directory: /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/")
+  set(CMAKE_INSTALL_PREFIX "/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -39,9 +39,9 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/cmake_install.cmake")
-  include("/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/CGL/cmake_install.cmake")
-  include("/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/src/cmake_install.cmake")
+  include("/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/cmake_install.cmake")
+  include("/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/CGL/cmake_install.cmake")
+  include("/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/src/cmake_install.cmake")
 
 endif()
 
@@ -53,5 +53,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

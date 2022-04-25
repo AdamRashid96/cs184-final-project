@@ -53,10 +53,10 @@ RM = /usr/local/Cellar/cmake/3.22.1/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1
+CMAKE_SOURCE_DIR = /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build
+CMAKE_BINARY_DIR = /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build
 
 # Include any dependencies generated for this target.
 include ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw.dir/depend.make
@@ -74,19 +74,19 @@ glfw_OBJECTS =
 
 # External object files for target glfw
 glfw_EXTERNAL_OBJECTS = \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/context.c.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/init.c.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/input.c.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/monitor.c.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/vulkan.c.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/window.c.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/cocoa_init.m.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/cocoa_joystick.m.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/cocoa_monitor.m.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/cocoa_window.m.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/cocoa_time.c.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/posix_tls.c.o" \
-"/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/nsgl_context.m.o"
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/context.c.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/init.c.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/input.c.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/monitor.c.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/vulkan.c.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/window.c.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/cocoa_init.m.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/cocoa_joystick.m.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/cocoa_monitor.m.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/cocoa_window.m.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/cocoa_time.c.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/posix_tls.c.o" \
+"/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/nsgl_context.m.o"
 
 ext/nanogui/ext_build/glfw/src/libglfw.dylib: ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/context.c.o
 ext/nanogui/ext_build/glfw/src/libglfw.dylib: ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/init.c.o
@@ -103,18 +103,18 @@ ext/nanogui/ext_build/glfw/src/libglfw.dylib: ext/nanogui/ext_build/glfw/src/CMa
 ext/nanogui/ext_build/glfw/src/libglfw.dylib: ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw_objects.dir/nsgl_context.m.o
 ext/nanogui/ext_build/glfw/src/libglfw.dylib: ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw.dir/build.make
 ext/nanogui/ext_build/glfw/src/libglfw.dylib: ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Linking C shared library libglfw.dylib"
-	cd /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/ext_build/glfw/src && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/glfw.dir/link.txt --verbose=$(VERBOSE)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Linking C shared library libglfw.dylib"
+	cd /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/ext_build/glfw/src && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/glfw.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
 ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw.dir/build: ext/nanogui/ext_build/glfw/src/libglfw.dylib
 .PHONY : ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw.dir/build
 
 ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw.dir/clean:
-	cd /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/ext_build/glfw/src && $(CMAKE_COMMAND) -P CMakeFiles/glfw.dir/cmake_clean.cmake
+	cd /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/ext_build/glfw/src && $(CMAKE_COMMAND) -P CMakeFiles/glfw.dir/cmake_clean.cmake
 .PHONY : ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw.dir/clean
 
 ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw.dir/depend:
-	cd /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1 /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/glfw/src /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/ext_build/glfw/src /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw.dir/DependInfo.cmake --color=$(COLOR)
+	cd /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/glfw/src /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/ext_build/glfw/src /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/build/ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : ext/nanogui/ext_build/glfw/src/CMakeFiles/glfw.dir/depend
 

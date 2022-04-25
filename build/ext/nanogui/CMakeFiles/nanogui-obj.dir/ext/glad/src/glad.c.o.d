@@ -1,5 +1,5 @@
 ext/nanogui/CMakeFiles/nanogui-obj.dir/ext/glad/src/glad.c.o: \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/glad/src/glad.c \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/glad/src/glad.c \
   /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/stdio.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/_stdio.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/sys/cdefs.h \
@@ -78,5 +78,5 @@ ext/nanogui/CMakeFiles/nanogui-obj.dir/ext/glad/src/glad.c.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/strings.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/secure/_strings.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/secure/_string.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/glad/include/glad/glad.h \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/ext/nanogui/ext/glad/include/KHR/khrplatform.h
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/glad/include/glad/glad.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/glad/include/KHR/khrplatform.h

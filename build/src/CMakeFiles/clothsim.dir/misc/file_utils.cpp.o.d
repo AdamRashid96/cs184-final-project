@@ -1,5 +1,5 @@
 src/CMakeFiles/clothsim.dir/misc/file_utils.cpp.o: \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/src/misc/file_utils.cpp \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/misc/file_utils.cpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/dirent.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/_types.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/sys/_types.h \
@@ -231,7 +231,7 @@ src/CMakeFiles/clothsim.dir/misc/file_utils.cpp.o: \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/deque \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/__split_buffer \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/iomanip \
-  /Users/adamrashid/Desktop/cs184/proj4/p4-clothsim-sp22-ae-1/src/misc/file_utils.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/misc/file_utils.h \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/set \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/__tree \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/__node_handle \
