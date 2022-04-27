@@ -131,12 +131,6 @@ void ClothSimulator::load_shaders() {
     if (shader_name == "Wireframe") {
       hint = ShaderTypeHint::WIREFRAME;
       std::cout << "Type: Wireframe" << std::endl;
-    } else if (shader_name == "Normal") {
-      hint = ShaderTypeHint::NORMALS;
-      std::cout << "Type: Normal" << std::endl;
-    } else {
-      hint = ShaderTypeHint::PHONG;
-      std::cout << "Type: Custom" << std::endl;
     }
     
     UserShader user_shader(shader_name, nanogui_shader, hint);
@@ -215,7 +209,7 @@ void ClothSimulator::init() {
   CGL::Vector3D target(avg_pm_position.x, avg_pm_position.y / 2,
                        avg_pm_position.z);
   CGL::Vector3D c_dir(0., 0., 0.);
-  canonical_view_distance = max(cloth->width, cloth->height) * 0.9;
+  canonical_view_distance = cloth->radius * 0.9;
   scroll_rate = canonical_view_distance / 10;
 
   view_distance = canonical_view_distance * 2;
@@ -274,33 +268,6 @@ void ClothSimulator::drawContents() {
     shader.setUniform("u_color", color, false);
     drawWireframe(shader);
     break;
-  case NORMALS:
-    drawNormals(shader);
-    break;
-  case PHONG:
-  
-    // Others
-    Vector3D cam_pos = camera.position();
-    shader.setUniform("u_color", color, false);
-    shader.setUniform("u_cam_pos", Vector3f(cam_pos.x, cam_pos.y, cam_pos.z), false);
-    shader.setUniform("u_light_pos", Vector3f(0.5, 2, 2), false);
-    shader.setUniform("u_light_intensity", Vector3f(3, 3, 3), false);
-    shader.setUniform("u_texture_1_size", Vector2f(m_gl_texture_1_size.x, m_gl_texture_1_size.y), false);
-    shader.setUniform("u_texture_2_size", Vector2f(m_gl_texture_2_size.x, m_gl_texture_2_size.y), false);
-    shader.setUniform("u_texture_3_size", Vector2f(m_gl_texture_3_size.x, m_gl_texture_3_size.y), false);
-    shader.setUniform("u_texture_4_size", Vector2f(m_gl_texture_4_size.x, m_gl_texture_4_size.y), false);
-    // Textures
-    shader.setUniform("u_texture_1", 1, false);
-    shader.setUniform("u_texture_2", 2, false);
-    shader.setUniform("u_texture_3", 3, false);
-    shader.setUniform("u_texture_4", 4, false);
-    
-    shader.setUniform("u_normal_scaling", m_normal_scaling, false);
-    shader.setUniform("u_height_scaling", m_height_scaling, false);
-    
-    shader.setUniform("u_texture_cubemap", 5, false);
-    drawPhong(shader);
-    break;
   }
 
   for (CollisionObject *co : *collision_objects) {
@@ -309,132 +276,29 @@ void ClothSimulator::drawContents() {
 }
 
 void ClothSimulator::drawWireframe(GLShader &shader) {
-  int num_structural_springs =
-      2 * cloth->num_width_points * cloth->num_height_points -
-      cloth->num_width_points - cloth->num_height_points;
-  int num_shear_springs =
-      2 * (cloth->num_width_points - 1) * (cloth->num_height_points - 1);
-  int num_bending_springs = num_structural_springs - cloth->num_width_points -
-                            cloth->num_height_points;
+  MatrixXf positions(4, cloth->point_masses.size());
+  MatrixXf normals(4, cloth->point_masses.size());
+  
+  int pi = 0;
+  for (int i = 0; i < cloth->point_masses.size(); i++) {
+    PointMass p = cloth->point_masses[i];
+    Vector3D pos = p.position;
 
-  int num_springs = cp->enable_structural_constraints * num_structural_springs +
-                    cp->enable_shearing_constraints * num_shear_springs +
-                    cp->enable_bending_constraints * num_bending_springs;
+    Vector3D n = p.normal();
 
-  MatrixXf positions(4, num_springs * 2);
-  MatrixXf normals(4, num_springs * 2);
+    positions.col(pi) << pos.x, pos.y, pos.z, 1.0;
 
-  // Draw springs as lines
+    normals.col(pi) << n.x, n.y, n.z, 0.0;
 
-  int si = 0;
-
-  for (int i = 0; i < cloth->springs.size(); i++) {
-    Spring s = cloth->springs[i];
-
-    if ((s.spring_type == STRUCTURAL && !cp->enable_structural_constraints) ||
-        (s.spring_type == SHEARING && !cp->enable_shearing_constraints) ||
-        (s.spring_type == BENDING && !cp->enable_bending_constraints)) {
-      continue;
-    }
-
-    Vector3D pa = s.pm_a->position;
-    Vector3D pb = s.pm_b->position;
-
-    Vector3D na = s.pm_a->normal();
-    Vector3D nb = s.pm_b->normal();
-
-    positions.col(si) << pa.x, pa.y, pa.z, 1.0;
-    positions.col(si + 1) << pb.x, pb.y, pb.z, 1.0;
-
-    normals.col(si) << na.x, na.y, na.z, 0.0;
-    normals.col(si + 1) << nb.x, nb.y, nb.z, 0.0;
-
-    si += 2;
+    pi++;
   }
 
-  //shader.setUniform("u_color", nanogui::Color(1.0f, 1.0f, 1.0f, 1.0f), false);
+//  shader.setUniform("u_color", nanogui::Color(1.0f, 1.0f, 1.0f, 1.0f), false);
   shader.uploadAttrib("in_position", positions, false);
   // Commented out: the wireframe shader does not have this attribute
-  //shader.uploadAttrib("in_normal", normals);
+//  shader.uploadAttrib("in_normal", normals);
 
-  shader.drawArray(GL_LINES, 0, num_springs * 2);
-}
-
-void ClothSimulator::drawNormals(GLShader &shader) {
-  int num_tris = cloth->clothMesh->triangles.size();
-
-  MatrixXf positions(4, num_tris * 3);
-  MatrixXf normals(4, num_tris * 3);
-
-  for (int i = 0; i < num_tris; i++) {
-    Triangle *tri = cloth->clothMesh->triangles[i];
-
-    Vector3D p1 = tri->pm1->position;
-    Vector3D p2 = tri->pm2->position;
-    Vector3D p3 = tri->pm3->position;
-
-    Vector3D n1 = tri->pm1->normal();
-    Vector3D n2 = tri->pm2->normal();
-    Vector3D n3 = tri->pm3->normal();
-
-    positions.col(i * 3) << p1.x, p1.y, p1.z, 1.0;
-    positions.col(i * 3 + 1) << p2.x, p2.y, p2.z, 1.0;
-    positions.col(i * 3 + 2) << p3.x, p3.y, p3.z, 1.0;
-
-    normals.col(i * 3) << n1.x, n1.y, n1.z, 0.0;
-    normals.col(i * 3 + 1) << n2.x, n2.y, n2.z, 0.0;
-    normals.col(i * 3 + 2) << n3.x, n3.y, n3.z, 0.0;
-  }
-
-  shader.uploadAttrib("in_position", positions, false);
-  shader.uploadAttrib("in_normal", normals, false);
-
-  shader.drawArray(GL_TRIANGLES, 0, num_tris * 3);
-}
-
-void ClothSimulator::drawPhong(GLShader &shader) {
-  int num_tris = cloth->clothMesh->triangles.size();
-
-  MatrixXf positions(4, num_tris * 3);
-  MatrixXf normals(4, num_tris * 3);
-  MatrixXf uvs(2, num_tris * 3);
-  MatrixXf tangents(4, num_tris * 3);
-
-  for (int i = 0; i < num_tris; i++) {
-    Triangle *tri = cloth->clothMesh->triangles[i];
-
-    Vector3D p1 = tri->pm1->position;
-    Vector3D p2 = tri->pm2->position;
-    Vector3D p3 = tri->pm3->position;
-
-    Vector3D n1 = tri->pm1->normal();
-    Vector3D n2 = tri->pm2->normal();
-    Vector3D n3 = tri->pm3->normal();
-
-    positions.col(i * 3    ) << p1.x, p1.y, p1.z, 1.0;
-    positions.col(i * 3 + 1) << p2.x, p2.y, p2.z, 1.0;
-    positions.col(i * 3 + 2) << p3.x, p3.y, p3.z, 1.0;
-
-    normals.col(i * 3    ) << n1.x, n1.y, n1.z, 0.0;
-    normals.col(i * 3 + 1) << n2.x, n2.y, n2.z, 0.0;
-    normals.col(i * 3 + 2) << n3.x, n3.y, n3.z, 0.0;
-    
-    uvs.col(i * 3    ) << tri->uv1.x, tri->uv1.y;
-    uvs.col(i * 3 + 1) << tri->uv2.x, tri->uv2.y;
-    uvs.col(i * 3 + 2) << tri->uv3.x, tri->uv3.y;
-    
-    tangents.col(i * 3    ) << 1.0, 0.0, 0.0, 1.0;
-    tangents.col(i * 3 + 1) << 1.0, 0.0, 0.0, 1.0;
-    tangents.col(i * 3 + 2) << 1.0, 0.0, 0.0, 1.0;
-  }
-
-
-  shader.uploadAttrib("in_position", positions, false);
-  shader.uploadAttrib("in_normal", normals, false);
-  shader.uploadAttrib("in_uv", uvs, false);
-  shader.uploadAttrib("in_tangent", tangents, false);
-
-  shader.drawArray(GL_TRIANGLES, 0, num_tris * 3);
+  shader.drawArray(GL_LINES, 0, cloth->point_masses.size());
 }
 
 // ----------------------------------------------------------------------------

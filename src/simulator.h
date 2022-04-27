@@ -11,7 +11,7 @@
 using namespace nanogui;
 
 struct UserShader;
-enum ShaderTypeHint { WIREFRAME = 0, NORMALS = 1, PHONG = 2 };
+enum ShaderTypeHint { WIREFRAME = 0 };
 
 class ClothSimulator {
 public:

@@ -43,10 +43,11 @@ struct ClothParameters {
 
 struct Cloth {
   Cloth() {}
-  Cloth(double width, double height, int num_width_points,
-        int num_height_points, float thickness);
+  Cloth(double radius, int num_points);
   ~Cloth();
 
+  void buildFibonacciSphere();
+  
   void buildGrid();
 
   void simulate(double frames_per_sec, double simulation_steps, ClothParameters *cp,
@@ -54,25 +55,20 @@ struct Cloth {
                 vector<CollisionObject *> *collision_objects);
 
   void reset();
-  void buildClothMesh();
 
   void build_spatial_map();
   void self_collide(PointMass &pm, double simulation_steps);
   float hash_position(Vector3D pos);
 
   // Cloth properties
-  double width;
-  double height;
-  int num_width_points;
-  int num_height_points;
-  double thickness;
+  double radius;
+  int num_points;
   e_orientation orientation;
 
   // Cloth components
   vector<PointMass> point_masses;
   vector<vector<int>> pinned;
   vector<Spring> springs;
-  ClothMesh *clothMesh;
 
   // Spatial hashing
   unordered_map<float, vector<PointMass *> *> map;

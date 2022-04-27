@@ -182,45 +182,24 @@ bool loadObjectsFromFile(string filename, Cloth *cloth, ClothParameters *cp, vec
     // Parse object depending on type (cloth, sphere, or plane)
     if (key == CLOTH) {
       // Cloth
-      double width, height;
-      int num_width_points, num_height_points;
+      double radius;
+      int num_points;
       float thickness;
       e_orientation orientation;
       vector<vector<int>> pinned;
 
-      auto it_width = object.find("width");
-      if (it_width != object.end()) {
-        width = *it_width;
+      auto it_radius = object.find("radius");
+      if (it_radius != object.end()) {
+        radius = *it_radius;
       } else {
-        incompleteObjectError("cloth", "width");
+        incompleteObjectError("cloth", "radius");
       }
 
-      auto it_height = object.find("height");
-      if (it_height != object.end()) {
-        height = *it_height;
+      auto it_num_points = object.find("num_points");
+      if (it_num_points != object.end()) {
+        num_points = *it_num_points;
       } else {
-        incompleteObjectError("cloth", "height");
-      }
-
-      auto it_num_width_points = object.find("num_width_points");
-      if (it_num_width_points != object.end()) {
-        num_width_points = *it_num_width_points;
-      } else {
-        incompleteObjectError("cloth", "num_width_points");
-      }
-
-      auto it_num_height_points = object.find("num_height_points");
-      if (it_num_height_points != object.end()) {
-        num_height_points = *it_num_height_points;
-      } else {
-        incompleteObjectError("cloth", "num_height_points");
-      }
-
-      auto it_thickness = object.find("thickness");
-      if (it_thickness != object.end()) {
-        thickness = *it_thickness;
-      } else {
-        incompleteObjectError("cloth", "thickness");
+        incompleteObjectError("cloth", "num_points");
       }
 
       auto it_orientation = object.find("orientation");
@@ -239,11 +218,8 @@ bool loadObjectsFromFile(string filename, Cloth *cloth, ClothParameters *cp, vec
         }
       }
 
-      cloth->width = width;
-      cloth->height = height;
-      cloth->num_width_points = num_width_points;
-      cloth->num_height_points = num_height_points;
-      cloth->thickness = thickness;
+      cloth->radius = radius;
+      cloth->num_points = num_points;
       cloth->orientation = orientation;
       cloth->pinned = pinned;
 
@@ -471,7 +447,6 @@ int main(int argc, char **argv) {
 
   // Initialize the Cloth object
   cloth.buildGrid();
-  cloth.buildClothMesh();
 
   // Initialize the ClothSimulator object
   app = new ClothSimulator(project_root, screen);
