@@ -1387,16 +1387,15 @@ src/CMakeFiles/clothsim.dir/collision/plane.cpp.o
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/pointMass.h
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/CGL/include/CGL/vector3D.h
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/simulator.h
+ /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/misc/sphere_drawing.h
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/camera.h
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/CGL/include/CGL/matrix3x3.h
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/misc/camera_info.h
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/misc/collada_info.h
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/CGL/include/CGL/matrix4x4.h
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/CGL/include/CGL/vector4D.h
- /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/cloth.h
- /Library/Developer/CommandLineTools/usr/include/c++/v1/unordered_set
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/collision/collisionObject.h
- /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/spring.h
+ /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/particle.h
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/collision/plane.h
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/collision/collisionObject.h
 
@@ -2317,16 +2316,15 @@ src/CMakeFiles/clothsim.dir/main.cpp.o
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/collision/collisionObject.h
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/collision/sphere.h
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/misc/sphere_drawing.h
- /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/cloth.h
- /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/clothMesh.h
- /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/spring.h
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/simulator.h
+ /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/misc/sphere_drawing.h
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/camera.h
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/CGL/include/CGL/matrix3x3.h
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/misc/camera_info.h
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/misc/collada_info.h
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/CGL/include/CGL/matrix4x4.h
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/CGL/include/CGL/vector4D.h
+ /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/particle.h
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/json.hpp
  /Library/Developer/CommandLineTools/usr/include/c++/v1/ciso646
  /Library/Developer/CommandLineTools/usr/include/c++/v1/forward_list
@@ -3251,6 +3249,12 @@ src/CMakeFiles/clothsim.dir/simulator.cpp.o
  /Library/Developer/CommandLineTools/usr/include/c++/v1/__bsd_locale_defaults.h
  /Library/Developer/CommandLineTools/usr/include/c++/v1/bitset
  /Library/Developer/CommandLineTools/usr/include/c++/v1/__bit_reference
+ /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/util/random_util.h
+ /Library/Developer/CommandLineTools/usr/include/c++/v1/random
+ /Library/Developer/CommandLineTools/usr/include/c++/v1/numeric
+ /Library/Developer/CommandLineTools/usr/include/c++/v1/vector
+ /Library/Developer/CommandLineTools/usr/include/c++/v1/__split_buffer
+ /Library/Developer/CommandLineTools/usr/include/c++/v1/istream
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/include/nanogui/nanogui.h
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/include/nanogui/common.h
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/Core
@@ -3258,7 +3262,6 @@ src/CMakeFiles/clothsim.dir/simulator.cpp.o
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/util/Macros.h
  /Library/Developer/CommandLineTools/usr/include/c++/v1/complex
  /Library/Developer/CommandLineTools/usr/include/c++/v1/sstream
- /Library/Developer/CommandLineTools/usr/include/c++/v1/istream
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/util/MKL_support.h
  /Library/Developer/CommandLineTools/usr/lib/clang/12.0.0/include/mmintrin.h
  /Library/Developer/CommandLineTools/usr/lib/clang/12.0.0/include/emmintrin.h
@@ -3378,8 +3381,6 @@ src/CMakeFiles/clothsim.dir/simulator.cpp.o
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/GlobalFunctions.h
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/ext/eigen/Eigen/src/Core/util/ReenableStupidWarnings.h
  /Library/Developer/CommandLineTools/usr/include/c++/v1/array
- /Library/Developer/CommandLineTools/usr/include/c++/v1/vector
- /Library/Developer/CommandLineTools/usr/include/c++/v1/__split_buffer
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/include/nanogui/widget.h
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/include/nanogui/object.h
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/include/nanogui/theme.h
@@ -3467,19 +3468,17 @@ src/CMakeFiles/clothsim.dir/simulator.cpp.o
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/ext/nanogui/include/nanogui/glcanvas.h
  /Library/Developer/CommandLineTools/usr/include/c++/v1/iostream
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/simulator.h
+ /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/misc/sphere_drawing.h
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/camera.h
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/CGL/include/CGL/matrix3x3.h
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/misc/camera_info.h
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/misc/collada_info.h
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/CGL/include/CGL/matrix4x4.h
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/CGL/include/CGL/vector4D.h
- /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/cloth.h
- /Library/Developer/CommandLineTools/usr/include/c++/v1/unordered_set
- /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/clothMesh.h
- /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/pointMass.h
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/collision/collisionObject.h
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/clothMesh.h
- /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/spring.h
+ /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/pointMass.h
+ /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/particle.h
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/collision/plane.h
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/collision/sphere.h
  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/misc/sphere_drawing.h

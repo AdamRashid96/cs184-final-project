@@ -464,16 +464,15 @@ src/CMakeFiles/clothsim.dir/main.cpp.o: \
   /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/collision/collisionObject.h \
   /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/collision/sphere.h \
   /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/collision/../misc/sphere_drawing.h \
-  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/cloth.h \
-  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/clothMesh.h \
-  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/spring.h \
   /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/simulator.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/misc/sphere_drawing.h \
   /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/camera.h \
   /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/CGL/include/CGL/matrix3x3.h \
   /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/misc/camera_info.h \
   /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/collision/../misc/collada_info.h \
   /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/CGL/include/CGL/matrix4x4.h \
   /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/CGL/include/CGL/vector4D.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/particle.h \
   /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/json.hpp \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/ciso646 \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/forward_list \

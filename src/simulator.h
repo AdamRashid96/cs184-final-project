@@ -3,10 +3,10 @@
 
 #include <nanogui/nanogui.h>
 #include <memory>
-
+#include "misc/sphere_drawing.h"
 #include "camera.h"
-#include "cloth.h"
 #include "collision/collisionObject.h"
+#include "particle.h"
 
 using namespace nanogui;
 
@@ -20,8 +20,6 @@ public:
 
   void init();
 
-  void loadCloth(Cloth *cloth);
-  void loadClothParameters(ClothParameters *cp);
   void loadCollisionObjects(vector<CollisionObject *> *objects);
   virtual bool isAlive();
   virtual void drawContents();
@@ -40,10 +38,18 @@ private:
   void drawWireframe(GLShader &shader);
   void drawNormals(GLShader &shader);
   void drawPhong(GLShader &shader);
+  void explosion(double frames_per_sec, double simulation_steps,
+                     vector<Vector3D> external_accelerations,
+                     vector<CollisionObject *> *collision_objects);
   
   void load_shaders();
   void load_textures();
   
+  void initParticles();
+  void particleSimulate(double frames_per_sec, double simulation_steps,
+                     vector<Vector3D> external_accelerations,
+                     vector<CollisionObject *> *collision_objects);
+
   // File management
   
   std::string m_project_root;
@@ -62,13 +68,12 @@ private:
   CGL::Vector3D gravity = CGL::Vector3D(0, -9.8, 0);
   nanogui::Color color = nanogui::Color(1.0f, 1.0f, 1.0f, 1.0f);
 
-  Cloth *cloth;
-  ClothParameters *cp;
   vector<CollisionObject *> *collision_objects;
+  vector<Particle *> *particles;
 
   // OpenGL attributes
 
-  int active_shader_idx = 0;
+  int active_shader_idx = 6;
 
   vector<UserShader> shaders;
   vector<std::string> shaders_combobox_names;
@@ -134,6 +139,11 @@ private:
   bool is_alive = true;
 
   Vector2i default_window_size = Vector2i(1024, 800);
+
+  // Sphere mesh
+  int num_lat = 5;
+  int num_lon = 5;
+  Misc::SphereMesh sphere_mesh = Misc::SphereMesh(num_lat, num_lon);
 };
 
 struct UserShader {

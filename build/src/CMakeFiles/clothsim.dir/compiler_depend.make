@@ -1383,16 +1383,15 @@ src/CMakeFiles/clothsim.dir/collision/plane.cpp.o: ../src/collision/plane.cpp \
   ../src/pointMass.h \
   ../CGL/include/CGL/vector3D.h \
   ../src/simulator.h \
+  ../src/misc/sphere_drawing.h \
   ../src/camera.h \
   ../CGL/include/CGL/matrix3x3.h \
   ../src/misc/camera_info.h \
   ../src/misc/collada_info.h \
   ../CGL/include/CGL/matrix4x4.h \
   ../CGL/include/CGL/vector4D.h \
-  ../src/cloth.h \
-  /Library/Developer/CommandLineTools/usr/include/c++/v1/unordered_set \
   ../src/collision/collisionObject.h \
-  ../src/spring.h \
+  ../src/particle.h \
   ../src/collision/plane.h \
   ../src/collision/collisionObject.h
 
@@ -2311,16 +2310,15 @@ src/CMakeFiles/clothsim.dir/main.cpp.o: ../src/main.cpp \
   ../src/collision/collisionObject.h \
   ../src/collision/sphere.h \
   ../src/misc/sphere_drawing.h \
-  ../src/cloth.h \
-  ../src/clothMesh.h \
-  ../src/spring.h \
   ../src/simulator.h \
+  ../src/misc/sphere_drawing.h \
   ../src/camera.h \
   ../CGL/include/CGL/matrix3x3.h \
   ../src/misc/camera_info.h \
   ../src/misc/collada_info.h \
   ../CGL/include/CGL/matrix4x4.h \
   ../CGL/include/CGL/vector4D.h \
+  ../src/particle.h \
   ../src/json.hpp \
   /Library/Developer/CommandLineTools/usr/include/c++/v1/ciso646 \
   /Library/Developer/CommandLineTools/usr/include/c++/v1/forward_list \
@@ -3242,6 +3240,12 @@ src/CMakeFiles/clothsim.dir/simulator.cpp.o: ../src/simulator.cpp \
   /Library/Developer/CommandLineTools/usr/include/c++/v1/__bsd_locale_defaults.h \
   /Library/Developer/CommandLineTools/usr/include/c++/v1/bitset \
   /Library/Developer/CommandLineTools/usr/include/c++/v1/__bit_reference \
+  ../src/util/random_util.h \
+  /Library/Developer/CommandLineTools/usr/include/c++/v1/random \
+  /Library/Developer/CommandLineTools/usr/include/c++/v1/numeric \
+  /Library/Developer/CommandLineTools/usr/include/c++/v1/vector \
+  /Library/Developer/CommandLineTools/usr/include/c++/v1/__split_buffer \
+  /Library/Developer/CommandLineTools/usr/include/c++/v1/istream \
   ../ext/nanogui/include/nanogui/nanogui.h \
   ../ext/nanogui/include/nanogui/common.h \
   ../ext/nanogui/ext/eigen/Eigen/Core \
@@ -3249,7 +3253,6 @@ src/CMakeFiles/clothsim.dir/simulator.cpp.o: ../src/simulator.cpp \
   ../ext/nanogui/ext/eigen/Eigen/src/Core/util/Macros.h \
   /Library/Developer/CommandLineTools/usr/include/c++/v1/complex \
   /Library/Developer/CommandLineTools/usr/include/c++/v1/sstream \
-  /Library/Developer/CommandLineTools/usr/include/c++/v1/istream \
   ../ext/nanogui/ext/eigen/Eigen/src/Core/util/MKL_support.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/12.0.0/include/mmintrin.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/12.0.0/include/emmintrin.h \
@@ -3369,8 +3372,6 @@ src/CMakeFiles/clothsim.dir/simulator.cpp.o: ../src/simulator.cpp \
   ../ext/nanogui/ext/eigen/Eigen/src/Core/GlobalFunctions.h \
   ../ext/nanogui/ext/eigen/Eigen/src/Core/util/ReenableStupidWarnings.h \
   /Library/Developer/CommandLineTools/usr/include/c++/v1/array \
-  /Library/Developer/CommandLineTools/usr/include/c++/v1/vector \
-  /Library/Developer/CommandLineTools/usr/include/c++/v1/__split_buffer \
   ../ext/nanogui/include/nanogui/widget.h \
   ../ext/nanogui/include/nanogui/object.h \
   ../ext/nanogui/include/nanogui/theme.h \
@@ -3458,19 +3459,17 @@ src/CMakeFiles/clothsim.dir/simulator.cpp.o: ../src/simulator.cpp \
   ../ext/nanogui/include/nanogui/glcanvas.h \
   /Library/Developer/CommandLineTools/usr/include/c++/v1/iostream \
   ../src/simulator.h \
+  ../src/misc/sphere_drawing.h \
   ../src/camera.h \
   ../CGL/include/CGL/matrix3x3.h \
   ../src/misc/camera_info.h \
   ../src/misc/collada_info.h \
   ../CGL/include/CGL/matrix4x4.h \
   ../CGL/include/CGL/vector4D.h \
-  ../src/cloth.h \
-  /Library/Developer/CommandLineTools/usr/include/c++/v1/unordered_set \
-  ../src/clothMesh.h \
-  ../src/pointMass.h \
   ../src/collision/collisionObject.h \
   ../src/clothMesh.h \
-  ../src/spring.h \
+  ../src/pointMass.h \
+  ../src/particle.h \
   ../src/collision/plane.h \
   ../src/collision/sphere.h \
   ../src/misc/sphere_drawing.h \
@@ -3480,6 +3479,8 @@ src/CMakeFiles/clothsim.dir/simulator.cpp.o: ../src/simulator.cpp \
 
 
 ../src/misc/stb_image.h:
+
+../src/util/random_util.h:
 
 ../src/simulator.cpp:
 
@@ -3504,6 +3505,8 @@ src/CMakeFiles/clothsim.dir/simulator.cpp.o: ../src/simulator.cpp \
 /Library/Developer/CommandLineTools/usr/include/c++/v1/set:
 
 ../src/collision/sphere.cpp:
+
+../src/particle.h:
 
 ../src/collision/plane.cpp:
 

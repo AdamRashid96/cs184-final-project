@@ -1,6 +1,6 @@
 {
     "sphere": {
-        "origin": [0, 0, 0],
+        "origin": [1, 1, 1],
         "radius": 0.1,
         "friction": 0.3
     }

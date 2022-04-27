@@ -446,15 +446,14 @@ src/CMakeFiles/clothsim.dir/collision/plane.cpp.o: \
   /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/collision/../pointMass.h \
   /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/CGL/include/CGL/vector3D.h \
   /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/collision/../simulator.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/collision/../misc/sphere_drawing.h \
   /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/collision/../camera.h \
   /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/CGL/include/CGL/matrix3x3.h \
   /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/collision/../misc/camera_info.h \
   /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/collision/../misc/collada_info.h \
   /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/CGL/include/CGL/matrix4x4.h \
   /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/CGL/include/CGL/vector4D.h \
-  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/collision/../cloth.h \
-  /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/unordered_set \
   /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/collision/../collision/collisionObject.h \
-  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/collision/../spring.h \
+  /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/collision/../particle.h \
   /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/collision/plane.h \
   /Users/adamrashid/Desktop/cs184/final-project/cs184-final-project/src/collision/collisionObject.h

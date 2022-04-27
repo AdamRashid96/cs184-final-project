@@ -2,12 +2,12 @@
 #include <glad/glad.h>
 
 #include <CGL/vector3D.h>
+#include "util/random_util.h"
 #include <nanogui/nanogui.h>
 
 #include "simulator.h"
 
 #include "camera.h"
-#include "cloth.h"
 #include "collision/plane.h"
 #include "collision/sphere.h"
 #include "misc/camera_info.h"
@@ -93,6 +93,89 @@ void Simulator::load_textures() {
   std::cout << "Loaded cubemap texture" << std::endl;
 }
 
+// Uniform Sphere Sampler3D Implementation //
+
+Vector3D get_sample() {
+  double z = random_uniform() * 2 - 1;
+  double sinTheta = sqrt(std::max(0.0, 1.0f - z * z));
+
+  double phi = 2.0f * PI * random_uniform();
+
+  return Vector3D(cos(phi) * sinTheta, sin(phi) * sinTheta, z);
+}
+
+void Simulator::initParticles() {
+  int num_particles = 1000;
+  double explosion_radius = .3;
+  double radius = 0.03;
+  double density = 1;
+  double max_vel = 10;
+  double min_vel = 5;
+
+  particles = new vector<Particle *>(num_particles);
+
+  for (int i = 0; i < num_particles; i++) {
+    Vector3D pos = get_sample() * explosion_radius * random_uniform();
+    (*particles)[i] = new Particle(pos, radius, density);
+
+    (*particles)[i]->velocity = pos.unit() * (min_vel + random_uniform() * (max_vel - min_vel));
+  }
+
+
+}
+
+void Simulator::particleSimulate(double frames_per_sec, double simulation_steps,
+                     vector<Vector3D> external_accelerations,
+                     vector<CollisionObject *> *collision_objects) {
+  double delta_t = 1.0f / frames_per_sec / simulation_steps;
+
+  // // Compute total force acting on each particle.
+  // Vector3D external_force;
+  // for (int i = 0; i < external_accelerations.size(); i++) {
+  //   external_force += mass * external_accelerations[i];
+  // }
+
+  // // Set the external force on the point masses
+  // for (int i = 0; i < num_height_points; i++) {
+  //   for (int j = 0; j < num_width_points; j++) {
+  //     int idx = (i * num_width_points) + j;
+  //     point_masses[idx].forces = external_force;
+  //   }
+  // }
+
+  double damping = 0;
+
+  // TODO (Part 2): Use Verlet integration to compute new point mass positions
+  for (int i = 0; i < particles->size(); i++) {
+
+    double mass = (*particles)[i]->mass();
+    Vector3D velocity = (*particles)[i]->velocity;
+    Vector3D position = (*particles)[i]->position;
+    Vector3D last_position = (*particles)[i]->last_position;
+    (*particles)[i]->position = position + (1.0 - damping / 100.0) * velocity * delta_t + (*particles)[i]->forces / mass * delta_t * delta_t;
+    (*particles)[i]->velocity = velocity + (*particles)[i]->forces / mass * delta_t;
+    
+    (*particles)[i]->last_position = position;
+  }
+
+  // // TODO (Part 4): Handle self-collisions.
+  // build_spatial_map();
+  // for (int i = 0; i < point_masses.size(); i++) {
+  //   self_collide(point_masses[i], simulation_steps);
+  // }
+
+
+  // // TODO (Part 3): Handle collisions with other primitives.
+  // for (int k = 0; k < collision_objects->size(); k++) {
+  //   for (int i = 0; i < num_height_points; i++) {
+  //     for (int j = 0; j < num_width_points; j++) {
+  //       int idx = (i * num_width_points) + j;
+  //       (*collision_objects)[k]->collide(point_masses[idx]);
+  //     }
+  //   }
+  // }
+}
+
 void Simulator::load_shaders() {
   std::set<std::string> shader_folder_contents;
   bool success = FileUtils::list_files_in_directory(m_project_root + "/shaders", shader_folder_contents);
@@ -147,7 +230,7 @@ void Simulator::load_shaders() {
   
   // Assuming that it's there, use "Wireframe" by default
   for (size_t i = 0; i < shaders_combobox_names.size(); ++i) {
-    if (shaders_combobox_names[i] == "Wireframe") {
+    if (shaders_combobox_names[i] == "Diffuse") {
       active_shader_idx = i;
       break;
     }
@@ -160,6 +243,9 @@ Simulator::Simulator(std::string project_root, Screen *screen)
   
   this->load_shaders();
   this->load_textures();
+
+  // Initialize particles
+  this->initParticles();
 
   glEnable(GL_PROGRAM_POINT_SIZE);
   glEnable(GL_DEPTH_TEST);
@@ -175,14 +261,30 @@ Simulator::~Simulator() {
   glDeleteTextures(1, &m_gl_texture_4);
   glDeleteTextures(1, &m_gl_cubemap_tex);
 
-  if (cloth) delete cloth;
-  if (cp) delete cp;
   if (collision_objects) delete collision_objects;
 }
 
-void Simulator::loadCloth(Cloth *cloth) { this->cloth = cloth; }
+void Simulator::explosion(double frames_per_sec, double simulation_steps,
+                     vector<Vector3D> external_accelerations,
+                     vector<CollisionObject *> *collision_objects){
+  double mass = 1;
+  double delta_t = 1.0f / frames_per_sec / simulation_steps;
 
-void Simulator::loadClothParameters(ClothParameters *cp) { this->cp = cp; }
+  // Compute total force acting on each point mass.
+
+  for (int i = 0; i < 1; i++) {
+    Vector3D origin(i, i, 0);
+    Sphere *s = new Sphere(origin, 0.5, 0.5, 40, 40);
+    collision_objects->push_back(s);
+  }
+
+  // Vector3D external_force;
+  // for (int i = 0; i < external_accelerations.size(); i++) {
+  //   external_force += mass * external_accelerations[i];
+  // }
+                    
+
+}
 
 void Simulator::loadCollisionObjects(vector<CollisionObject *> *objects) { this->collision_objects = objects; }
 
@@ -207,10 +309,6 @@ void Simulator::init() {
   // Try to intelligently figure out the camera target
 
   Vector3D avg_pm_position(0, 0, 0);
-
-  // for (auto &pm : cloth->point_masses) {
-  //   avg_pm_position += pm.position / cloth->point_masses.size();
-  // }
 
   CGL::Vector3D target(avg_pm_position.x, avg_pm_position.y / 2,
                        avg_pm_position.z);
@@ -244,9 +342,10 @@ void Simulator::drawContents() {
   if (!is_paused) {
     vector<Vector3D> external_accelerations = {gravity};
 
-    // for (int i = 0; i < simulation_steps; i++) {
-    //   cloth->simulate(frames_per_sec, simulation_steps, cp, external_accelerations, collision_objects);
-    // }
+    for (int i = 0; i < simulation_steps; i++) {
+      particleSimulate(frames_per_sec, simulation_steps, external_accelerations, collision_objects);
+    }
+
   }
 
   // Bind the active shader
@@ -269,172 +368,44 @@ void Simulator::drawContents() {
   shader.setUniform("u_model", model);
   shader.setUniform("u_view_projection", viewProjection);
 
-  // switch (active_shader.type_hint) {
-  // case WIREFRAME:
-  //   shader.setUniform("u_color", color, false);
-  //   drawWireframe(shader);
-  //   break;
-  // case NORMALS:
-  //   drawNormals(shader);
-  //   break;
-  // case PHONG:
-  
-  //   // Others
-  //   Vector3D cam_pos = camera.position();
-  //   shader.setUniform("u_color", color, false);
-  //   shader.setUniform("u_cam_pos", Vector3f(cam_pos.x, cam_pos.y, cam_pos.z), false);
-  //   shader.setUniform("u_light_pos", Vector3f(0.5, 2, 2), false);
-  //   shader.setUniform("u_light_intensity", Vector3f(3, 3, 3), false);
-  //   shader.setUniform("u_texture_1_size", Vector2f(m_gl_texture_1_size.x, m_gl_texture_1_size.y), false);
-  //   shader.setUniform("u_texture_2_size", Vector2f(m_gl_texture_2_size.x, m_gl_texture_2_size.y), false);
-  //   shader.setUniform("u_texture_3_size", Vector2f(m_gl_texture_3_size.x, m_gl_texture_3_size.y), false);
-  //   shader.setUniform("u_texture_4_size", Vector2f(m_gl_texture_4_size.x, m_gl_texture_4_size.y), false);
-  //   // Textures
-  //   shader.setUniform("u_texture_1", 1, false);
-  //   shader.setUniform("u_texture_2", 2, false);
-  //   shader.setUniform("u_texture_3", 3, false);
-  //   shader.setUniform("u_texture_4", 4, false);
+  switch (active_shader.type_hint) {
+  case WIREFRAME:
+    shader.setUniform("u_color", color, false);
+    break;
+  case NORMALS:
+    // drawNormals(shader);
+    break;
+  case PHONG:
+    // Others
+    Vector3D cam_pos = camera.position();
+    shader.setUniform("u_color", color, false);
+    shader.setUniform("u_cam_pos", Vector3f(cam_pos.x, cam_pos.y, cam_pos.z), false);
+    shader.setUniform("u_light_pos", Vector3f(0.5, 2, 2), false);
+    shader.setUniform("u_light_intensity", Vector3f(3, 3, 3), false);
+    shader.setUniform("u_texture_1_size", Vector2f(m_gl_texture_1_size.x, m_gl_texture_1_size.y), false);
+    shader.setUniform("u_texture_2_size", Vector2f(m_gl_texture_2_size.x, m_gl_texture_2_size.y), false);
+    shader.setUniform("u_texture_3_size", Vector2f(m_gl_texture_3_size.x, m_gl_texture_3_size.y), false);
+    shader.setUniform("u_texture_4_size", Vector2f(m_gl_texture_4_size.x, m_gl_texture_4_size.y), false);
+    // Textures
+    shader.setUniform("u_texture_1", 1, false);
+    shader.setUniform("u_texture_2", 2, false);
+    shader.setUniform("u_texture_3", 3, false);
+    shader.setUniform("u_texture_4", 4, false);
     
-  //   shader.setUniform("u_normal_scaling", m_normal_scaling, false);
-  //   shader.setUniform("u_height_scaling", m_height_scaling, false);
+    shader.setUniform("u_normal_scaling", m_normal_scaling, false);
+    shader.setUniform("u_height_scaling", m_height_scaling, false);
     
-  //   shader.setUniform("u_texture_cubemap", 5, false);
-  //   drawPhong(shader);
-  //   break;
-  // }
+    shader.setUniform("u_texture_cubemap", 5, false);
+    break;
+  }
+
+  for (int i = 0; i < particles->size(); i++) {
+    sphere_mesh.draw_sphere(shader, (*particles)[i]->position, (*particles)[i]->radius);
+  }
 
   for (CollisionObject *co : *collision_objects) {
     co->render(shader);
   }
-}
-
-void Simulator::drawWireframe(GLShader &shader) {
-  int num_structural_springs =
-      2 * cloth->num_width_points * cloth->num_height_points -
-      cloth->num_width_points - cloth->num_height_points;
-  int num_shear_springs =
-      2 * (cloth->num_width_points - 1) * (cloth->num_height_points - 1);
-  int num_bending_springs = num_structural_springs - cloth->num_width_points -
-                            cloth->num_height_points;
-
-  int num_springs = cp->enable_structural_constraints * num_structural_springs +
-                    cp->enable_shearing_constraints * num_shear_springs +
-                    cp->enable_bending_constraints * num_bending_springs;
-
-  MatrixXf positions(4, num_springs * 2);
-  MatrixXf normals(4, num_springs * 2);
-
-  // Draw springs as lines
-
-  int si = 0;
-
-  for (int i = 0; i < cloth->springs.size(); i++) {
-    Spring s = cloth->springs[i];
-
-    if ((s.spring_type == STRUCTURAL && !cp->enable_structural_constraints) ||
-        (s.spring_type == SHEARING && !cp->enable_shearing_constraints) ||
-        (s.spring_type == BENDING && !cp->enable_bending_constraints)) {
-      continue;
-    }
-
-    Vector3D pa = s.pm_a->position;
-    Vector3D pb = s.pm_b->position;
-
-    Vector3D na = s.pm_a->normal();
-    Vector3D nb = s.pm_b->normal();
-
-    positions.col(si) << pa.x, pa.y, pa.z, 1.0;
-    positions.col(si + 1) << pb.x, pb.y, pb.z, 1.0;
-
-    normals.col(si) << na.x, na.y, na.z, 0.0;
-    normals.col(si + 1) << nb.x, nb.y, nb.z, 0.0;
-
-    si += 2;
-  }
-
-  //shader.setUniform("u_color", nanogui::Color(1.0f, 1.0f, 1.0f, 1.0f), false);
-  shader.uploadAttrib("in_position", positions, false);
-  // Commented out: the wireframe shader does not have this attribute
-  //shader.uploadAttrib("in_normal", normals);
-
-  shader.drawArray(GL_LINES, 0, num_springs * 2);
-}
-
-void Simulator::drawNormals(GLShader &shader) {
-  int num_tris = cloth->clothMesh->triangles.size();
-
-  MatrixXf positions(4, num_tris * 3);
-  MatrixXf normals(4, num_tris * 3);
-
-  for (int i = 0; i < num_tris; i++) {
-    Triangle *tri = cloth->clothMesh->triangles[i];
-
-    Vector3D p1 = tri->pm1->position;
-    Vector3D p2 = tri->pm2->position;
-    Vector3D p3 = tri->pm3->position;
-
-    Vector3D n1 = tri->pm1->normal();
-    Vector3D n2 = tri->pm2->normal();
-    Vector3D n3 = tri->pm3->normal();
-
-    positions.col(i * 3) << p1.x, p1.y, p1.z, 1.0;
-    positions.col(i * 3 + 1) << p2.x, p2.y, p2.z, 1.0;
-    positions.col(i * 3 + 2) << p3.x, p3.y, p3.z, 1.0;
-
-    normals.col(i * 3) << n1.x, n1.y, n1.z, 0.0;
-    normals.col(i * 3 + 1) << n2.x, n2.y, n2.z, 0.0;
-    normals.col(i * 3 + 2) << n3.x, n3.y, n3.z, 0.0;
-  }
-
-  shader.uploadAttrib("in_position", positions, false);
-  shader.uploadAttrib("in_normal", normals, false);
-
-  shader.drawArray(GL_TRIANGLES, 0, num_tris * 3);
-}
-
-void Simulator::drawPhong(GLShader &shader) {
-  int num_tris = cloth->clothMesh->triangles.size();
-
-  MatrixXf positions(4, num_tris * 3);
-  MatrixXf normals(4, num_tris * 3);
-  MatrixXf uvs(2, num_tris * 3);
-  MatrixXf tangents(4, num_tris * 3);
-
-  for (int i = 0; i < num_tris; i++) {
-    Triangle *tri = cloth->clothMesh->triangles[i];
-
-    Vector3D p1 = tri->pm1->position;
-    Vector3D p2 = tri->pm2->position;
-    Vector3D p3 = tri->pm3->position;
-
-    Vector3D n1 = tri->pm1->normal();
-    Vector3D n2 = tri->pm2->normal();
-    Vector3D n3 = tri->pm3->normal();
-
-    positions.col(i * 3    ) << p1.x, p1.y, p1.z, 1.0;
-    positions.col(i * 3 + 1) << p2.x, p2.y, p2.z, 1.0;
-    positions.col(i * 3 + 2) << p3.x, p3.y, p3.z, 1.0;
-
-    normals.col(i * 3    ) << n1.x, n1.y, n1.z, 0.0;
-    normals.col(i * 3 + 1) << n2.x, n2.y, n2.z, 0.0;
-    normals.col(i * 3 + 2) << n3.x, n3.y, n3.z, 0.0;
-    
-    uvs.col(i * 3    ) << tri->uv1.x, tri->uv1.y;
-    uvs.col(i * 3 + 1) << tri->uv2.x, tri->uv2.y;
-    uvs.col(i * 3 + 2) << tri->uv3.x, tri->uv3.y;
-    
-    tangents.col(i * 3    ) << 1.0, 0.0, 0.0, 1.0;
-    tangents.col(i * 3 + 1) << 1.0, 0.0, 0.0, 1.0;
-    tangents.col(i * 3 + 2) << 1.0, 0.0, 0.0, 1.0;
-  }
-
-
-  shader.uploadAttrib("in_position", positions, false);
-  shader.uploadAttrib("in_normal", normals, false);
-  shader.uploadAttrib("in_uv", uvs, false);
-  shader.uploadAttrib("in_tangent", tangents, false);
-
-  shader.drawArray(GL_TRIANGLES, 0, num_tris * 3);
 }
 
 // ----------------------------------------------------------------------------
@@ -577,7 +548,7 @@ bool Simulator::keyCallbackEvent(int key, int scancode, int action,
       break;
     case 'r':
     case 'R':
-      cloth->reset();
+      initParticles();
       break;
     case ' ':
       resetCamera();
@@ -631,24 +602,24 @@ void Simulator::initGUI(Screen *screen) {
   {
     Button *b = new Button(window, "structural");
     b->setFlags(Button::ToggleButton);
-    b->setPushed(cp->enable_structural_constraints);
+    b->setPushed(true);
     b->setFontSize(14);
-    b->setChangeCallback(
-        [this](bool state) { cp->enable_structural_constraints = state; });
+    // b->setChangeCallback(
+    //     [this](bool state) { cp->enable_structural_constraints = state; });
 
     b = new Button(window, "shearing");
     b->setFlags(Button::ToggleButton);
-    b->setPushed(cp->enable_shearing_constraints);
+    b->setPushed(true);
     b->setFontSize(14);
-    b->setChangeCallback(
-        [this](bool state) { cp->enable_shearing_constraints = state; });
+    // b->setChangeCallback(
+    //     [this](bool state) { cp->enable_shearing_constraints = state; });
 
     b = new Button(window, "bending");
     b->setFlags(Button::ToggleButton);
-    b->setPushed(cp->enable_bending_constraints);
+    b->setPushed(true);
     b->setFontSize(14);
-    b->setChangeCallback(
-        [this](bool state) { cp->enable_bending_constraints = state; });
+    // b->setChangeCallback(
+    //     [this](bool state) { cp->enable_bending_constraints = state; });
   }
 
   // Mass-spring parameters
@@ -669,22 +640,10 @@ void Simulator::initGUI(Screen *screen) {
     fb->setEditable(true);
     fb->setFixedSize(Vector2i(100, 20));
     fb->setFontSize(14);
-    fb->setValue(cp->density / 10);
+    fb->setValue(1);
     fb->setUnits("g/cm^2");
     fb->setSpinnable(true);
-    fb->setCallback([this](float value) { cp->density = (double)(value * 10); });
-
-    new Label(panel, "ks :", "sans-bold");
-
-    fb = new FloatBox<double>(panel);
-    fb->setEditable(true);
-    fb->setFixedSize(Vector2i(100, 20));
-    fb->setFontSize(14);
-    fb->setValue(cp->ks);
-    fb->setUnits("N/m");
-    fb->setSpinnable(true);
-    fb->setMinValue(0);
-    fb->setCallback([this](float value) { cp->ks = value; });
+    // fb->setCallback([this](float value) { cp->density = (double)(value * 10); });
   }
 
   // Simulation constants
@@ -730,23 +689,11 @@ void Simulator::initGUI(Screen *screen) {
     panel->setLayout(
         new BoxLayout(Orientation::Horizontal, Alignment::Middle, 0, 5));
 
-    Slider *slider = new Slider(panel);
-    slider->setValue(cp->damping);
-    slider->setFixedWidth(105);
-
     TextBox *percentage = new TextBox(panel);
     percentage->setFixedWidth(75);
-    percentage->setValue(to_string(cp->damping));
+    percentage->setValue(to_string(1));
     percentage->setUnits("%");
     percentage->setFontSize(14);
-
-    slider->setCallback([percentage](float value) {
-      percentage->setValue(std::to_string(value));
-    });
-    slider->setFinalCallback([&](float value) {
-      cp->damping = (double)value;
-      // cout << "Final slider value: " << (int)(value * 100) << endl;
-    });
   }
 
   // Gravity
