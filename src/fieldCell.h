@@ -14,6 +14,7 @@ public:
     Vector3D velocity;
     double temperature;
     double divergence;
+    bool isBoundary;
 }; // struct FieldCell
 
 #endif // FIELD_CELL_H
