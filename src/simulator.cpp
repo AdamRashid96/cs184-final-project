@@ -105,9 +105,9 @@ Vector3D get_sample() {
 }
 
 void Simulator::initParticles() {
-  int num_particles = 1000;
-  double explosion_radius = .3;
-  double radius = 0.03;
+  int num_particles = 10000;
+  double explosion_radius = .01;
+  double radius = 0.001;
   double density = 1;
   double max_vel = 10;
   double min_vel = 5;
