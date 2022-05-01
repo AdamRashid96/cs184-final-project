@@ -21,6 +21,16 @@ inline double random_uniform() {
   return clamp(double(minstd_engine() - minstd_engine.min()) * rmax, 0.0000001, 0.99999999);
 }
 
+// Uniform Sphere Sampler3D Implementation //
+inline Vector3D get_sample() {
+  double z = random_uniform() * 2 - 1;
+  double sinTheta = sqrt(std::max(0.0, 1.0f - z * z));
+
+  double phi = 2.0f * PI * random_uniform();
+
+  return Vector3D(cos(phi) * sinTheta, sin(phi) * sinTheta, z);
+}
+
 /**
  * Returns true with probability p and false with probability 1 - p.
  */

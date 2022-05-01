@@ -93,35 +93,15 @@ void Simulator::load_textures() {
   std::cout << "Loaded cubemap texture" << std::endl;
 }
 
-// Uniform Sphere Sampler3D Implementation //
-
-Vector3D get_sample() {
-  double z = random_uniform() * 2 - 1;
-  double sinTheta = sqrt(std::max(0.0, 1.0f - z * z));
-
-  double phi = 2.0f * PI * random_uniform();
-
-  return Vector3D(cos(phi) * sinTheta, sin(phi) * sinTheta, z);
-}
-
 void Simulator::initParticles() {
-  int num_particles = 10000;
-  double explosion_radius = .01;
-  double radius = 0.001;
-  double density = 1;
-  double max_vel = 10;
-  double min_vel = 5;
-
   particles = new vector<Particle *>(num_particles);
 
   for (int i = 0; i < num_particles; i++) {
     Vector3D pos = get_sample() * explosion_radius * random_uniform();
-    (*particles)[i] = new Particle(pos, radius, density);
+    (*particles)[i] = new Particle(pos, particle_radius, particle_density);
 
     (*particles)[i]->velocity = pos.unit() * (min_vel + random_uniform() * (max_vel - min_vel));
   }
-
-
 }
 
 void Simulator::particleSimulate(double frames_per_sec, double simulation_steps,
@@ -238,7 +218,8 @@ void Simulator::load_shaders() {
 }
 
 Simulator::Simulator(std::string project_root, Screen *screen)
-: m_project_root(project_root) {
+: m_project_root(project_root), field(field_width, field_height, field_depth, field_cell_size,
+                   ambient_temperature, base_pressure, initial_velocity) {
   this->screen = screen;
   
   this->load_shaders();

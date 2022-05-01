@@ -7,6 +7,7 @@
 #include "camera.h"
 #include "collision/collisionObject.h"
 #include "particle.h"
+#include "gasField.h"
 
 using namespace nanogui;
 
@@ -70,6 +71,26 @@ private:
 
   vector<CollisionObject *> *collision_objects;
   vector<Particle *> *particles;
+
+  // Gas Field Parameters
+  int field_width = 100;
+  int field_height = 100;
+  int field_depth = 100;
+  double field_cell_size = 0.1;
+
+  double ambient_temperature = 0; // Kelvin
+  double base_pressure = 0;
+  double initial_velocity = 0.01;
+
+  GasField field;
+
+  // Explosion parameters
+  int num_particles = 10000;
+  double explosion_radius = .01;
+  double particle_radius = 0.001;
+  double particle_density = 1;
+  double max_vel = 10;
+  double min_vel = 5;
 
   // OpenGL attributes
 
