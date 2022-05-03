@@ -4,14 +4,19 @@
 
 using namespace CGL;
 
+enum ParticleType { FUEL, SOOT };
 
 struct Particle {
   Particle(Vector3D position, double radius, double density)
       : start_position(position), position(position),
-        last_position(position), radius(radius), density(density) {}
+        radius(radius), density(density) {}
 
     double mass() {
         return density * (4.0/3.0) * PI * radius * radius * radius;
+    }
+
+    double thermal_mass() {
+        return 0; // TODO: fix
     }
 
     // static values
@@ -20,10 +25,15 @@ struct Particle {
 
     // dynamic values
     Vector3D position;
-    Vector3D last_position;
-    Vector3D forces;
+    //Vector3D last_position; // TODO: remove
+    Vector3D force;
     Vector3D accel;
     Vector3D velocity;
     double radius;
+    double temperature;
+    double heat_transfer;
+    ParticleType type;
+    double soot_mass;
+
 
 };

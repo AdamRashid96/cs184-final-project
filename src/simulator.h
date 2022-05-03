@@ -52,6 +52,10 @@ private:
                      vector<Vector3D> external_accelerations,
                      vector<CollisionObject *> *collision_objects);
 
+  void time_step(double delta_time);
+  void particle_time_step(double delta_time);
+  void fluid_time_step(double delta_time);
+
   void field_vel_step(Vector3D* v0, float visc, double delta_time);
 
   // File management
@@ -91,10 +95,22 @@ private:
   vector<Vector3D> line_endpoints;
   int wireframe_shader_idx = 0;
 
+  // TODO: Tune these values
+  double a_h = 0.9;
+  double a_d = 0.9;
+  double particle_mass_threshold = 0;
+  double particle_thermal_mass_threshold = 0;
+  double ignition_temperature;
+  double burn_rate;
+  double b_h;
+  double b_s;
+  double b_g;
+  double mass_creation_threshold;
+
   // Explosion parameters
   int num_particles = 10000;
   double explosion_radius = .1;
-  double particle_radius = 0.001;
+  double particle_radius = 0.01;
   double particle_density = 1;
   double max_vel = 10;
   double min_vel = 5;

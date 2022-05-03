@@ -100,7 +100,7 @@ void Simulator::initParticles() {
     Vector3D pos = get_sample() * explosion_radius * random_uniform();
     (*particles)[i] = new Particle(pos, particle_radius, particle_density);
 
-    (*particles)[i]->velocity = pos.unit() * (min_vel + random_uniform() * (max_vel - min_vel));
+    (*particles)[i]->velocity = Vector3D(0);//pos.unit() * (min_vel + random_uniform() * (max_vel - min_vel));
   }
 }
 
@@ -108,35 +108,6 @@ void Simulator::particleSimulate(double frames_per_sec, double simulation_steps,
                      vector<Vector3D> external_accelerations,
                      vector<CollisionObject *> *collision_objects) {
   double delta_t = 1.0f / frames_per_sec / simulation_steps;
-
-  // // Compute total force acting on each particle.
-  // Vector3D external_force;
-  // for (int i = 0; i < external_accelerations.size(); i++) {
-  //   external_force += mass * external_accelerations[i];
-  // }
-
-  // // Set the external force on the point masses
-  // for (int i = 0; i < num_height_points; i++) {
-  //   for (int j = 0; j < num_width_points; j++) {
-  //     int idx = (i * num_width_points) + j;
-  //     point_masses[idx].forces = external_force;
-  //   }
-  // }
-
-  double damping = 0;
-
-  // TODO (Part 2): Use Verlet integration to compute new point mass positions
-  for (int i = 0; i < particles->size(); i++) {
-
-    double mass = (*particles)[i]->mass();
-    Vector3D velocity = (*particles)[i]->velocity;
-    Vector3D position = (*particles)[i]->position;
-    Vector3D last_position = (*particles)[i]->last_position;
-    (*particles)[i]->position = position + (1.0 - damping / 100.0) * velocity * delta_t + (*particles)[i]->forces / mass * delta_t * delta_t;
-    (*particles)[i]->velocity = velocity + (*particles)[i]->forces / mass * delta_t;
-    
-    (*particles)[i]->last_position = position;
-  }
 
   // // TODO (Part 4): Handle self-collisions.
   // build_spatial_map();
@@ -156,12 +127,106 @@ void Simulator::particleSimulate(double frames_per_sec, double simulation_steps,
   // }
 }
 
-void Simulator::field_vel_step(Vector3D* v0, float visc, double delta_time) {
+void Simulator::time_step(double delta_time) {
+  // Particle Gravity
+  for (int i = 0; i < particles->size(); i++) {
+    Particle* particle = (*particles)[i];
+    particle->force = particle->mass() * gravity;
+  }
+
+  // Fluid Bouyancy and Vorticity Confinement
+  // TODO
+
+  // Particle Fluid Interaction
+  for (int i = 0; i < particles->size(); i++) {
+    Particle* particle = (*particles)[i];
+    // Sample the fluid at the particle position to get interpolated cell values
+    FieldCell interpolatedCell = field.CellAtInterpolated(particle->position);
+    Vector3D velocityDifference = interpolatedCell.velocity - particle->velocity;
+    double r2 = particle->radius * particle->radius;
+
+    // Calculate force and heat transfer
+    Vector3D force;
+    if (particle->mass() >= particle_mass_threshold) {
+      force = a_d * r2 * velocityDifference * velocityDifference.norm();
+    } else {
+      force = Vector3D(0);
+    }
+
+    double heat_transfer;
+    if (particle->thermal_mass() >= particle_thermal_mass_threshold) {
+      heat_transfer = a_h * r2 * (interpolatedCell.temperature - particle->temperature);
+    } else {
+      heat_transfer = 0;
+    }
+
+    FieldCell* cell = field.CellAt(particle->position);
+    if (cell != NULL) {
+      cell->force -= force;
+      cell->heat_transfer -= heat_transfer;
+    }
+    particle->force += force;
+    particle->heat_transfer += heat_transfer;
+  }
+
+  // Fuel Particle Burning
+  // for (int i = 0; i < particles->size(); i++) {
+  //   Particle* particle = (*particles)[i];
+  //   if (particle->type == FUEL && particle->temperature >= ignition_temperature) {
+  //     double burned_mass = burn_rate * delta_time;
+
+  //     // Consume burned mass
+  //     particle->setMass(particle->mass() - burned_mass) 
+
+  //     // Heat generation
+  //     particle->heat_transfer += b_h * burned_mass;
+
+  //     // Mass generation
+  //     particle->soot_mass += b_s * burned_mass;
+  //     if (particle->soot_mass >= mass_creation_threshold) {
+  //       // TODO: Create soot particle
+  //     }
+
+  //     FieldCell* cell = field.CellAt(particle->position);
+  //     cell->divergence += b_g * burned_mass / (field.cell_size * field.cell_size * field.cell_size);
+
+  //     if (particle->mass() <= 0) {
+  //       // TODO: Delete the particle
+  //     }
+  //   }
+  // }
+
+  // Fluid Time Step
+  fluid_time_step(delta_time);
+
+  // Particle Time Step
+  particle_time_step(delta_time);
+}
+
+void Simulator::particle_time_step(double delta_time) {
+  for (int i = 0; i < particles->size(); i++) {
+    Particle* particle = (*particles)[i];
+
+    double mass = particle->mass();
+    if (mass >= particle_mass_threshold) {
+      Vector3D velocity = particle->velocity;
+      Vector3D position = particle->position;
+      particle->position += velocity * delta_time + particle->force / mass * delta_time * delta_time;
+      particle->velocity += particle->force / mass * delta_time;
+    }
+
+    if (particle->thermal_mass() >= particle_thermal_mass_threshold) {
+      particle->temperature += particle->heat_transfer / particle->thermal_mass();
+    }
+  }
+}
+
+void Simulator::fluid_time_step(double delta_time) {
   //field.add_vel(v0, delta_time);
   //field.swap();
-  field.diffuse_vel(visc, delta_time);
-  field.project();
-  field.swap();
+  //field.diffuse_vel(0, delta_time);
+  //field.project();
+  //field.swap();
   field.advect(delta_time);
   field.project();
 }
@@ -333,20 +398,12 @@ void Simulator::drawContents() {
   glEnable(GL_DEPTH_TEST);
 
   if (!is_paused) {
-    vector<Vector3D> external_accelerations = {gravity};
-
-    for (int i = 0; i < simulation_steps; i++) {
-      //particleSimulate(frames_per_sec, simulation_steps, external_accelerations, collision_objects);
-    }
     double delta_time = 1.0 / frames_per_sec;
-    field_vel_step(NULL, field_viscosity, delta_time);
-
+    time_step(delta_time);
   }
 
   // Bind the active shader
-
   const UserShader& active_shader = shaders[active_shader_idx];
-
   GLShader &shader = *active_shader.nanogui_shader;
   shader.bind();
 

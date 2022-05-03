@@ -132,6 +132,11 @@ public:
     }
 
     void project() {  // int N, float * u, float * v, float * p, float * div project ( N, u, v, u0, v0 );
+        for (int i = 0; i < size; i++) {
+            div[i] = 0;
+            p[i] = 0;
+        }
+
         int i, j, k;
         double hx = 1.0/width;
         double hy = 1.0/height;
@@ -140,7 +145,7 @@ public:
             for ( j=1 ; j<=height ; j++ ) {
                 for ( k=1 ; k<=depth ; k++ ) {
                 div[i + j * width + k * height * width] = -0.5 * ( hx * (CellAt(cells, i+1, j, k)->velocity[0] - CellAt(cells, i-1, j, k)->velocity[0]) +
-                                                hy * (CellAt(cells, i, j+1, k)->velocity[0] - CellAt(cells, i, j - 1, k)->velocity[0]) + hz * (CellAt(cells, i, j, k+1)->velocity[0] - CellAt(cells, i, j, k-1)->velocity[0]));
+                                                hy * (CellAt(cells, i, j+1, k)->velocity[1] - CellAt(cells, i, j - 1, k)->velocity[1]) + hz * (CellAt(cells, i, j, k+1)->velocity[2] - CellAt(cells, i, j, k-1)->velocity[2]));
                 p[i + j * width + k * height * width] = 0;
                 }
             }
@@ -247,6 +252,64 @@ public:
 
     FieldCell* CellAt(FieldCell *cells, int x, int y, int z) {
         return &cells[x + y * width + z * height * width];
+    }
+
+    FieldCell* CellAt(Vector3D position) {
+        int x = (position.x - origin.x) / cell_size + 0.5 * cell_size * width;
+        int y = (position.y - origin.y) / cell_size + 0.5 * cell_size * height;
+        int z = (position.z - origin.z) / cell_size + 0.5 * cell_size * depth;
+
+        if (x < 0 || x >= width || y < 0 || y >= height || z < 0 || z >= depth) {
+            return NULL;
+        }
+
+        return CellAt(cells, x, y, z);
+    }
+
+    FieldCell InterpCell(FieldCell a, FieldCell b, double t) {
+        FieldCell result;
+        result.temperature = a.temperature + t * b.temperature  + (-t) * a.temperature;
+        result.velocity = a.velocity + t * b.velocity  + (-t) * a.velocity;
+        return result;
+    }
+
+    FieldCell CellAtInterpolated(Vector3D position) {
+        double x = (position.x - origin.x) / cell_size + 0.5 * cell_size * width;
+        double y = (position.y - origin.y) / cell_size + 0.5 * cell_size * height;
+        double z = (position.z - origin.z) / cell_size + 0.5 * cell_size * depth;
+
+        int left = clamp(static_cast<int>(x), 0, width - 1);
+        int right = clamp(static_cast<int>(x + 0.5), 0, width - 1);
+        int lower = clamp(static_cast<int>(y), 0, height - 1);
+        int upper = clamp(static_cast<int>(y + 0.5), 0, height - 1);
+        int front = clamp(static_cast<int>(z), 0, depth - 1);
+        int back = clamp(static_cast<int>(z + 0.5), 0, depth - 1);
+
+        // Left or Right
+        // Upper or lower
+        // Front or Back
+        FieldCell* luf = CellAt(cells, left, upper, front);
+        FieldCell* ruf = CellAt(cells, right, upper, front);
+        FieldCell* llf = CellAt(cells, left, lower, front);
+        FieldCell* rlf = CellAt(cells, right, lower, front);
+        FieldCell* lub = CellAt(cells, left, upper, back);
+        FieldCell* rub = CellAt(cells, right, upper, back);
+        FieldCell* llb = CellAt(cells, left, lower, back);
+        FieldCell* rlb = CellAt(cells, right, lower, back);
+
+        double horizontal = x - static_cast<int>(x);
+        double vertical = y - static_cast<int>(y);
+        double forward = z - static_cast<int>(z);
+
+        FieldCell left_upper = InterpCell(*luf, *lub, forward);
+        FieldCell right_upper = InterpCell(*ruf, *rub, forward);
+        FieldCell left_lower = InterpCell(*llf, *llb, forward);
+        FieldCell right_lower = InterpCell(*rlf, *rlb, forward);
+
+        FieldCell upper_cell = InterpCell(left_upper, right_upper, horizontal);
+        FieldCell lower_cell = InterpCell(left_lower, right_lower, horizontal);
+
+        return InterpCell(upper_cell, lower_cell, vertical);
     }
 
     void swap() {

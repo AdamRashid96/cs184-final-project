@@ -15,6 +15,8 @@ public:
     double temperature;
     double divergence;
     bool isBoundary;
+    Vector3D force;
+    double heat_transfer;
 }; // struct FieldCell
 
 #endif // FIELD_CELL_H
