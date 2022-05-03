@@ -13,7 +13,7 @@ using namespace std;
 class GasField {
 public:
     GasField(int width, int height, int depth, double cell_size,
-             double ambient_temperature, double base_pressure, double initial_velocity) {
+                double ambient_temperature, double base_pressure, double initial_velocity) {
         this->width = width;
         this->height = height;
         this->depth = depth;
@@ -21,21 +21,25 @@ public:
         this->size = (width + 2) * (height + 2) * (depth + 2);
 
         cells = new FieldCell[size];
+        prev_cells = new FieldCell[size];
 
         // Initialize cell values
         for (int i = 0; i < width + 2; i++) {
             for (int j = 0; j < height + 2; j++) {
                 for (int k = 0; k < depth + 2; k++) {
-                    FieldCell* cell = CellAt(cells, i, j, k);
+                    FieldCell cell;
                     if (i == 0 || i == width + 1 || j == 0 || j == height + 1 || k == 0 || k == depth + 1) {
-                        cell->isBoundary = true;
+                        cell.isBoundary = true;
                     } else {
-                        cell->isBoundary = false;
+                        cell.isBoundary = false;
                     }
-                    cell->temperature = ambient_temperature;
-                    cell->pressure = base_pressure;
-                    cell->divergence = 0;
-                    cell->velocity = get_sample() * random_uniform() * initial_velocity;
+                    cell.temperature = ambient_temperature;
+                    cell.pressure = base_pressure;
+                    cell.divergence = 0;
+                    cell.velocity = get_sample() * random_uniform() * initial_velocity;
+
+                    *CellAt(cells, i, j, k) = cell;
+                    *CellAt(prev_cells, i, j, k) = cell;
                 }
             }
         }
@@ -43,38 +47,38 @@ public:
 
     ~GasField() {
         delete [] cells;
+        delete [] prev_cells;
     }
     
-    void add_vel(Vector3D *s, float dt) {
+    void add_vel(Vector3D *s, double dt) {
         int i;
         for (i=0 ; i<size ; i++) { 
             cells[i].velocity += dt*s[i];
         }
     }
 
-    void diffuse_vel(float diff, float dt )
-    {
+    void diffuse_vel(double diff, double dt) {
         int i, j, k, t;
-        float a=dt*diff*width*height*depth;
+        double a=dt*diff*width*height*depth;
 
-        for (t=0; t<20; t++) {
-            for (i=1; i<=width; i++) {
-                for (j=1; j<=height; j++) {
-                    for (k = 1; k <=depth; k++) {
+        for (t = 0; t < 20; t++) {
+            for (i = 1; i <= width; i++) {
+                for (j = 1; j <= height; j++) {
+                    for (k = 1; k <= depth; k++) {
                         CellAt(cells, i, j, k)->velocity = (CellAt(prev_cells, i, j, k)->velocity + a * (CellAt(cells, i-1, j, k)->velocity +
                                                             CellAt(cells, i+1, j, k)->velocity + CellAt(cells, i, j-1, k)->velocity + CellAt(cells, i, j+1, k)->velocity + 
                                                             CellAt(cells, i, j, k-1)->velocity + CellAt(cells, i, j, k+1)->velocity)) / (1 + 6*a);
                     }
                 }
             }
-        set_bnd (cells);
+            set_bnd(cells);
         }
     }
 
-    void advect (float dt )  // int N, int b, float * d, float * d0, float * u, float * v, float dt
+    void advect (double dt )  // int N, int b, float * d, float * d0, float * u, float * v, float dt
     {
       int i, j, k, i0, j0, k0, i1, j1, k1;
-      float x, y, z, s0, t0, u0, s1, t1, u1, dtx0, dty0, dtz0;
+      double x, y, z, s0, t0, u0, s1, t1, u1, dtx0, dty0, dtz0;
       dtx0 = dt*width;
       dty0 = dt*height;
       dtz0 = dt*depth;
@@ -108,10 +112,10 @@ public:
               u1 = z - k0;
               u0 = 1 - k1;
 
-              float s0t0 = u0 * CellAt(prev_cells, i0, j0, k0)->velocity[dim] + u1 * CellAt(prev_cells, i0, j0, k1)->velocity[dim];
-              float s0t1 = u0 * CellAt(prev_cells, i0, j1, k0)->velocity[dim] + u1 * CellAt(prev_cells, i0, j1, k1)->velocity[dim];
-              float s1t0 = u0 * CellAt(prev_cells, i1, j0, k0)->velocity[dim] + u1 * CellAt(prev_cells, i1, j0, k1)->velocity[dim];
-              float s1t1 = u0 * CellAt(prev_cells, i1, j1, k0)->velocity[dim] + u1 * CellAt(prev_cells, i1, j1, k1)->velocity[dim];
+              double s0t0 = u0 * CellAt(prev_cells, i0, j0, k0)->velocity[dim] + u1 * CellAt(prev_cells, i0, j0, k1)->velocity[dim];
+              double s0t1 = u0 * CellAt(prev_cells, i0, j1, k0)->velocity[dim] + u1 * CellAt(prev_cells, i0, j1, k1)->velocity[dim];
+              double s1t0 = u0 * CellAt(prev_cells, i1, j0, k0)->velocity[dim] + u1 * CellAt(prev_cells, i1, j0, k1)->velocity[dim];
+              double s1t1 = u0 * CellAt(prev_cells, i1, j1, k0)->velocity[dim] + u1 * CellAt(prev_cells, i1, j1, k1)->velocity[dim];
               CellAt(cells, i, j, k)->velocity[dim] = s0 * (t0 * s0t0 + t1 * s0t1)+ s1 * (t0 * s1t0 + t1 * s1t1);
 //              CellAt(cells, i, j, k)->velocity[dim] = s0 * (t0 * d0[IDX(i0, j0)] + t1 * d0[IDX(i0, j1)])+ s1 * (t0 * d0[IDX(i1, j0)] + t1 * d0[IDX(i1, j1)]);
             }
@@ -125,9 +129,9 @@ public:
   void project ()   // int N, float * u, float * v, float * p, float * div project ( N, u, v, u0, v0 );
   {
     int i, j, k, t;
-    float hx = 1.0/width;
-    float hy = 1.0/height;
-    float hz = 1.0/depth;
+    double hx = 1.0/width;
+    double hy = 1.0/height;
+    double hz = 1.0/depth;
     double *div = new double[size];
     double *p = new double[size];
     for ( i=1 ; i<=width ; i++ ) {
@@ -241,6 +245,12 @@ public:
 
     FieldCell* CellAt(FieldCell *cells, int x, int y, int z) {
         return &cells[x + y * width + z * height * width];
+    }
+
+    void swap() {
+        FieldCell *temp = cells;
+        cells = prev_cells;
+        prev_cells = temp;
     }
 
     int width, height, depth;

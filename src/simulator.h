@@ -51,6 +51,8 @@ private:
                      vector<Vector3D> external_accelerations,
                      vector<CollisionObject *> *collision_objects);
 
+  void field_vel_step(Vector3D* v0, float visc, double frames_per_sec, double simulation_steps);
+
   // File management
   
   std::string m_project_root;
@@ -73,10 +75,11 @@ private:
   vector<Particle *> *particles;
 
   // Gas Field Parameters
-  int field_width = 100;
-  int field_height = 100;
-  int field_depth = 100;
+  int field_width = 30;
+  int field_height = 30;
+  int field_depth = 30;
   double field_cell_size = 0.1;
+  double field_viscosity = 0;
 
   double ambient_temperature = 0; // Kelvin
   double base_pressure = 0;

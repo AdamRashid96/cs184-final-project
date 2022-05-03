@@ -156,6 +156,17 @@ void Simulator::particleSimulate(double frames_per_sec, double simulation_steps,
   // }
 }
 
+void Simulator::field_vel_step(Vector3D* v0, float visc, double frames_per_sec, double simulation_steps) {
+  double dt = 1.0f / frames_per_sec / simulation_steps;
+  //field.add_vel(v0, dt);
+  //field.swap();
+  field.diffuse_vel(visc, dt);
+  // field.project();
+  // field.swap();
+  // field.advect(dt);
+  // field.project();
+}
+
 void Simulator::load_shaders() {
   std::set<std::string> shader_folder_contents;
   bool success = FileUtils::list_files_in_directory(m_project_root + "/shaders", shader_folder_contents);
@@ -324,8 +335,9 @@ void Simulator::drawContents() {
     vector<Vector3D> external_accelerations = {gravity};
 
     for (int i = 0; i < simulation_steps; i++) {
-      particleSimulate(frames_per_sec, simulation_steps, external_accelerations, collision_objects);
+      //particleSimulate(frames_per_sec, simulation_steps, external_accelerations, collision_objects);
     }
+    field_vel_step(NULL, field_viscosity, frames_per_sec, 1);
 
   }
 
