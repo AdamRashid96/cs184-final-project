@@ -36,6 +36,7 @@ public:
 
 private:
   virtual void initGUI(Screen *screen);
+  void drawLines(GLShader &shader);
   void drawWireframe(GLShader &shader);
   void drawNormals(GLShader &shader);
   void drawPhong(GLShader &shader);
@@ -51,7 +52,7 @@ private:
                      vector<Vector3D> external_accelerations,
                      vector<CollisionObject *> *collision_objects);
 
-  void field_vel_step(Vector3D* v0, float visc, double frames_per_sec, double simulation_steps);
+  void field_vel_step(Vector3D* v0, float visc, double delta_time);
 
   // File management
   
@@ -87,9 +88,12 @@ private:
 
   GasField field;
 
+  vector<Vector3D> line_endpoints;
+  int wireframe_shader_idx = 0;
+
   // Explosion parameters
   int num_particles = 10000;
-  double explosion_radius = .01;
+  double explosion_radius = .1;
   double particle_radius = 0.001;
   double particle_density = 1;
   double max_vel = 10;

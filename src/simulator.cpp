@@ -156,15 +156,14 @@ void Simulator::particleSimulate(double frames_per_sec, double simulation_steps,
   // }
 }
 
-void Simulator::field_vel_step(Vector3D* v0, float visc, double frames_per_sec, double simulation_steps) {
-  double dt = 1.0f / frames_per_sec / simulation_steps;
-  //field.add_vel(v0, dt);
+void Simulator::field_vel_step(Vector3D* v0, float visc, double delta_time) {
+  //field.add_vel(v0, delta_time);
   //field.swap();
-  field.diffuse_vel(visc, dt);
-  // field.project();
-  // field.swap();
-  // field.advect(dt);
-  // field.project();
+  field.diffuse_vel(visc, delta_time);
+  field.project();
+  field.swap();
+  field.advect(delta_time);
+  field.project();
 }
 
 void Simulator::load_shaders() {
@@ -223,6 +222,8 @@ void Simulator::load_shaders() {
   for (size_t i = 0; i < shaders_combobox_names.size(); ++i) {
     if (shaders_combobox_names[i] == "Diffuse") {
       active_shader_idx = i;
+    }if (shaders_combobox_names[i] == "Wireframe") {
+      wireframe_shader_idx = i;
       break;
     }
   }
@@ -337,7 +338,8 @@ void Simulator::drawContents() {
     for (int i = 0; i < simulation_steps; i++) {
       //particleSimulate(frames_per_sec, simulation_steps, external_accelerations, collision_objects);
     }
-    field_vel_step(NULL, field_viscosity, frames_per_sec, 1);
+    double delta_time = 1.0 / frames_per_sec;
+    field_vel_step(NULL, field_viscosity, delta_time);
 
   }
 
@@ -399,7 +401,44 @@ void Simulator::drawContents() {
   for (CollisionObject *co : *collision_objects) {
     co->render(shader);
   }
+
+  line_endpoints = vector<Vector3D>();
+
+  for (int i = 0; i < field.width; i++) {
+    for (int j = 0; j < field.height; j++) {
+      for (int k = 0; k < field.depth; k++) {
+        Vector3D cellPos = field.CellPos(i, j, k);
+        line_endpoints.push_back(cellPos);
+        line_endpoints.push_back(cellPos + field.CellAt(field.cells, i, j, k)->velocity);
+      }
+    }
+  }
+
+  const UserShader& wireframe_shader = shaders[wireframe_shader_idx];
+  GLShader &wireframeShader = *wireframe_shader.nanogui_shader;
+  wireframeShader.bind();
+  wireframeShader.setUniform("u_model", model);
+  wireframeShader.setUniform("u_view_projection", viewProjection);
+  wireframeShader.setUniform("u_color", nanogui::Color(1.0f, 1.0f, 1.0f, 1.0f), false);
+
+  drawLines(wireframeShader);
 }
+
+void Simulator::drawLines(GLShader &shader) {
+  
+  MatrixXf positions(4, line_endpoints.size());
+
+  for (int i = 0; i < line_endpoints.size(); i++) {
+    positions.col(i) << line_endpoints[i].x, line_endpoints[i].y, line_endpoints[i].z, 1.0;
+  }
+
+  //shader.setUniform("u_color", nanogui::Color(1.0f, 1.0f, 1.0f, 1.0f), false);
+  //shader.setUniform("u_color", color, false);
+  shader.uploadAttrib("in_position", positions, false);
+
+  shader.drawArray(GL_LINES, 0, line_endpoints.size());
+}
+
 
 // ----------------------------------------------------------------------------
 // CAMERA CALCULATIONS

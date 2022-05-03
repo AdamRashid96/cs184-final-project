@@ -20,6 +20,9 @@ public:
         this->cell_size = cell_size;
         this->size = (width + 2) * (height + 2) * (depth + 2);
 
+        div = new double[size];
+        p = new double[size];
+
         cells = new FieldCell[size];
         prev_cells = new FieldCell[size];
 
@@ -48,6 +51,8 @@ public:
     ~GasField() {
         delete [] cells;
         delete [] prev_cells;
+        delete [] div;
+        delete [] p;
     }
     
     void add_vel(Vector3D *s, double dt) {
@@ -75,7 +80,7 @@ public:
         }
     }
 
-    void advect (double dt )  // int N, int b, float * d, float * d0, float * u, float * v, float dt
+    void advect(double dt)  // int N, int b, float * d, float * d0, float * u, float * v, float dt
     {
       int i, j, k, i0, j0, k0, i1, j1, k1;
       double x, y, z, s0, t0, u0, s1, t1, u1, dtx0, dty0, dtz0;
@@ -83,10 +88,10 @@ public:
       dty0 = dt*height;
       dtz0 = dt*depth;
 
-      for (int dim=0; dim < 3; dim++) {
+      for (int dim = 0; dim < 3; dim++) {
         for (i = 1; i <= width; i++) {
           for (j = 1; j <= height; j++) {
-            for (k = 1; j <= depth; k++) {
+            for (k = 1; k <= depth; k++) {
 
               x = i - dtx0 * CellAt(prev_cells, i, j, k)->velocity[0];
               y = j - dty0 * CellAt(prev_cells, i, j, k)->velocity[1];
@@ -110,7 +115,7 @@ public:
               t1 = y - j0;
               t0 = 1 - t1;
               u1 = z - k0;
-              u0 = 1 - k1;
+              u0 = 1 - u1;
 
               double s0t0 = u0 * CellAt(prev_cells, i0, j0, k0)->velocity[dim] + u1 * CellAt(prev_cells, i0, j0, k1)->velocity[dim];
               double s0t1 = u0 * CellAt(prev_cells, i0, j1, k0)->velocity[dim] + u1 * CellAt(prev_cells, i0, j1, k1)->velocity[dim];
@@ -121,54 +126,51 @@ public:
             }
           }
         }
-        set_bnd (cells);
+        set_bnd(cells);
       }
 
     }
 
-  void project ()   // int N, float * u, float * v, float * p, float * div project ( N, u, v, u0, v0 );
-  {
-    int i, j, k, t;
-    double hx = 1.0/width;
-    double hy = 1.0/height;
-    double hz = 1.0/depth;
-    double *div = new double[size];
-    double *p = new double[size];
-    for ( i=1 ; i<=width ; i++ ) {
-      for ( j=1 ; j<=height ; j++ ) {
-        for ( k=1 ; k<=depth ; k++ ) {
-          div[i + j * width + k * height * width] = -0.5 * ( hx * (CellAt(cells, i+1, j, k)->velocity[0] - CellAt(cells, i-1, j, k)->velocity[0]) +
-                                        hy * (CellAt(cells, i, j+1, k)->velocity[0] - CellAt(cells, i, j - 1, k)->velocity[0]) + hz * (CellAt(cells, i, j, k+1)->velocity[0] - CellAt(cells, i, j, k-1)->velocity[0]));
-          p[i + j * width + k * height * width] = 0;
+    void project() {  // int N, float * u, float * v, float * p, float * div project ( N, u, v, u0, v0 );
+        int i, j, k;
+        double hx = 1.0/width;
+        double hy = 1.0/height;
+        double hz = 1.0/depth;
+        for ( i=1 ; i<=width ; i++ ) {
+            for ( j=1 ; j<=height ; j++ ) {
+                for ( k=1 ; k<=depth ; k++ ) {
+                div[i + j * width + k * height * width] = -0.5 * ( hx * (CellAt(cells, i+1, j, k)->velocity[0] - CellAt(cells, i-1, j, k)->velocity[0]) +
+                                                hy * (CellAt(cells, i, j+1, k)->velocity[0] - CellAt(cells, i, j - 1, k)->velocity[0]) + hz * (CellAt(cells, i, j, k+1)->velocity[0] - CellAt(cells, i, j, k-1)->velocity[0]));
+                p[i + j * width + k * height * width] = 0;
+                }
+            }
         }
-      }
-    }
-    set_bnd_vec (div);
-    for ( t=0 ; t<20 ; k++ ) {
-      for ( i=1 ; i<=width ; i++ ) {
-        for ( j=1 ; j<=height ; j++ ) {
-          for (k = 1; k <= depth; k++) {
-            p[i + j * width + k * height * width] =
-                (div[i + j * width + k * height * width] + p[(i - 1) + j * width + k * height * width] +
-                 p[(i + 1) + j * width + k * height * width] +
-                 p[i + (j - 1) * width + k * height * width] + p[i + (j + 1) * width + k * height * width] +
-                 p[i + j * width + (k - 1) * height * width] + p[i + (j + 1) * width + (k + 1) * height * width]) / 6;
-          }
+        set_bnd_vec (div);
+         for (int t = 0; t < 20; t++) {
+            for ( i=1 ; i<=width ; i++ ) {
+                for ( j=1 ; j<=height ; j++ ) {
+                    for (k = 1; k <= depth; k++) {
+                        p[i + j * width + k * height * width] =
+                            (div[i + j * width + k * height * width] + p[(i - 1) + j * width + k * height * width] +
+                            p[(i + 1) + j * width + k * height * width] +
+                            p[i + (j - 1) * width + k * height * width] + p[i + (j + 1) * width + k * height * width] +
+                            p[i + j * width + (k - 1) * height * width] + p[i + (j + 1) * width + (k + 1) * height * width]) / 6;
+                    }
+                }
+            }
+            set_bnd_vec (p);
         }
-      }
-      set_bnd_vec (p);
-    }
-    for ( i=1 ; i<=width ; i++ ) {
-      for ( j=1 ; j<=height ; j++ ) {
-        for (k = 1; k <= depth; k++) {
-          CellAt(cells, i, j, k)->velocity[0] -= 0.5 * (p[IDX(i + 1, j, k)] - p[IDX(i - 1, j, k)]) / hx;
-          CellAt(cells, i, j, k)->velocity[1] -= 0.5 * (p[IDX(i, j + 1, k)] - p[IDX(i, j - 1, k)]) / hy;
-          CellAt(cells, i, j, k)->velocity[2] -= 0.5 * (p[IDX(i, j, k + 1)] - p[IDX(i, j, k - 1)]) / hz;
+        for ( i=1 ; i<=width ; i++ ) {
+            for ( j=1 ; j<=height ; j++ ) {
+                for (k = 1; k <= depth; k++) {
+                CellAt(cells, i, j, k)->velocity[0] -= 0.5 * (p[IDX(i + 1, j, k)] - p[IDX(i - 1, j, k)]) / hx;
+                CellAt(cells, i, j, k)->velocity[1] -= 0.5 * (p[IDX(i, j + 1, k)] - p[IDX(i, j - 1, k)]) / hy;
+                CellAt(cells, i, j, k)->velocity[2] -= 0.5 * (p[IDX(i, j, k + 1)] - p[IDX(i, j, k - 1)]) / hz;
+                }
+            }
         }
-      }
+        set_bnd ( cells );
     }
-    set_bnd ( cells );
-  }
 
     int IDX(int x, int y, int z) {
       return x + y * width + z * height * width;
@@ -253,11 +255,19 @@ public:
         prev_cells = temp;
     }
 
+    Vector3D CellPos(int x, int y, int z) {
+        return origin + cell_size * (Vector3D(x, y, z) - 0.5 * Vector3D(width, height, depth));
+    }
+
+    Vector3D origin; // Center of the grid field
     int width, height, depth;
     int size;
     double cell_size;
     FieldCell *cells;
     FieldCell *prev_cells;
+
+    double *div;
+    double *p;
 
 }; // class GasField
 
