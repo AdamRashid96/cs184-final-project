@@ -88,7 +88,7 @@ private:
 
   double ambient_temperature = 0; // Kelvin
   double base_pressure = 0;
-  double initial_velocity = 0.01;
+  double initial_velocity = 0.5;
 
   GasField field;
 
@@ -96,8 +96,8 @@ private:
   int wireframe_shader_idx = 0;
 
   // TODO: Tune these values
-  double a_h = 0.9;
-  double a_d = 0.9;
+  double a_h = 0.1;
+  double a_d = 0.1;
   double particle_mass_threshold = 0;
   double particle_thermal_mass_threshold = 0;
   double ignition_temperature;

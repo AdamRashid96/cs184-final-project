@@ -131,7 +131,7 @@ void Simulator::time_step(double delta_time) {
   // Particle Gravity
   for (int i = 0; i < particles->size(); i++) {
     Particle* particle = (*particles)[i];
-    particle->force = particle->mass() * gravity;
+    particle->force = 0;//particle->mass() * gravity;
   }
 
   // Fluid Bouyancy and Vorticity Confinement
