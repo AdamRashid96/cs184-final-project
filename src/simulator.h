@@ -115,6 +115,9 @@ private:
   double alpha = 0.05;
   double beta = 0.05;
 
+  // Used for vorticity confinement
+  double epsilon = 100;
+
   // Explosion parameters
   int num_particles = 10000;
   double explosion_radius = 1;
@@ -201,8 +204,8 @@ private:
   Vector2i default_window_size = Vector2i(1024, 800);
 
   // Sphere mesh
-  int num_lat = 5;
-  int num_lon = 5;
+  int num_lat = 3;
+  int num_lon = 3;
   Misc::SphereMesh sphere_mesh = Misc::SphereMesh(num_lat, num_lon);
 };
 

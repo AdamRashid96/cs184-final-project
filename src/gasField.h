@@ -23,6 +23,8 @@ public:
 
     div = new double[size];
     p = new double[size];
+    vorticity = new Vector3D[size];
+    N = new Vector3D[size];
 
     cells = new FieldCell[size];
     prev_cells = new FieldCell[size];
@@ -55,6 +57,8 @@ public:
     delete [] prev_cells;
     delete [] div;
     delete [] p;
+    delete [] vorticity;
+    delete [] N;
   }
 
   void apply_force(double delta_time) {
@@ -84,9 +88,9 @@ public:
             FieldCell* in = CellAt(prev_cells, i, j, k - 1);
             FieldCell* out = CellAt(prev_cells, i, j, k + 1);
 
-            FieldCell* assignment = CellAt(cells, i, j, k);
-            *assignment = *CellAt(cells, i, j, k);
-            assignment->velocity = (assignment->velocity + a * (up->velocity + down->velocity + left->velocity + right->velocity + in->velocity + out->velocity)) / (1 + 6 * a);
+            FieldCell* current = CellAt(cells, i, j, k);
+            *current = *CellAt(prev_cells, i, j, k);
+            prev_cells->velocity = (prev_cells->velocity + a * (up->velocity + down->velocity + left->velocity + right->velocity + in->velocity + out->velocity)) / (1 + 6 * a);
             
             
             // (CellAt(prev_cells, i, j, k)->velocity + a * (CellAt(cells, i - 1, j, k)->velocity +
@@ -248,12 +252,63 @@ public:
 
           FieldCell* assignment = CellAt(cells, i, j, k);
           *assignment = *center;
-          assignment->velocity.x -= (right->pressure - left->pressure) / (2 * cell_size);
+          assignment->velocity.x -= (right->pressure - left->pressure) / (2 * cell_size); // Is this supposed to have cell_size?
           assignment->velocity.y -= (up->pressure - down->pressure) / (2 * cell_size);
           assignment->velocity.z -= (out->pressure - in->pressure) / (2 * cell_size);
         }
       }
     }
+  }
+
+  void vorticity_confinement(double epsilon) {
+    // Calculate the vorticity vector field
+    for (int i = 1; i <= width; i++) {
+      for (int j = 1; j <= height; j++) {
+        for (int k = 1; k <= depth; k++) {
+          FieldCell* up = CellAt(prev_cells, i, j + 1, k); // Should this be cells or prev_cells?
+          FieldCell* down = CellAt(prev_cells, i, j - 1, k);
+          FieldCell* left = CellAt(prev_cells, i - 1, j, k);
+          FieldCell* right = CellAt(prev_cells, i + 1, j, k);
+          FieldCell* in = CellAt(prev_cells, i, j, k - 1);
+          FieldCell* out = CellAt(prev_cells, i, j, k + 1);
+
+          vorticity[IDX(i, j, k)].x -= (up->velocity.z - down->velocity.z - out->velocity.y + in->velocity.y) / (2 * cell_size);
+          vorticity[IDX(i, j, k)].y -= (out->velocity.x - in->velocity.x - right->velocity.z + left->velocity.z) / (2 * cell_size);
+          vorticity[IDX(i, j, k)].z -= (right->velocity.y - left->velocity.y - up->velocity.x + down->velocity.x) / (2 * cell_size);
+        }
+      }
+    }
+
+    // Calculate the gradient of the vorticity magnitude
+    for (int i = 1; i <= width; i++) {
+      for (int j = 1; j <= height; j++) {
+        for (int k = 1; k <= depth; k++) {
+          double upMagnitude = vorticity[IDX(i, j + 1, k)].norm();
+          double downMagnitude = vorticity[IDX(i, j - 1, k)].norm();
+          double leftMagnitude = vorticity[IDX(i - 1, j, k)].norm();
+          double rightMagnitude = vorticity[IDX(i + 1, j, k)].norm();
+          double inMagnitude = vorticity[IDX(i, j, k - 1)].norm();
+          double outMagnitude = vorticity[IDX(i, j, k + 1)].norm();
+
+          N[IDX(i, j, k)].x -= (rightMagnitude - leftMagnitude) / (2 * cell_size); // Is this supposed to have cell_size?
+          N[IDX(i, j, k)].y -= (upMagnitude - downMagnitude) / (2 * cell_size);
+          N[IDX(i, j, k)].z -= (outMagnitude - inMagnitude) / (2 * cell_size);
+
+          N[IDX(i, j, k)] = N[IDX(i, j, k)].unit();
+        }
+      }
+    }
+
+    for (int i = 1; i <= width; i++) {
+      for (int j = 1; j <= height; j++) {
+        for (int k = 1; k <= depth; k++) {
+          FieldCell* cell = CellAt(prev_cells, i, j, k);
+
+          cell->force += epsilon * cell_size * cross(N[IDX(i, j, k)], vorticity[IDX(i, j, k)]);
+        }
+      }
+    }
+
   }
 
   void project() {  // int N, float * u, float * v, float * p, float * div project ( N, u, v, u0, v0 );
@@ -533,8 +588,10 @@ public:
   int pressure_relax_steps = 20;
   int diffuse_relax_steps = 20;
 
-  double *div;
-  double *p;
+  double* div;
+  double* p;
+  Vector3D* vorticity;
+  Vector3D* N;
 
 }; // class GasField
 

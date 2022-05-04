@@ -142,11 +142,12 @@ void Simulator::time_step(double delta_time) {
 
         // Thermal buoyancy force
         cell->force = (-alpha * cell->pressure + beta * (cell->temperature - ambient_temperature)) * Vector3D(0, 1, 0);
-
-        // Vorticity Confimenet TODO
       }
     }
   }
+
+  // Vorticity Confinement
+  field.vorticity_confinement(epsilon);
 
   // Particle Fluid Interaction
   for (int i = 0; i < particles->size(); i++) {
