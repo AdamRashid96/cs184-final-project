@@ -224,7 +224,7 @@ void Simulator::time_step(double delta_time) {
   }
 
   // Explosion Time Step
-  //explosion_time_step(delta_time);
+//  explosion_time_step(delta_time);
 
   // Fluid Time Step
   fluid_time_step(delta_time);
@@ -269,9 +269,9 @@ void Simulator::particle_time_step(double delta_time) {
 }
 
 void Simulator::fluid_time_step(double delta_time) {
-  fluid.apply_heat(delta_time);
-  fluid.temperature_diffusion(delta_time);
-  fluid.temperature_advection(delta_time, ambient_temperature, max_temperature, c_v, c_r);
+  field.apply_heat(delta_time, ambient_temperature, max_temperature, c_v, c_r);
+  field.temperature_diffusion(diff, delta_time);
+  field.temperature_advection(delta_time);
 
 
   field.apply_force(delta_time);

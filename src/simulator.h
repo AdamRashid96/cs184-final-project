@@ -122,6 +122,8 @@ private:
   double c_r = 0;
   double c_v = 1.005;
 
+  double diff = 0.01;   // not sure, should this be 0 or visc?
+
   // Explosion parameters
   int num_particles = 10000;
   double explosion_radius = 1;

@@ -74,8 +74,35 @@ public:
     }
   }
 
-  void temperature_diffusion(double delta_time) {
+  void temperature_diffusion(double diff, double delta_time) {
+    swap();
 
+    double a = delta_time * diff * width * height * depth;
+
+    for (int t = 0; t < diffuse_relax_steps; t++) {
+      for (int i = 1; i <= width; i++) {
+        for (int j = 1; j <= height; j++) {
+          for (int k = 1; k <= depth; k++) {
+            FieldCell* up = CellAt(cells, i, j + 1, k);
+            FieldCell* down = CellAt(cells, i, j - 1, k);
+            FieldCell* left = CellAt(cells, i - 1, j, k);
+            FieldCell* right = CellAt(cells, i + 1, j, k);
+            FieldCell* in = CellAt(cells, i, j, k - 1);
+            FieldCell* out = CellAt(cells, i, j, k + 1);
+
+            FieldCell* current = CellAt(cells, i, j, k);
+            FieldCell* prev = CellAt(prev_cells, i, j, k);
+            current->temperature = (prev->temperature + a * (up->temperature + down->temperature + left->temperature + right->temperature + in->temperature + out->temperature)) / (1 + 6 * a);
+
+
+            // (CellAt(prev_cells, i, j, k)->velocity + a * (CellAt(cells, i - 1, j, k)->velocity +
+            // CellAt(cells, i + 1, j, k)->velocity + CellAt(cells, i, j - 1, k)->velocity + CellAt(cells, i, j + 1, k)->velocity +
+            // CellAt(cells, i, j, k - 1)->velocity + CellAt(cells, i, j, k + 1)->velocity)) / (1 + 6 * a);
+          }
+        }
+      }
+      set_bnd(cells);
+    }
   }
 
   void temperature_advection(double delta_time) {
@@ -175,16 +202,16 @@ public:
       for (int i = 1; i <= width; i++) {
         for (int j = 1; j <= height; j++) {
           for (int k = 1; k <= depth; k++) {
-            FieldCell* up = CellAt(prev_cells, i, j + 1, k);
-            FieldCell* down = CellAt(prev_cells, i, j - 1, k);
-            FieldCell* left = CellAt(prev_cells, i - 1, j, k);
-            FieldCell* right = CellAt(prev_cells, i + 1, j, k);
-            FieldCell* in = CellAt(prev_cells, i, j, k - 1);
-            FieldCell* out = CellAt(prev_cells, i, j, k + 1);
+            FieldCell* up = CellAt(cells, i, j + 1, k);
+            FieldCell* down = CellAt(cells, i, j - 1, k);
+            FieldCell* left = CellAt(cells, i - 1, j, k);
+            FieldCell* right = CellAt(cells, i + 1, j, k);
+            FieldCell* in = CellAt(cells, i, j, k - 1);
+            FieldCell* out = CellAt(cells, i, j, k + 1);
 
             FieldCell* current = CellAt(cells, i, j, k);
-            *current = *CellAt(prev_cells, i, j, k);
-            prev_cells->velocity = (prev_cells->velocity + a * (up->velocity + down->velocity + left->velocity + right->velocity + in->velocity + out->velocity)) / (1 + 6 * a);
+            FieldCell* prev = CellAt(prev_cells, i, j, k);
+            current->velocity = (prev->velocity + a * (up->velocity + down->velocity + left->velocity + right->velocity + in->velocity + out->velocity)) / (1 + 6 * a);
             
             
             // (CellAt(prev_cells, i, j, k)->velocity + a * (CellAt(cells, i - 1, j, k)->velocity +
