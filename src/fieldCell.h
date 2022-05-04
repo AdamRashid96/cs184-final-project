@@ -13,7 +13,7 @@ public:
     double pressure;
     Vector3D velocity;
     double temperature;
-    double divergence;
+    double phi;
     bool isBoundary;
     Vector3D force;
     double heat_transfer;

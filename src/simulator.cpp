@@ -98,9 +98,9 @@ void Simulator::initParticles() {
 
   for (int i = 0; i < num_particles; i++) {
     Vector3D pos = get_sample() * explosion_radius * random_uniform();
-    (*particles)[i] = new Particle(pos, particle_radius, particle_density);
+    (*particles)[i] = new Particle(FUEL, fuel_density, fuel_specific_heat_capacity, pos, particle_radius, ambient_temperature + 10000);
 
-    (*particles)[i]->velocity = Vector3D(0);//pos.unit() * (min_vel + random_uniform() * (max_vel - min_vel));
+    (*particles)[i]->velocity = pos.unit() * (min_vel + random_uniform() * (max_vel - min_vel));
   }
 }
 
@@ -131,11 +131,22 @@ void Simulator::time_step(double delta_time) {
   // Particle Gravity
   for (int i = 0; i < particles->size(); i++) {
     Particle* particle = (*particles)[i];
-    particle->force = 0;//particle->mass() * gravity;
+    particle->force = particle->mass() * gravity;
   }
 
   // Fluid Bouyancy and Vorticity Confinement
-  // TODO
+  for (int i = 0; i < field.width; i++) {
+    for (int j = 0; j < field.height; j++) {
+      for (int k = 0; k < field.depth; k++) {
+        FieldCell* cell = field.CellAt(field.cells, i, j, k);
+
+        // Thermal buoyancy force
+        cell->force = (-alpha * cell->pressure + beta * (cell->temperature - ambient_temperature)) * Vector3D(0, 1, 0);
+
+        // Vorticity Confimenet TODO
+      }
+    }
+  }
 
   // Particle Fluid Interaction
   for (int i = 0; i < particles->size(); i++) {
@@ -169,6 +180,9 @@ void Simulator::time_step(double delta_time) {
     particle->heat_transfer += heat_transfer;
   }
 
+  vector<int> deleted_particles;
+  vector<Particle *> created_particles;
+
   // Fuel Particle Burning
   // for (int i = 0; i < particles->size(); i++) {
   //   Particle* particle = (*particles)[i];
@@ -191,16 +205,48 @@ void Simulator::time_step(double delta_time) {
   //     cell->divergence += b_g * burned_mass / (field.cell_size * field.cell_size * field.cell_size);
 
   //     if (particle->mass() <= 0) {
-  //       // TODO: Delete the particle
+  //       // Delete the particle
+  //       deleted_particles.push_back(i);
   //     }
   //   }
   // }
+
+  // Delete the particles
+  for (int i = deleted_particles.size() - 1; i >= 0; i++) {
+    particles->erase(particles->begin() + deleted_particles[i]);
+  }
+
+  // Create the particles
+  for (int i = 0; i < created_particles.size(); i++) {
+    Particle* particle = created_particles[i];
+    particles->push_back(particle);
+  }
+
+  // Explosion Time Step
+  explosion_time_step(delta_time);
 
   // Fluid Time Step
   fluid_time_step(delta_time);
 
   // Particle Time Step
   particle_time_step(delta_time);
+}
+
+void Simulator::explosion_time_step(double delta_time) {
+  elapsed_time += delta_time;
+  double phi = 1000000000 * pow(2, - 8 * elapsed_time) * sin(10 * elapsed_time);
+  std::cout << phi << std::endl;
+
+  for (int i = 1; i <= field.width; i++) {
+    for (int j = 1; j <= field.height; j++) {
+      for (int k = 1; k <= field.depth; k++) {
+        double distance = field.CellPos(i, j, k).norm();
+        if (distance < explosion_radius) {
+          field.CellAt(i, k, k)->phi = phi;
+        }
+      }
+    }
+  }
 }
 
 void Simulator::particle_time_step(double delta_time) {
@@ -222,12 +268,13 @@ void Simulator::particle_time_step(double delta_time) {
 }
 
 void Simulator::fluid_time_step(double delta_time) {
-  //field.add_vel(v0, delta_time);
-  //field.swap();
-  //field.diffuse_vel(0, delta_time);
-  //field.project();
-  //field.swap();
+  //field.apply_force(delta_time);
   field.advect(delta_time);
+  field.project();
+
+  // Pressure time step;
+  field.pressure_step(delta_time);
+  field.vel_pressure_step();
   field.project();
 }
 
@@ -296,7 +343,7 @@ void Simulator::load_shaders() {
 
 Simulator::Simulator(std::string project_root, Screen *screen)
 : m_project_root(project_root), field(field_width, field_height, field_depth, field_cell_size,
-                   ambient_temperature, base_pressure, initial_velocity) {
+                   field_density, ambient_temperature + 100, base_pressure, initial_velocity) {
   this->screen = screen;
   
   this->load_shaders();
@@ -461,12 +508,13 @@ void Simulator::drawContents() {
 
   line_endpoints = vector<Vector3D>();
 
-  for (int i = 0; i < field.width; i++) {
-    for (int j = 0; j < field.height; j++) {
-      for (int k = 0; k < field.depth; k++) {
+  for (int i = 0; i < field.width + 2; i++) {
+    for (int j = 0; j < field.height + 2; j++) {
+      for (int k = 0; k < field.depth + 2; k++) {
         Vector3D cellPos = field.CellPos(i, j, k);
         line_endpoints.push_back(cellPos);
-        line_endpoints.push_back(cellPos + field.CellAt(field.cells, i, j, k)->velocity);
+        Vector3D velocity = field.CellAt(field.cells, i, j, k)->velocity;
+        line_endpoints.push_back(cellPos + 0.03 * velocity);
       }
     }
   }
@@ -478,7 +526,9 @@ void Simulator::drawContents() {
   wireframeShader.setUniform("u_view_projection", viewProjection);
   wireframeShader.setUniform("u_color", nanogui::Color(1.0f, 1.0f, 1.0f, 1.0f), false);
 
-  drawLines(wireframeShader);
+  if (display_field_velocity) {
+    drawLines(wireframeShader);
+  }
 }
 
 void Simulator::drawLines(GLShader &shader) {
@@ -686,29 +736,16 @@ void Simulator::initGUI(Screen *screen) {
 
   // Spring types
 
-  new Label(window, "Spring types", "sans-bold");
+  new Label(window, "Field", "sans-bold");
 
   {
-    Button *b = new Button(window, "structural");
+    Button *b = new Button(window, "Velocity");
     b->setFlags(Button::ToggleButton);
     b->setPushed(true);
     b->setFontSize(14);
-    // b->setChangeCallback(
-    //     [this](bool state) { cp->enable_structural_constraints = state; });
+    b->setChangeCallback(
+        [this](bool state) { display_field_velocity = state; });
 
-    b = new Button(window, "shearing");
-    b->setFlags(Button::ToggleButton);
-    b->setPushed(true);
-    b->setFontSize(14);
-    // b->setChangeCallback(
-    //     [this](bool state) { cp->enable_shearing_constraints = state; });
-
-    b = new Button(window, "bending");
-    b->setFlags(Button::ToggleButton);
-    b->setPushed(true);
-    b->setFontSize(14);
-    // b->setChangeCallback(
-    //     [this](bool state) { cp->enable_bending_constraints = state; });
   }
 
   // Mass-spring parameters

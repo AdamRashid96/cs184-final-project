@@ -53,6 +53,7 @@ private:
                      vector<CollisionObject *> *collision_objects);
 
   void time_step(double delta_time);
+  void explosion_time_step(double delta_time);
   void particle_time_step(double delta_time);
   void fluid_time_step(double delta_time);
 
@@ -86,8 +87,11 @@ private:
   double field_cell_size = 0.1;
   double field_viscosity = 0;
 
-  double ambient_temperature = 0; // Kelvin
-  double base_pressure = 0;
+  // Value of air
+  double field_density = 1.225; // kg / m^3
+
+  double ambient_temperature = 300; // Kelvin
+  double base_pressure = 1;
   double initial_velocity = 0.5;
 
   GasField field;
@@ -96,8 +100,8 @@ private:
   int wireframe_shader_idx = 0;
 
   // TODO: Tune these values
-  double a_h = 0.1;
-  double a_d = 0.1;
+  double a_h = 15000;
+  double a_d = 550;
   double particle_mass_threshold = 0;
   double particle_thermal_mass_threshold = 0;
   double ignition_temperature;
@@ -107,13 +111,25 @@ private:
   double b_g;
   double mass_creation_threshold;
 
+  // Used for thermal buoyancy force
+  double alpha = 0.05;
+  double beta = 0.05;
+
   // Explosion parameters
   int num_particles = 10000;
-  double explosion_radius = .1;
+  double explosion_radius = 1;
   double particle_radius = 0.01;
-  double particle_density = 1;
-  double max_vel = 10;
+
+  double max_vel = 5;
   double min_vel = 5;
+
+  // Values for gasoline
+  double fuel_density = 747; // kg / m^3
+  double fuel_specific_heat_capacity = 2.22 / 1000; // J / (kg K)
+
+  double elapsed_time = 0;
+
+  bool display_field_velocity = true;
 
   // OpenGL attributes
 

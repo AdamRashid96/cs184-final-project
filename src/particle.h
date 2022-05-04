@@ -7,33 +7,36 @@ using namespace CGL;
 enum ParticleType { FUEL, SOOT };
 
 struct Particle {
-  Particle(Vector3D position, double radius, double density)
-      : start_position(position), position(position),
-        radius(radius), density(density) {}
+  Particle(ParticleType type, double density, 
+           double specific_heat_capacity, Vector3D position, double radius, double temperature)
+      : type(type), density(density), specific_heat_capacity(specific_heat_capacity), 
+        position(position), radius(radius), temperature(temperature) {
 
-    double mass() {
-        return density * (4.0/3.0) * PI * radius * radius * radius;
-    }
+    force = Vector3D(0.0);
+    velocity = Vector3D(0.0);
+    heat_transfer = 0.0;
+    soot_mass = 0.0;
+  }
 
-    double thermal_mass() {
-        return 0; // TODO: fix
-    }
+  double mass() {
+    return density * (4.0/3.0) * PI * radius * radius * radius;
+  }
 
-    // static values
-    Vector3D start_position;
-    double density;
+  double thermal_mass() {
+    return mass() * specific_heat_capacity;
+  }
 
-    // dynamic values
-    Vector3D position;
-    //Vector3D last_position; // TODO: remove
-    Vector3D force;
-    Vector3D accel;
-    Vector3D velocity;
-    double radius;
-    double temperature;
-    double heat_transfer;
-    ParticleType type;
-    double soot_mass;
+  // Static values
+  ParticleType type;
+  double density;
+  double specific_heat_capacity;
 
-
+  // dynamic values
+  Vector3D position;
+  Vector3D force;
+  Vector3D velocity;
+  double radius;
+  double temperature;
+  double heat_transfer;
+  double soot_mass;
 };
