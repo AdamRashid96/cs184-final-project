@@ -135,9 +135,9 @@ void Simulator::time_step(double delta_time) {
   }
 
   // Fluid Bouyancy and Vorticity Confinement
-  for (int i = 0; i < field.width; i++) {
-    for (int j = 0; j < field.height; j++) {
-      for (int k = 0; k < field.depth; k++) {
+  for (int i = 1; i <= field.width; i++) {
+    for (int j = 1; j <= field.height; j++) {
+      for (int k = 1; k <= field.depth; k++) {
         FieldCell* cell = field.CellAt(field.cells, i, j, k);
 
         // Thermal buoyancy force
@@ -224,7 +224,7 @@ void Simulator::time_step(double delta_time) {
   }
 
   // Explosion Time Step
-  explosion_time_step(delta_time);
+  //explosion_time_step(delta_time);
 
   // Fluid Time Step
   fluid_time_step(delta_time);
@@ -235,7 +235,7 @@ void Simulator::time_step(double delta_time) {
 
 void Simulator::explosion_time_step(double delta_time) {
   elapsed_time += delta_time;
-  double phi = 1000000000 * pow(2, - 8 * elapsed_time) * sin(10 * elapsed_time);
+  double phi = 100 * pow(2, - 8 * elapsed_time) * sin(10 * elapsed_time);
   std::cout << phi << std::endl;
 
   for (int i = 1; i <= field.width; i++) {
@@ -269,7 +269,12 @@ void Simulator::particle_time_step(double delta_time) {
 }
 
 void Simulator::fluid_time_step(double delta_time) {
-  //field.apply_force(delta_time);
+  fluid.apply_heat(delta_time);
+  fluid.temperature_diffusion(delta_time);
+  fluid.temperature_advection(delta_time, ambient_temperature, max_temperature, c_v, c_r);
+
+
+  field.apply_force(delta_time);
   field.advect(delta_time);
   field.project();
 

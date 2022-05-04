@@ -43,6 +43,7 @@ public:
           cell.pressure = base_pressure;
           cell.phi = 0;
           cell.velocity = get_sample() * random_uniform() * initial_velocity;
+          cell.force = Vector3D(0);
 
           // Write to both arrays
           *CellAt(cells, i, j, k) = cell;
@@ -59,6 +60,99 @@ public:
     delete [] p;
     delete [] vorticity;
     delete [] N;
+  }
+
+  void apply_heat(double delta_time, double ambient_temperature, double max_temperature, double c_v, double c_r) {
+    for (int i = 1; i <= width; i++) {
+      for (int j = 1; j <= height; j++) {
+        for (int k = 1; k <= depth; k++) {
+          FieldCell* cell = CellAt(i, j, k);
+          cell->temperature += cell->heat_transfer / (density * c_v) * delta_time + 
+          c_r * pow((cell->temperature - ambient_temperature) / (max_temperature - ambient_temperature), 4);
+        }
+      }
+    }
+  }
+
+  void temperature_diffusion(double delta_time) {
+
+  }
+
+  void temperature_advection(double delta_time) {
+    swap();
+
+    double dt0 = delta_time / cell_size;
+
+    for (int i = 1; i <= width; i++) {
+      for (int j = 1; j <= height; j++) {
+        for (int k = 1; k <= depth; k++) {
+          FieldCell* prev_cell = CellAt(prev_cells, i, j, k);
+
+          // Perform the back trace in field space
+          double x = i - dt0 * prev_cell->velocity.x;
+          double y = j - dt0 * prev_cell->velocity.y;
+          double z = k - dt0 * prev_cell->velocity.z;
+
+          // There is a difference in the way we clamp
+          if (x < 0.5) {
+              x = 0.5;
+          }
+          if (x > width + 0.5) {
+            x = width + 0.5;
+          }
+          if (y < 0.5) {
+              y = 0.5;
+          }
+          if (y > height + 0.5) {
+            y = height + 0.5;
+          }
+          if (z < 0.5) {
+              z = 0.5;
+          }
+          if (z > depth + 0.5) {
+            z = depth + 0.5;
+          }
+
+          int left = static_cast<int>(x);
+          int right = static_cast<int>(x) + 1;
+          int lower = static_cast<int>(y);
+          int upper = static_cast<int>(y) + 1;
+          int front = static_cast<int>(z);
+          int back = static_cast<int>(z) + 1;
+
+          // Left or Right
+          // Upper or lower
+          // Front or Back
+          FieldCell* luf = CellAt(prev_cells, left, upper, front);
+          FieldCell* ruf = CellAt(prev_cells, right, upper, front);
+          FieldCell* llf = CellAt(prev_cells, left, lower, front);
+          FieldCell* rlf = CellAt(prev_cells, right, lower, front);
+          FieldCell* lub = CellAt(prev_cells, left, upper, back);
+          FieldCell* rub = CellAt(prev_cells, right, upper, back);
+          FieldCell* llb = CellAt(prev_cells, left, lower, back);
+          FieldCell* rlb = CellAt(prev_cells, right, lower, back);
+
+          double horizontal = x - left;
+          double vertical = y - lower;
+          double forward = z - front;
+
+          FieldCell left_upper = InterpCell(*luf, *lub, forward);
+          FieldCell right_upper = InterpCell(*ruf, *rub, forward);
+          FieldCell left_lower = InterpCell(*llf, *llb, forward);
+          FieldCell right_lower = InterpCell(*rlf, *rlb, forward);
+
+          FieldCell upper_cell = InterpCell(left_upper, right_upper, horizontal);
+          FieldCell lower_cell = InterpCell(left_lower, right_lower, horizontal);
+
+          FieldCell interpolatedCell = InterpCell(lower_cell, upper_cell, vertical);
+
+          //FieldCell interpolatedCell = CellAtInterpolatedFieldSpace(prev_cells, x, y, z);
+          FieldCell* cell = CellAt(cells, i, j, k);
+          *cell = *prev_cell;
+          cell->temperature = interpolatedCell.temperature;
+        }
+      }
+    }
   }
 
   void apply_force(double delta_time) {
@@ -171,9 +265,6 @@ public:
 
           FieldCell interpolatedCell = InterpCell(lower_cell, upper_cell, vertical);
 
-
-
-
           //FieldCell interpolatedCell = CellAtInterpolatedFieldSpace(prev_cells, x, y, z);
           FieldCell* cell = CellAt(cells, i, j, k);
           *cell = *prev_cell;
@@ -261,20 +352,24 @@ public:
   }
 
   void vorticity_confinement(double epsilon) {
+    for (int i = 0; i < size; i++) {
+      vorticity[i] = Vector3D(0);
+    }
+
     // Calculate the vorticity vector field
     for (int i = 1; i <= width; i++) {
       for (int j = 1; j <= height; j++) {
         for (int k = 1; k <= depth; k++) {
-          FieldCell* up = CellAt(prev_cells, i, j + 1, k); // Should this be cells or prev_cells?
-          FieldCell* down = CellAt(prev_cells, i, j - 1, k);
-          FieldCell* left = CellAt(prev_cells, i - 1, j, k);
-          FieldCell* right = CellAt(prev_cells, i + 1, j, k);
-          FieldCell* in = CellAt(prev_cells, i, j, k - 1);
-          FieldCell* out = CellAt(prev_cells, i, j, k + 1);
+          FieldCell* up = CellAt(cells, i, j + 1, k);
+          FieldCell* down = CellAt(cells, i, j - 1, k);
+          FieldCell* left = CellAt(cells, i - 1, j, k);
+          FieldCell* right = CellAt(cells, i + 1, j, k);
+          FieldCell* in = CellAt(cells, i, j, k - 1);
+          FieldCell* out = CellAt(cells, i, j, k + 1);
 
-          vorticity[IDX(i, j, k)].x -= (up->velocity.z - down->velocity.z - out->velocity.y + in->velocity.y) / (2 * cell_size);
-          vorticity[IDX(i, j, k)].y -= (out->velocity.x - in->velocity.x - right->velocity.z + left->velocity.z) / (2 * cell_size);
-          vorticity[IDX(i, j, k)].z -= (right->velocity.y - left->velocity.y - up->velocity.x + down->velocity.x) / (2 * cell_size);
+          vorticity[IDX(i, j, k)].x = (up->velocity.z - down->velocity.z - out->velocity.y + in->velocity.y) / (2 * cell_size);
+          vorticity[IDX(i, j, k)].y = (out->velocity.x - in->velocity.x - right->velocity.z + left->velocity.z) / (2 * cell_size);
+          vorticity[IDX(i, j, k)].z = (right->velocity.y - left->velocity.y - up->velocity.x + down->velocity.x) / (2 * cell_size);
         }
       }
     }
@@ -290,9 +385,9 @@ public:
           double inMagnitude = vorticity[IDX(i, j, k - 1)].norm();
           double outMagnitude = vorticity[IDX(i, j, k + 1)].norm();
 
-          N[IDX(i, j, k)].x -= (rightMagnitude - leftMagnitude) / (2 * cell_size); // Is this supposed to have cell_size?
-          N[IDX(i, j, k)].y -= (upMagnitude - downMagnitude) / (2 * cell_size);
-          N[IDX(i, j, k)].z -= (outMagnitude - inMagnitude) / (2 * cell_size);
+          N[IDX(i, j, k)].x = (rightMagnitude - leftMagnitude) / (2 * cell_size); // Is this supposed to have cell_size?
+          N[IDX(i, j, k)].y = (upMagnitude - downMagnitude) / (2 * cell_size);
+          N[IDX(i, j, k)].z = (outMagnitude - inMagnitude) / (2 * cell_size);
 
           N[IDX(i, j, k)] = N[IDX(i, j, k)].unit();
         }
@@ -302,7 +397,7 @@ public:
     for (int i = 1; i <= width; i++) {
       for (int j = 1; j <= height; j++) {
         for (int k = 1; k <= depth; k++) {
-          FieldCell* cell = CellAt(prev_cells, i, j, k);
+          FieldCell* cell = CellAt(cells, i, j, k);
 
           cell->force += epsilon * cell_size * cross(N[IDX(i, j, k)], vorticity[IDX(i, j, k)]);
         }

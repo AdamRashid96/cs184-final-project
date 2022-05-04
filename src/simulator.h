@@ -91,6 +91,7 @@ private:
   double field_density = 1.225; // kg / m^3
 
   double ambient_temperature = 300; // Kelvin
+  double max_temperature = 2000;
   double base_pressure = 1;
   double initial_velocity = 0.5;
 
@@ -116,7 +117,10 @@ private:
   double beta = 0.05;
 
   // Used for vorticity confinement
-  double epsilon = 100;
+  double epsilon = 0.1;
+
+  double c_r = 0;
+  double c_v = 1.005;
 
   // Explosion parameters
   int num_particles = 10000;
