@@ -316,9 +316,9 @@ public:
           FieldCell* in = CellAt(cell_array, i, j, k - 1);
           FieldCell* out = CellAt(cell_array, i, j, k + 1);
 
-          div[i + j * width + k * height * width] = cell_size * ((right->velocity.x - left->velocity.x) + 
-                                                           (up->velocity.y - down->velocity.y) +
-                                                           (out->velocity.z - in->velocity.z)) / 2.0;
+          div[IDX(i, j, k)] = cell_size * ((right->velocity.x - left->velocity.x) + 
+                                           (up->velocity.y - down->velocity.y) +
+                                           (out->velocity.z - in->velocity.z)) / 2.0;
         }
       }
     }
@@ -330,8 +330,9 @@ public:
 
     // Calculate divergence
     calculate_divergence(prev_cells);
+    set_bnd_vec(div);
 
-    double h3 = cell_size * cell_size * cell_size;
+    double h3 = cell_size;
 
     for (int t = 0; t < pressure_relax_steps; t++) {
       for (int i = 1; i <= width; i++) {
@@ -345,7 +346,7 @@ public:
             FieldCell* in = CellAt(prev_cells, i, j, k - 1);
             FieldCell* out = CellAt(prev_cells, i, j, k + 1);
 
-            double f = density / delta_time * (div[i + j * width + k * height * width] - center->phi);
+            double f = density / delta_time * (div[IDX(i, j, k)] - center->phi);
 
             FieldCell* assignment = CellAt(cells, i, j, k);
             *assignment = *center;
@@ -353,6 +354,7 @@ public:
           }
         }
       }
+      // Set bounds on pressure
     }
   }
 
@@ -378,6 +380,7 @@ public:
         }
       }
     }
+    set_bnd(cells);
   }
 
   void vorticity_confinement(double epsilon) {
@@ -468,15 +471,6 @@ public:
       }
     }
     set_bnd(cells);
-
-
-    calculate_divergence(cells);
-
-    for (int i = 0; i < size; i++) {
-      if (div[i] > 0.01) {
-        std::cout << div[i] << std::endl;
-      }
-    }
   }
 
   int IDX(int x, int y, int z) {
@@ -496,7 +490,7 @@ public:
     for (int i = 1; i <= width; i++) {
       for (int k = 1; k <= depth; k++) {
         p[IDX(i, 0, k)] = p[IDX(i, 1, k)];
-        p[IDX(i, height + 1, k)] = p[IDX(i, height + 1, k)];
+        p[IDX(i, height + 1, k)] = p[IDX(i, height, k)];
       }
     }
 
@@ -510,26 +504,26 @@ public:
 
     // Horizontal edges
     for (int i = 1; i <= width; i++) {
-        p[IDX(i, 0, 0)] = (p[IDX(i, 1, 0)] + p[IDX(i, 0, 1)]) / 2;
-        p[IDX(i, height+1, 0)] = (p[IDX(i, height, 0)] + p[IDX(i, height + 1, 1)]) / 2;
-        p[IDX(i, 0, depth + 1)] = (p[IDX(i, 0, depth)] + p[IDX(i, 1, depth + 1)]) / 2;
-        p[IDX(i, height+1, depth+1)] = (p[IDX(i, height, depth+1)] + p[IDX(i, height+1, depth)]) / 2;
+        p[IDX(i, 0, 0)] = (p[IDX(i, 1, 0)] + p[IDX(i, 0, 1)]) / 2.0;
+        p[IDX(i, height+1, 0)] = (p[IDX(i, height, 0)] + p[IDX(i, height + 1, 1)]) / 2.0;
+        p[IDX(i, 0, depth + 1)] = (p[IDX(i, 0, depth)] + p[IDX(i, 1, depth + 1)]) / 2.0;
+        p[IDX(i, height+1, depth+1)] = (p[IDX(i, height, depth+1)] + p[IDX(i, height+1, depth)]) / 2.0;
     }
 
     // Vertical edges
     for (int j = 1; j <= height; j++) {
       p[IDX(0, j, 0)] = (p[IDX(1, j, 0)] + p[IDX(0, j, 1)]) / 2;
-      p[IDX(width + 1, j, 0)] = (p[IDX(width, j, 0)] + p[IDX(width + 1, j, 1)]) / 2;
-      p[IDX(0, j, depth + 1)] = (p[IDX(1, j, depth + 1)] + p[IDX(0, j, depth)]) / 2;
-      p[IDX(width + 1, j, depth + 1)] = (p[IDX(width, j, depth + 1)] + p[IDX(width + 1, j, depth)]) / 2;
+      p[IDX(width + 1, j, 0)] = (p[IDX(width, j, 0)] + p[IDX(width + 1, j, 1)]) / 2.0;
+      p[IDX(0, j, depth + 1)] = (p[IDX(1, j, depth + 1)] + p[IDX(0, j, depth)]) / 2.0;
+      p[IDX(width + 1, j, depth + 1)] = (p[IDX(width, j, depth + 1)] + p[IDX(width + 1, j, depth)]) / 2.0;
     }
 
     // Outward edges
     for (int k = 1; k <= depth; k++) {
       p[IDX(0, 0, k)] = (p[IDX(1, 0, k)] + p[IDX(0, 1, k)]) / 2;
-      p[IDX(0, height + 1, k)] = (p[IDX(1, height + 1, k)] + p[IDX(0, height, k)]) / 2;
-      p[IDX(width + 1, 0, k)] = (p[IDX(width, 0, k)]  + p[IDX(width + 1, 1, k)]) / 2;
-      p[IDX(width + 1, height + 1, k)] = (p[IDX(width, height + 1, k)] + p[IDX(width + 1, height, k)]) / 2;
+      p[IDX(0, height + 1, k)] = (p[IDX(1, height + 1, k)] + p[IDX(0, height, k)]) / 2.0;
+      p[IDX(width + 1, 0, k)] = (p[IDX(width, 0, k)]  + p[IDX(width + 1, 1, k)]) / 2.0;
+      p[IDX(width + 1, height + 1, k)] = (p[IDX(width, height + 1, k)] + p[IDX(width + 1, height, k)]) / 2.0;
     }
 
     // The corners

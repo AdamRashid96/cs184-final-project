@@ -100,7 +100,7 @@ void Simulator::initParticles() {
     Vector3D pos = get_sample() * explosion_radius * random_uniform();
     (*particles)[i] = new Particle(FUEL, fuel_density, fuel_specific_heat_capacity, pos, particle_radius, ambient_temperature + 10000);
 
-    (*particles)[i]->velocity = pos.unit() * (min_vel + random_uniform() * (max_vel - min_vel));
+    //(*particles)[i]->velocity = pos.unit() * (min_vel + random_uniform() * (max_vel - min_vel));
   }
 }
 
@@ -141,7 +141,7 @@ void Simulator::time_step(double delta_time) {
         FieldCell* cell = field.CellAt(field.cells, i, j, k);
 
         // Thermal buoyancy force
-        //cell->force = (-alpha * cell->pressure + beta * (cell->temperature - ambient_temperature)) * Vector3D(0, 1, 0);
+        cell->force = (-alpha * cell->pressure + beta * (cell->temperature - ambient_temperature)) * Vector3D(0, 1, 0);
       }
     }
   }
@@ -224,7 +224,7 @@ void Simulator::time_step(double delta_time) {
   }
 
   // Explosion Time Step
-//  explosion_time_step(delta_time);
+  explosion_time_step(delta_time);
 
   // Fluid Time Step
   fluid_time_step(delta_time);
@@ -242,7 +242,7 @@ void Simulator::explosion_time_step(double delta_time) {
     for (int j = 1; j <= field.height; j++) {
       for (int k = 1; k <= field.depth; k++) {
         double distance = field.CellPos(i, j, k).norm();
-        if (distance < explosion_radius) {
+        if (distance < 0.6 * explosion_radius) {
           field.CellAt(i, k, k)->phi = phi;
         }
       }
@@ -273,15 +273,17 @@ void Simulator::fluid_time_step(double delta_time) {
   // field.temperature_diffusion(diff, delta_time);
   // field.temperature_advection(delta_time);
 
+  
+  field.apply_force(delta_time);
 
-  //field.apply_force(delta_time);
-  //field.advect(delta_time);
-  field.project();
+  
+  field.advect(delta_time);
+  //field.project();
 
   // Pressure time step;
-  // field.pressure_step(delta_time);
-  // field.vel_pressure_step();
-  // field.project();
+  field.pressure_step(delta_time);
+  field.vel_pressure_step();
+  field.project();
 }
 
 void Simulator::load_shaders() {
