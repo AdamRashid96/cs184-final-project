@@ -81,10 +81,10 @@ private:
   vector<Particle *> *particles;
 
   // Gas Field Parameters
-  int field_width = 30;
-  int field_height = 30;
-  int field_depth = 30;
-  double field_cell_size = 0.1;
+  int field_width = 40;
+  int field_height = 40;
+  int field_depth = 40;
+  double field_cell_size = 0.2;
   double field_viscosity = 0;
 
   // Value of air

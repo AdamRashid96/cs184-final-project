@@ -226,7 +226,9 @@ void Simulator::time_step(double delta_time) {
       }
 
       FieldCell* cell = field.CellAt(particle->position);
-      cell->phi += b_g * burned_mass / (field.cell_size * field.cell_size * field.cell_size);
+      if (cell != NULL) {
+        cell->phi += b_g * burned_mass / (field.cell_size * field.cell_size * field.cell_size);
+      }
     }
   }
 
@@ -662,12 +664,13 @@ void Simulator::drawContents() {
       worldPos.col(6 * i + 4) << particle->position.x, particle->position.y, particle->position.z, 1.0;
       worldPos.col(6 * i + 5) << particle->position.x, particle->position.y, particle->position.z, 1.0;
 
-      radii.col(6 * i + 0) << particle->radius;
-      radii.col(6 * i + 1) << particle->radius;
-      radii.col(6 * i + 2) << particle->radius;
-      radii.col(6 * i + 3) << particle->radius;
-      radii.col(6 * i + 4) << particle->radius;
-      radii.col(6 * i + 5) << particle->radius;
+      double radius_scalar = 2.0;
+      radii.col(6 * i + 0) << radius_scalar * particle->radius;
+      radii.col(6 * i + 1) << radius_scalar * particle->radius;
+      radii.col(6 * i + 2) << radius_scalar * particle->radius;
+      radii.col(6 * i + 3) << radius_scalar * particle->radius;
+      radii.col(6 * i + 4) << radius_scalar * particle->radius;
+      radii.col(6 * i + 5) << radius_scalar * particle->radius;
 
       uvs.col(6 * i + 0) <<  0.0,  0.0;
       uvs.col(6 * i + 1) <<  1.0,  0.0;
