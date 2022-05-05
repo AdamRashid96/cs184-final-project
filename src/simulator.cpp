@@ -141,13 +141,13 @@ void Simulator::time_step(double delta_time) {
         FieldCell* cell = field.CellAt(field.cells, i, j, k);
 
         // Thermal buoyancy force
-        cell->force = (-alpha * cell->pressure + beta * (cell->temperature - ambient_temperature)) * Vector3D(0, 1, 0);
+        //cell->force = (-alpha * cell->pressure + beta * (cell->temperature - ambient_temperature)) * Vector3D(0, 1, 0);
       }
     }
   }
 
   // Vorticity Confinement
-  field.vorticity_confinement(epsilon);
+  //field.vorticity_confinement(epsilon);
 
   // Particle Fluid Interaction
   for (int i = 0; i < particles->size(); i++) {
@@ -269,19 +269,19 @@ void Simulator::particle_time_step(double delta_time) {
 }
 
 void Simulator::fluid_time_step(double delta_time) {
-  field.apply_heat(delta_time, ambient_temperature, max_temperature, c_v, c_r);
-  field.temperature_diffusion(diff, delta_time);
-  field.temperature_advection(delta_time);
+  // field.apply_heat(delta_time, ambient_temperature, max_temperature, c_v, c_r);
+  // field.temperature_diffusion(diff, delta_time);
+  // field.temperature_advection(delta_time);
 
 
-  field.apply_force(delta_time);
-  field.advect(delta_time);
+  //field.apply_force(delta_time);
+  //field.advect(delta_time);
   field.project();
 
   // Pressure time step;
-  field.pressure_step(delta_time);
-  field.vel_pressure_step();
-  field.project();
+  // field.pressure_step(delta_time);
+  // field.vel_pressure_step();
+  // field.project();
 }
 
 void Simulator::load_shaders() {

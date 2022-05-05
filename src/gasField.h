@@ -224,6 +224,8 @@ public:
     }
   }
 
+
+
   void advect(double delta_time) {
     swap();
 
@@ -314,9 +316,9 @@ public:
           FieldCell* in = CellAt(cell_array, i, j, k - 1);
           FieldCell* out = CellAt(cell_array, i, j, k + 1);
 
-          div[i + j * width + k * height * width] = 0.5 * ((right->velocity.x - left->velocity.x) / cell_size + 
-                                                           (up->velocity.y - down->velocity.y) / cell_size +
-                                                           (out->velocity.z - in->velocity.z) / cell_size);
+          div[i + j * width + k * height * width] = cell_size * ((right->velocity.x - left->velocity.x) + 
+                                                           (up->velocity.y - down->velocity.y) +
+                                                           (out->velocity.z - in->velocity.z)) / 2.0;
         }
       }
     }
@@ -347,7 +349,7 @@ public:
 
             FieldCell* assignment = CellAt(cells, i, j, k);
             *assignment = *center;
-            assignment->pressure = 1 / 6 * (up->pressure + down->pressure + left->pressure + right->pressure + in->pressure + out->pressure - h3 * f); 
+            assignment->pressure = 1.0 / 6.0 * (up->pressure + down->pressure + left->pressure + right->pressure + in->pressure + out->pressure - h3 * f); 
           }
         }
       }
@@ -370,9 +372,9 @@ public:
 
           FieldCell* assignment = CellAt(cells, i, j, k);
           *assignment = *center;
-          assignment->velocity.x -= (right->pressure - left->pressure) / (2 * cell_size); // Is this supposed to have cell_size?
-          assignment->velocity.y -= (up->pressure - down->pressure) / (2 * cell_size);
-          assignment->velocity.z -= (out->pressure - in->pressure) / (2 * cell_size);
+          assignment->velocity.x -= (right->pressure - left->pressure) / (2.0 * cell_size); // Is this supposed to have cell_size?
+          assignment->velocity.y -= (up->pressure - down->pressure) / (2.0 * cell_size);
+          assignment->velocity.z -= (out->pressure - in->pressure) / (2.0 * cell_size);
         }
       }
     }
@@ -433,48 +435,48 @@ public:
 
   }
 
-  void project() {  // int N, float * u, float * v, float * p, float * div project ( N, u, v, u0, v0 );
+  void project() {
     for (int i = 0; i < size; i++) {
       div[i] = 0;
       p[i] = 0;
     }
 
-    int i, j, k;
-    double hx = cell_size;
-    double hy = cell_size;
-    double hz = cell_size;
-    for ( i=1 ; i<=width ; i++ ) {
-      for ( j=1 ; j<=height ; j++ ) {
-        for ( k=1 ; k<=depth ; k++ ) {
-          div[IDX(i, j, k)] = -0.5 * ( hx * (CellAt(cells, i+1, j, k)->velocity[0] - CellAt(cells, i-1, j, k)->velocity[0]) +
-                                          hy * (CellAt(cells, i, j+1, k)->velocity[1] - CellAt(cells, i, j - 1, k)->velocity[1]) + hz * (CellAt(cells, i, j, k+1)->velocity[2] - CellAt(cells, i, j, k-1)->velocity[2]));
-          p[IDX(i, j, k)] = 0;
-        }
-      }
-    }
+    calculate_divergence(cells);
     set_bnd_vec(div);
-    for (int t = 0; t < 20; t++) {
-      for ( i=1 ; i<=width ; i++ ) {
-        for ( j=1 ; j<=height ; j++ ) {
-          for (k = 1; k <= depth; k++) {
-            p[IDX(i, j, k)] =
-                (div[IDX(i, j, k)] + p[IDX(i - 1, j, k)] + p[IDX(i + 1, j, k)] +
-                p[IDX(i, j - 1, k)] + p[IDX(i, j + 1, k)] + p[IDX(i, j, k - 1)] + p[IDX(i, j, k + 1)]) / 6;
+
+    // Calculate the gradient
+    for (int t = 0; t < project_relax_steps; t++) {
+      for (int i = 1; i <= width; i++) {
+        for (int j = 1; j <= height; j++) {
+          for (int k = 1; k <= depth; k++) {
+            p[IDX(i, j, k)] = (p[IDX(i + 1, j, k)] + p[IDX(i - 1, j, k)] + p[IDX(i, j + 1, k)] + p[IDX(i, j - 1, k)] + p[IDX(i, j, k + 1)] + p[IDX(i, j, k - 1)] - div[IDX(i, j, k)]) / 6.0;
           }
         }
       }
       set_bnd_vec(p);
     }
-    for ( i=1 ; i<=width ; i++ ) {
-      for ( j=1 ; j<=height ; j++ ) {
-        for (k = 1; k <= depth; k++) {
-          CellAt(cells, i, j, k)->velocity[0] -= 0.5 * (p[IDX(i + 1, j, k)] - p[IDX(i - 1, j, k)]) / hx;
-          CellAt(cells, i, j, k)->velocity[1] -= 0.5 * (p[IDX(i, j + 1, k)] - p[IDX(i, j - 1, k)]) / hy;
-          CellAt(cells, i, j, k)->velocity[2] -= 0.5 * (p[IDX(i, j, k + 1)] - p[IDX(i, j, k - 1)]) / hz;
+
+    // Subtract the gradient
+    for (int i = 1; i <= width; i++) {
+      for (int j = 1; j <= height; j++) {
+        for (int k = 1; k <= depth; k++) {
+          FieldCell* cell = CellAt(cells, i, j, k);
+          cell->velocity.x -= (p[IDX(i + 1, j, k)] - p[IDX(i - 1, j, k)]) / (2.0 * cell_size);
+          cell->velocity.y -= (p[IDX(i, j + 1, k)] - p[IDX(i, j - 1, k)]) / (2.0 * cell_size);
+          cell->velocity.z -= (p[IDX(i, j, k + 1)] - p[IDX(i, j, k - 1)]) / (2.0 * cell_size);
         }
       }
     }
     set_bnd(cells);
+
+
+    calculate_divergence(cells);
+
+    for (int i = 0; i < size; i++) {
+      if (div[i] > 0.01) {
+        std::cout << div[i] << std::endl;
+      }
+    }
   }
 
   int IDX(int x, int y, int z) {
@@ -709,6 +711,7 @@ public:
 
   int pressure_relax_steps = 20;
   int diffuse_relax_steps = 20;
+  int project_relax_steps = 20;
 
   double* div;
   double* p;
