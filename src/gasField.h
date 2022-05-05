@@ -67,8 +67,8 @@ public:
       for (int j = 1; j <= height; j++) {
         for (int k = 1; k <= depth; k++) {
           FieldCell* cell = CellAt(i, j, k);
-          cell->temperature += cell->heat_transfer / (density * c_v) * delta_time + 
-          c_r * pow((cell->temperature - ambient_temperature) / (max_temperature - ambient_temperature), 4);
+          double cooling = c_r * pow((cell->temperature - ambient_temperature) / (max_temperature - ambient_temperature), 4);
+          cell->temperature += cell->heat_transfer / (density * c_v) * delta_time + cooling;
         }
       }
     }
@@ -78,6 +78,14 @@ public:
     swap();
 
     double a = delta_time * diff * width * height * depth;
+
+    for (int i = 1; i <= width; i++) {
+        for (int j = 1; j <= height; j++) {
+          for (int k = 1; k <= depth; k++) {
+            *CellAt(cells, i, j, k) = *CellAt(prev_cells, i, j, k);
+          }
+        }
+    }
 
     for (int t = 0; t < diffuse_relax_steps; t++) {
       for (int i = 1; i <= width; i++) {
@@ -93,15 +101,11 @@ public:
             FieldCell* current = CellAt(cells, i, j, k);
             FieldCell* prev = CellAt(prev_cells, i, j, k);
             current->temperature = (prev->temperature + a * (up->temperature + down->temperature + left->temperature + right->temperature + in->temperature + out->temperature)) / (1 + 6 * a);
-
-
-            // (CellAt(prev_cells, i, j, k)->velocity + a * (CellAt(cells, i - 1, j, k)->velocity +
-            // CellAt(cells, i + 1, j, k)->velocity + CellAt(cells, i, j - 1, k)->velocity + CellAt(cells, i, j + 1, k)->velocity +
-            // CellAt(cells, i, j, k - 1)->velocity + CellAt(cells, i, j, k + 1)->velocity)) / (1 + 6 * a);
           }
         }
       }
-      set_bnd(cells);
+      // Set bounds on the temperature
+      //set_bnd(cells);
     }
   }
 
@@ -180,6 +184,68 @@ public:
         }
       }
     }
+    // Set bounds on temperature
+  }
+
+
+
+
+
+
+  void vorticity_confinement(double epsilon) {
+    for (int i = 0; i < size; i++) {
+      vorticity[i] = Vector3D(0);
+    }
+
+    // Calculate the vorticity vector field
+    for (int i = 1; i <= width; i++) {
+      for (int j = 1; j <= height; j++) {
+        for (int k = 1; k <= depth; k++) {
+          FieldCell* up = CellAt(cells, i, j + 1, k);
+          FieldCell* down = CellAt(cells, i, j - 1, k);
+          FieldCell* left = CellAt(cells, i - 1, j, k);
+          FieldCell* right = CellAt(cells, i + 1, j, k);
+          FieldCell* in = CellAt(cells, i, j, k - 1);
+          FieldCell* out = CellAt(cells, i, j, k + 1);
+
+          vorticity[IDX(i, j, k)].x = (up->velocity.z - down->velocity.z - out->velocity.y + in->velocity.y) / (2 * cell_size);
+          vorticity[IDX(i, j, k)].y = (out->velocity.x - in->velocity.x - right->velocity.z + left->velocity.z) / (2 * cell_size);
+          vorticity[IDX(i, j, k)].z = (right->velocity.y - left->velocity.y - up->velocity.x + down->velocity.x) / (2 * cell_size);
+        }
+      }
+    }
+    // Set bounds on vorticity
+
+    // Calculate the gradient of the vorticity magnitude
+    for (int i = 1; i <= width; i++) {
+      for (int j = 1; j <= height; j++) {
+        for (int k = 1; k <= depth; k++) {
+          double upMagnitude = vorticity[IDX(i, j + 1, k)].norm();
+          double downMagnitude = vorticity[IDX(i, j - 1, k)].norm();
+          double leftMagnitude = vorticity[IDX(i - 1, j, k)].norm();
+          double rightMagnitude = vorticity[IDX(i + 1, j, k)].norm();
+          double inMagnitude = vorticity[IDX(i, j, k - 1)].norm();
+          double outMagnitude = vorticity[IDX(i, j, k + 1)].norm();
+
+          N[IDX(i, j, k)].x = (rightMagnitude - leftMagnitude) / (2 * cell_size); // Is this supposed to have cell_size?
+          N[IDX(i, j, k)].y = (upMagnitude - downMagnitude) / (2 * cell_size);
+          N[IDX(i, j, k)].z = (outMagnitude - inMagnitude) / (2 * cell_size);
+
+          N[IDX(i, j, k)] = N[IDX(i, j, k)].unit();
+        }
+      }
+    }
+
+    for (int i = 1; i <= width; i++) {
+      for (int j = 1; j <= height; j++) {
+        for (int k = 1; k <= depth; k++) {
+          FieldCell* cell = CellAt(cells, i, j, k);
+
+          cell->force += epsilon * cell_size * cross(N[IDX(i, j, k)], vorticity[IDX(i, j, k)]);
+        }
+      }
+    }
+
   }
 
   void apply_force(double delta_time) {
@@ -223,8 +289,6 @@ public:
       set_bnd(cells);
     }
   }
-
-
 
   void advect(double delta_time) {
     swap();
@@ -316,146 +380,82 @@ public:
           FieldCell* in = CellAt(cell_array, i, j, k - 1);
           FieldCell* out = CellAt(cell_array, i, j, k + 1);
 
-          div[IDX(i, j, k)] = cell_size * ((right->velocity.x - left->velocity.x) + 
-                                           (up->velocity.y - down->velocity.y) +
-                                           (out->velocity.z - in->velocity.z)) / 2.0;
+          div[IDX(i, j, k)] = ((right->velocity.x - left->velocity.x) + 
+                               (up->velocity.y - down->velocity.y) +
+                               (out->velocity.z - in->velocity.z)) / (2.0 * cell_size);
         }
       }
     }
   }
 
   void pressure_step(double delta_time) {
-    // Swap
-    swap();
+    // Zero out the pressure and divergence
+    for (int i = 0; i < size; i++) {
+      div[i] = 0.0;
+      p[i] = 0.0;
+    }
 
     // Calculate divergence
-    calculate_divergence(prev_cells);
+    calculate_divergence(cells);
     set_bnd_vec(div);
 
-    double h3 = cell_size;
+    double h2 = cell_size * cell_size;
 
+    // Calculate the gradient
     for (int t = 0; t < pressure_relax_steps; t++) {
       for (int i = 1; i <= width; i++) {
         for (int j = 1; j <= height; j++) {
           for (int k = 1; k <= depth; k++) {
-            FieldCell* center = CellAt(prev_cells, i, j, k);
-            FieldCell* up = CellAt(prev_cells, i, j + 1, k);
-            FieldCell* down = CellAt(prev_cells, i, j - 1, k);
-            FieldCell* left = CellAt(prev_cells, i - 1, j, k);
-            FieldCell* right = CellAt(prev_cells, i + 1, j, k);
-            FieldCell* in = CellAt(prev_cells, i, j, k - 1);
-            FieldCell* out = CellAt(prev_cells, i, j, k + 1);
+            FieldCell* center = CellAt(cells, i, j, k);
 
-            double f = density / delta_time * (div[IDX(i, j, k)] - center->phi);
-
-            FieldCell* assignment = CellAt(cells, i, j, k);
-            *assignment = *center;
-            assignment->pressure = 1.0 / 6.0 * (up->pressure + down->pressure + left->pressure + right->pressure + in->pressure + out->pressure - h3 * f); 
+            //double f = density / delta_time * (div[IDX(i, j, k)] - center->phi);
+            double f = (div[IDX(i, j, k)] - center->phi);
+            p[IDX(i, j, k)] = (p[IDX(i + 1, j, k)] + p[IDX(i - 1, j, k)] + p[IDX(i, j + 1, k)] + p[IDX(i, j - 1, k)] + p[IDX(i, j, k + 1)] + p[IDX(i, j, k - 1)] - h2 * f) / 6.0;
           }
         }
       }
       // Set bounds on pressure
+      set_bnd_vec(p);
     }
-  }
 
-  void vel_pressure_step() {
-    swap();
-
+    // Subtract the gradient
     for (int i = 1; i <= width; i++) {
       for (int j = 1; j <= height; j++) {
         for (int k = 1; k <= depth; k++) {
-          FieldCell* center = CellAt(prev_cells, i, j, k);
-          FieldCell* up = CellAt(prev_cells, i, j + 1, k);
-          FieldCell* down = CellAt(prev_cells, i, j - 1, k);
-          FieldCell* left = CellAt(prev_cells, i - 1, j, k);
-          FieldCell* right = CellAt(prev_cells, i + 1, j, k);
-          FieldCell* in = CellAt(prev_cells, i, j, k - 1);
-          FieldCell* out = CellAt(prev_cells, i, j, k + 1);
-
-          FieldCell* assignment = CellAt(cells, i, j, k);
-          *assignment = *center;
-          assignment->velocity.x -= (right->pressure - left->pressure) / (2.0 * cell_size); // Is this supposed to have cell_size?
-          assignment->velocity.y -= (up->pressure - down->pressure) / (2.0 * cell_size);
-          assignment->velocity.z -= (out->pressure - in->pressure) / (2.0 * cell_size);
+          FieldCell* cell = CellAt(cells, i, j, k);
+          cell->velocity.x -= (p[IDX(i + 1, j, k)] - p[IDX(i - 1, j, k)]) / (2.0 * cell_size);
+          cell->velocity.y -= (p[IDX(i, j + 1, k)] - p[IDX(i, j - 1, k)]) / (2.0 * cell_size);
+          cell->velocity.z -= (p[IDX(i, j, k + 1)] - p[IDX(i, j, k - 1)]) / (2.0 * cell_size);
+          cell->pressure = p[IDX(i, j, k)];
         }
       }
     }
     set_bnd(cells);
   }
 
-  void vorticity_confinement(double epsilon) {
-    for (int i = 0; i < size; i++) {
-      vorticity[i] = Vector3D(0);
-    }
-
-    // Calculate the vorticity vector field
-    for (int i = 1; i <= width; i++) {
-      for (int j = 1; j <= height; j++) {
-        for (int k = 1; k <= depth; k++) {
-          FieldCell* up = CellAt(cells, i, j + 1, k);
-          FieldCell* down = CellAt(cells, i, j - 1, k);
-          FieldCell* left = CellAt(cells, i - 1, j, k);
-          FieldCell* right = CellAt(cells, i + 1, j, k);
-          FieldCell* in = CellAt(cells, i, j, k - 1);
-          FieldCell* out = CellAt(cells, i, j, k + 1);
-
-          vorticity[IDX(i, j, k)].x = (up->velocity.z - down->velocity.z - out->velocity.y + in->velocity.y) / (2 * cell_size);
-          vorticity[IDX(i, j, k)].y = (out->velocity.x - in->velocity.x - right->velocity.z + left->velocity.z) / (2 * cell_size);
-          vorticity[IDX(i, j, k)].z = (right->velocity.y - left->velocity.y - up->velocity.x + down->velocity.x) / (2 * cell_size);
-        }
-      }
-    }
-
-    // Calculate the gradient of the vorticity magnitude
-    for (int i = 1; i <= width; i++) {
-      for (int j = 1; j <= height; j++) {
-        for (int k = 1; k <= depth; k++) {
-          double upMagnitude = vorticity[IDX(i, j + 1, k)].norm();
-          double downMagnitude = vorticity[IDX(i, j - 1, k)].norm();
-          double leftMagnitude = vorticity[IDX(i - 1, j, k)].norm();
-          double rightMagnitude = vorticity[IDX(i + 1, j, k)].norm();
-          double inMagnitude = vorticity[IDX(i, j, k - 1)].norm();
-          double outMagnitude = vorticity[IDX(i, j, k + 1)].norm();
-
-          N[IDX(i, j, k)].x = (rightMagnitude - leftMagnitude) / (2 * cell_size); // Is this supposed to have cell_size?
-          N[IDX(i, j, k)].y = (upMagnitude - downMagnitude) / (2 * cell_size);
-          N[IDX(i, j, k)].z = (outMagnitude - inMagnitude) / (2 * cell_size);
-
-          N[IDX(i, j, k)] = N[IDX(i, j, k)].unit();
-        }
-      }
-    }
-
-    for (int i = 1; i <= width; i++) {
-      for (int j = 1; j <= height; j++) {
-        for (int k = 1; k <= depth; k++) {
-          FieldCell* cell = CellAt(cells, i, j, k);
-
-          cell->force += epsilon * cell_size * cross(N[IDX(i, j, k)], vorticity[IDX(i, j, k)]);
-        }
-      }
-    }
-
-  }
-
   void project() {
+    // Zero out the pressure and divergence
     for (int i = 0; i < size; i++) {
-      div[i] = 0;
-      p[i] = 0;
+      div[i] = 0.0;
+      p[i] = 0.0;
     }
 
+    // Calculate divergence
     calculate_divergence(cells);
     set_bnd_vec(div);
+
+    double h2 = cell_size * cell_size;
 
     // Calculate the gradient
     for (int t = 0; t < project_relax_steps; t++) {
       for (int i = 1; i <= width; i++) {
         for (int j = 1; j <= height; j++) {
           for (int k = 1; k <= depth; k++) {
-            p[IDX(i, j, k)] = (p[IDX(i + 1, j, k)] + p[IDX(i - 1, j, k)] + p[IDX(i, j + 1, k)] + p[IDX(i, j - 1, k)] + p[IDX(i, j, k + 1)] + p[IDX(i, j, k - 1)] - div[IDX(i, j, k)]) / 6.0;
+            p[IDX(i, j, k)] = (p[IDX(i + 1, j, k)] + p[IDX(i - 1, j, k)] + p[IDX(i, j + 1, k)] + p[IDX(i, j - 1, k)] + p[IDX(i, j, k + 1)] + p[IDX(i, j, k - 1)] - h2 * div[IDX(i, j, k)]) / 6.0;
           }
         }
       }
+      // Set bounds on pressure
       set_bnd_vec(p);
     }
 

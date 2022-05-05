@@ -26,6 +26,10 @@ struct Particle {
     return mass() * specific_heat_capacity;
   }
 
+  void setMass(double desiredMass) {
+    radius = pow(desiredMass / (density * (4.0/3.0) * PI), 1.0 / 3.0);
+  }
+
   // Static values
   ParticleType type;
   double density;

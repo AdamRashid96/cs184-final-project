@@ -98,7 +98,7 @@ void Simulator::initParticles() {
 
   for (int i = 0; i < num_particles; i++) {
     Vector3D pos = get_sample() * explosion_radius * random_uniform();
-    (*particles)[i] = new Particle(FUEL, fuel_density, fuel_specific_heat_capacity, pos, particle_radius, ambient_temperature + 10000);
+    (*particles)[i] = new Particle(FUEL, fuel_density, fuel_specific_heat_capacity, pos, particle_radius, particle_base_temperature);
 
     //(*particles)[i]->velocity = pos.unit() * (min_vel + random_uniform() * (max_vel - min_vel));
   }
@@ -147,7 +147,7 @@ void Simulator::time_step(double delta_time) {
   }
 
   // Vorticity Confinement
-  //field.vorticity_confinement(epsilon);
+  field.vorticity_confinement(epsilon);
 
   // Particle Fluid Interaction
   for (int i = 0; i < particles->size(); i++) {
@@ -160,7 +160,12 @@ void Simulator::time_step(double delta_time) {
     // Calculate force and heat transfer
     Vector3D force;
     if (particle->mass() >= particle_mass_threshold) {
-      force = a_d * r2 * velocityDifference * velocityDifference.norm();
+      if (particle->type == FUEL) {
+        force = a_d * r2 * velocityDifference * velocityDifference.norm();
+      } else {
+
+        force = 13 * r2 * velocityDifference * velocityDifference.norm();
+      }
     } else {
       force = Vector3D(0);
     }
@@ -184,36 +189,49 @@ void Simulator::time_step(double delta_time) {
   vector<int> deleted_particles;
   vector<Particle *> created_particles;
 
+
   // Fuel Particle Burning
-  // for (int i = 0; i < particles->size(); i++) {
-  //   Particle* particle = (*particles)[i];
-  //   if (particle->type == FUEL && particle->temperature >= ignition_temperature) {
-  //     double burned_mass = burn_rate * delta_time;
+  for (int i = 0; i < particles->size(); i++) {
+    Particle* particle = (*particles)[i];
+    if (particle->type == FUEL && particle->temperature >= ignition_temperature) {
+      double burned_mass = burn_rate * delta_time;
 
-  //     // Consume burned mass
-  //     particle->setMass(particle->mass() - burned_mass) 
+      bool deleted = false;
 
-  //     // Heat generation
-  //     particle->heat_transfer += b_h * burned_mass;
+      // Consume burned mass
+      double new_mass = particle->mass() - burned_mass;
+      if (new_mass <= 0.0) {
+        // Delete the particle
+        deleted_particles.push_back(i);
+        deleted = true;
+      } else {
+        particle->setMass(new_mass);
+      }
 
-  //     // Mass generation
-  //     particle->soot_mass += b_s * burned_mass;
-  //     if (particle->soot_mass >= mass_creation_threshold) {
-  //       // TODO: Create soot particle
-  //     }
+      // Heat generation
+      particle->heat_transfer += b_h * burned_mass;
 
-  //     FieldCell* cell = field.CellAt(particle->position);
-  //     cell->divergence += b_g * burned_mass / (field.cell_size * field.cell_size * field.cell_size);
+      // Mass generation
+      particle->soot_mass += b_s * burned_mass;
+      if (particle->soot_mass >= mass_creation_threshold || deleted) {
+        // Create soot particle
+        Vector3D position = particle->position + particle->radius * (get_sample() * 2 + random_uniform());
+        
+        Particle* soot = new Particle(SOOT, soot_density, soot_specific_heat_capacity, position, 0.001, particle->temperature);
+        soot->setMass(particle->soot_mass);
+        soot->velocity = particle->velocity;
+        particle->soot_mass = 0.0;
 
-  //     if (particle->mass() <= 0) {
-  //       // Delete the particle
-  //       deleted_particles.push_back(i);
-  //     }
-  //   }
-  // }
+        created_particles.push_back(soot);
+      }
+
+      FieldCell* cell = field.CellAt(particle->position);
+      cell->phi += b_g * burned_mass / (field.cell_size * field.cell_size * field.cell_size);
+    }
+  }
 
   // Delete the particles
-  for (int i = deleted_particles.size() - 1; i >= 0; i++) {
+  for (int i = deleted_particles.size() - 1; i >= 0; i--) {
     particles->erase(particles->begin() + deleted_particles[i]);
   }
 
@@ -235,15 +253,39 @@ void Simulator::time_step(double delta_time) {
 
 void Simulator::explosion_time_step(double delta_time) {
   elapsed_time += delta_time;
-  double phi = 100 * pow(2, - 8 * elapsed_time) * sin(10 * elapsed_time);
-  std::cout << phi << std::endl;
+
+  // if (elapsed_time < 10) {
+  //   for (int i = 1; i <= field.width; i++) {
+  //     for (int j = 1; j <= field.height; j++) {
+  //       for (int k = 1; k <= field.depth; k++) {
+  //         double distance = field.CellPos(i, j, k).norm();
+  //         if (distance < explosion_radius) {
+  //           field.CellAt(i, j, k)->force = Vector3D(0.2, 100, 0.4);
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
+    
+
+  // return;
+
+
+  double phi = 2000 * pow(2, - 8 * elapsed_time) * sin(10 * elapsed_time);
 
   for (int i = 1; i <= field.width; i++) {
     for (int j = 1; j <= field.height; j++) {
       for (int k = 1; k <= field.depth; k++) {
         double distance = field.CellPos(i, j, k).norm();
-        if (distance < 0.6 * explosion_radius) {
-          field.CellAt(i, k, k)->phi = phi;
+        if (distance < explosion_radius) {
+
+          if (elapsed_time < 0) {
+            field.CellAt(i, k, k)->phi = 300;
+          } else {
+            field.CellAt(i, k, k)->phi = 300 * pow(2, - (elapsed_time - 0.0) / 1.0);
+            field.CellAt(i, k, k)->heat_transfer += 1000000;
+          }
+          
         }
       }
     }
@@ -263,27 +305,22 @@ void Simulator::particle_time_step(double delta_time) {
     }
 
     if (particle->thermal_mass() >= particle_thermal_mass_threshold) {
-      particle->temperature += particle->heat_transfer / particle->thermal_mass();
+      particle->temperature += particle->heat_transfer / particle->thermal_mass() * delta_time;
+      //std::cout << particle->temperature << std::endl;
     }
   }
 }
 
 void Simulator::fluid_time_step(double delta_time) {
-  // field.apply_heat(delta_time, ambient_temperature, max_temperature, c_v, c_r);
-  // field.temperature_diffusion(diff, delta_time);
-  // field.temperature_advection(delta_time);
+  field.apply_heat(delta_time, ambient_temperature, max_temperature, c_v, c_r);
+  field.temperature_diffusion(c_k, delta_time);
+  field.temperature_advection(delta_time);
 
-  
+  //field.project();
   field.apply_force(delta_time);
-
-  
   field.advect(delta_time);
   //field.project();
-
-  // Pressure time step;
   field.pressure_step(delta_time);
-  field.vel_pressure_step();
-  field.project();
 }
 
 void Simulator::load_shaders() {
@@ -340,7 +377,7 @@ void Simulator::load_shaders() {
   
   // Assuming that it's there, use "Wireframe" by default
   for (size_t i = 0; i < shaders_combobox_names.size(); ++i) {
-    if (shaders_combobox_names[i] == "Diffuse") {
+    if (shaders_combobox_names[i] == "Billboard") {
       active_shader_idx = i;
     }if (shaders_combobox_names[i] == "Wireframe") {
       wireframe_shader_idx = i;
@@ -351,7 +388,7 @@ void Simulator::load_shaders() {
 
 Simulator::Simulator(std::string project_root, Screen *screen)
 : m_project_root(project_root), field(field_width, field_height, field_depth, field_cell_size,
-                   field_density, ambient_temperature + 100, base_pressure, initial_velocity) {
+                   field_density, field_base_temperature, 0, initial_velocity) {
   this->screen = screen;
   
   this->load_shaders();
@@ -449,6 +486,132 @@ void Simulator::init() {
 
 bool Simulator::isAlive() { return is_alive; }
 
+struct colourSystem {
+    char *name;                     /* Colour system name */
+    double xRed, yRed,              /* Red x, y */
+           xGreen, yGreen,          /* Green x, y */
+           xBlue, yBlue,            /* Blue x, y */
+           xWhite, yWhite,          /* White point x, y */
+           gamma;                   /* Gamma correction for system */
+};
+
+void spectrum_to_xyz(double (*spec_intens)(double wavelength),
+                     double *x, double *y, double *z)
+{
+    int i;
+    double lambda, X = 0, Y = 0, Z = 0, XYZ;
+
+    /* CIE colour matching functions xBar, yBar, and zBar for
+       wavelengths from 380 through 780 nanometers, every 5
+       nanometers.  For a wavelength lambda in this range:
+
+            cie_colour_match[(lambda - 380) / 5][0] = xBar
+            cie_colour_match[(lambda - 380) / 5][1] = yBar
+            cie_colour_match[(lambda - 380) / 5][2] = zBar
+
+        To save memory, this table can be declared as floats
+        rather than doubles; (IEEE) float has enough
+        significant bits to represent the values. It's declared
+        as a double here to avoid warnings about "conversion
+        between floating-point types" from certain persnickety
+        compilers. */
+
+    static double cie_colour_match[81][3] = {
+        {0.0014,0.0000,0.0065}, {0.0022,0.0001,0.0105}, {0.0042,0.0001,0.0201},
+        {0.0076,0.0002,0.0362}, {0.0143,0.0004,0.0679}, {0.0232,0.0006,0.1102},
+        {0.0435,0.0012,0.2074}, {0.0776,0.0022,0.3713}, {0.1344,0.0040,0.6456},
+        {0.2148,0.0073,1.0391}, {0.2839,0.0116,1.3856}, {0.3285,0.0168,1.6230},
+        {0.3483,0.0230,1.7471}, {0.3481,0.0298,1.7826}, {0.3362,0.0380,1.7721},
+        {0.3187,0.0480,1.7441}, {0.2908,0.0600,1.6692}, {0.2511,0.0739,1.5281},
+        {0.1954,0.0910,1.2876}, {0.1421,0.1126,1.0419}, {0.0956,0.1390,0.8130},
+        {0.0580,0.1693,0.6162}, {0.0320,0.2080,0.4652}, {0.0147,0.2586,0.3533},
+        {0.0049,0.3230,0.2720}, {0.0024,0.4073,0.2123}, {0.0093,0.5030,0.1582},
+        {0.0291,0.6082,0.1117}, {0.0633,0.7100,0.0782}, {0.1096,0.7932,0.0573},
+        {0.1655,0.8620,0.0422}, {0.2257,0.9149,0.0298}, {0.2904,0.9540,0.0203},
+        {0.3597,0.9803,0.0134}, {0.4334,0.9950,0.0087}, {0.5121,1.0000,0.0057},
+        {0.5945,0.9950,0.0039}, {0.6784,0.9786,0.0027}, {0.7621,0.9520,0.0021},
+        {0.8425,0.9154,0.0018}, {0.9163,0.8700,0.0017}, {0.9786,0.8163,0.0014},
+        {1.0263,0.7570,0.0011}, {1.0567,0.6949,0.0010}, {1.0622,0.6310,0.0008},
+        {1.0456,0.5668,0.0006}, {1.0026,0.5030,0.0003}, {0.9384,0.4412,0.0002},
+        {0.8544,0.3810,0.0002}, {0.7514,0.3210,0.0001}, {0.6424,0.2650,0.0000},
+        {0.5419,0.2170,0.0000}, {0.4479,0.1750,0.0000}, {0.3608,0.1382,0.0000},
+        {0.2835,0.1070,0.0000}, {0.2187,0.0816,0.0000}, {0.1649,0.0610,0.0000},
+        {0.1212,0.0446,0.0000}, {0.0874,0.0320,0.0000}, {0.0636,0.0232,0.0000},
+        {0.0468,0.0170,0.0000}, {0.0329,0.0119,0.0000}, {0.0227,0.0082,0.0000},
+        {0.0158,0.0057,0.0000}, {0.0114,0.0041,0.0000}, {0.0081,0.0029,0.0000},
+        {0.0058,0.0021,0.0000}, {0.0041,0.0015,0.0000}, {0.0029,0.0010,0.0000},
+        {0.0020,0.0007,0.0000}, {0.0014,0.0005,0.0000}, {0.0010,0.0004,0.0000},
+        {0.0007,0.0002,0.0000}, {0.0005,0.0002,0.0000}, {0.0003,0.0001,0.0000},
+        {0.0002,0.0001,0.0000}, {0.0002,0.0001,0.0000}, {0.0001,0.0000,0.0000},
+        {0.0001,0.0000,0.0000}, {0.0001,0.0000,0.0000}, {0.0000,0.0000,0.0000}
+    };
+
+    for (i = 0, lambda = 380; lambda < 780.1; i++, lambda += 5) {
+        double Me;
+
+        Me = (*spec_intens)(lambda);
+        X += Me * cie_colour_match[i][0];
+        Y += Me * cie_colour_match[i][1];
+        Z += Me * cie_colour_match[i][2];
+    }
+    XYZ = (X + Y + Z);
+    *x = X / XYZ;
+    *y = Y / XYZ;
+    *z = Z / XYZ;
+}
+
+void xyz_to_rgb(struct colourSystem *cs,
+                double xc, double yc, double zc,
+                double *r, double *g, double *b)
+{
+    double xr, yr, zr, xg, yg, zg, xb, yb, zb;
+    double xw, yw, zw;
+    double rx, ry, rz, gx, gy, gz, bx, by, bz;
+    double rw, gw, bw;
+
+    xr = cs->xRed;    yr = cs->yRed;    zr = 1 - (xr + yr);
+    xg = cs->xGreen;  yg = cs->yGreen;  zg = 1 - (xg + yg);
+    xb = cs->xBlue;   yb = cs->yBlue;   zb = 1 - (xb + yb);
+
+    xw = cs->xWhite;  yw = cs->yWhite;  zw = 1 - (xw + yw);
+
+    /* xyz -> rgb matrix, before scaling to white. */
+
+    rx = (yg * zb) - (yb * zg);  ry = (xb * zg) - (xg * zb);  rz = (xg * yb) - (xb * yg);
+    gx = (yb * zr) - (yr * zb);  gy = (xr * zb) - (xb * zr);  gz = (xb * yr) - (xr * yb);
+    bx = (yr * zg) - (yg * zr);  by = (xg * zr) - (xr * zg);  bz = (xr * yg) - (xg * yr);
+
+    /* White scaling factors.
+       Dividing by yw scales the white luminance to unity, as conventional. */
+
+    rw = ((rx * xw) + (ry * yw) + (rz * zw)) / yw;
+    gw = ((gx * xw) + (gy * yw) + (gz * zw)) / yw;
+    bw = ((bx * xw) + (by * yw) + (bz * zw)) / yw;
+
+    /* xyz -> rgb matrix, correctly scaled to white. */
+
+    rx = rx / rw;  ry = ry / rw;  rz = rz / rw;
+    gx = gx / gw;  gy = gy / gw;  gz = gz / gw;
+    bx = bx / bw;  by = by / bw;  bz = bz / bw;
+
+    /* rgb of the desired point */
+
+    *r = (rx * xc) + (ry * yc) + (rz * zc);
+    *g = (gx * xc) + (gy * yc) + (gz * zc);
+    *b = (bx * xc) + (by * yc) + (bz * zc);
+}
+
+double bbTemp = 5000;                 /* Hidden temperature argument
+                                         to BB_SPECTRUM. */
+double bb_spectrum(double wavelength)
+{
+    double wlm = wavelength * 1e-9;   /* Wavelength in meters */
+
+    return (3.74183e-16 * pow(wlm, -5.0)) /
+           (exp(1.4388e-2 / (wlm * bbTemp)) - 1.0);
+}
+
+
 void Simulator::drawContents() {
   glEnable(GL_DEPTH_TEST);
 
@@ -464,51 +627,83 @@ void Simulator::drawContents() {
 
   // Prepare the camera projection matrix
 
-  Matrix4f model;
-  model.setIdentity();
-
   Matrix4f view = getViewMatrix();
   Matrix4f projection = getProjectionMatrix();
 
-  Matrix4f viewProjection = projection * view;
+  // shader.setUniform("u_model_view", view * model);
+  shader.setUniform("u_projection", projection);
+  shader.setUniform("u_view", view);
 
-  shader.setUniform("u_model", model);
-  shader.setUniform("u_view_projection", viewProjection);
-
-  switch (active_shader.type_hint) {
-  case WIREFRAME:
-    shader.setUniform("u_color", color, false);
-    break;
-  case NORMALS:
-    // drawNormals(shader);
-    break;
-  case PHONG:
-    // Others
-    Vector3D cam_pos = camera.position();
-    shader.setUniform("u_color", color, false);
-    shader.setUniform("u_cam_pos", Vector3f(cam_pos.x, cam_pos.y, cam_pos.z), false);
-    shader.setUniform("u_light_pos", Vector3f(0.5, 2, 2), false);
-    shader.setUniform("u_light_intensity", Vector3f(3, 3, 3), false);
-    shader.setUniform("u_texture_1_size", Vector2f(m_gl_texture_1_size.x, m_gl_texture_1_size.y), false);
-    shader.setUniform("u_texture_2_size", Vector2f(m_gl_texture_2_size.x, m_gl_texture_2_size.y), false);
-    shader.setUniform("u_texture_3_size", Vector2f(m_gl_texture_3_size.x, m_gl_texture_3_size.y), false);
-    shader.setUniform("u_texture_4_size", Vector2f(m_gl_texture_4_size.x, m_gl_texture_4_size.y), false);
-    // Textures
-    shader.setUniform("u_texture_1", 1, false);
-    shader.setUniform("u_texture_2", 2, false);
-    shader.setUniform("u_texture_3", 3, false);
-    shader.setUniform("u_texture_4", 4, false);
-    
-    shader.setUniform("u_normal_scaling", m_normal_scaling, false);
-    shader.setUniform("u_height_scaling", m_height_scaling, false);
-    
-    shader.setUniform("u_texture_cubemap", 5, false);
-    break;
-  }
+  MatrixXf positions = MatrixXf(4, 6 * particles->size());
+  MatrixXf worldPos = MatrixXf(4, 6 * particles->size());
+  MatrixXf radii = MatrixXf(1, 6 * particles->size());
+  MatrixXf uvs = MatrixXf(2, 6 * particles->size());
+  MatrixXf color = MatrixXf(4, 6 * particles->size());
 
   for (int i = 0; i < particles->size(); i++) {
-    sphere_mesh.draw_sphere(shader, (*particles)[i]->position, (*particles)[i]->radius);
+    Particle* particle = (*particles)[i];
+
+      // Matrix4f model;
+      // model << particle->radius, 0, 0, particle->position.x, 0, particle->radius, 0, particle->position.y, 0, 0, particle->radius, particle->position.z, 0, 0, 0, 1;
+
+      // Matrix4f model_view = view * model;
+
+      positions.col(6 * i + 0) << -0.5, -0.5, 0.0, 1.0;
+      positions.col(6 * i + 1) <<  0.5, -0.5, 0.0, 1.0;
+      positions.col(6 * i + 2) <<  0.5,  0.5, 0.0, 1.0;
+      positions.col(6 * i + 3) <<  0.5,  0.5, 0.0, 1.0;
+      positions.col(6 * i + 4) << -0.5,  0.5, 0.0, 1.0;
+      positions.col(6 * i + 5) << -0.5, -0.5, 0.0, 1.0;
+
+      worldPos.col(6 * i + 0) << particle->position.x, particle->position.y, particle->position.z, 1.0;
+      worldPos.col(6 * i + 1) << particle->position.x, particle->position.y, particle->position.z, 1.0;
+      worldPos.col(6 * i + 2) << particle->position.x, particle->position.y, particle->position.z, 1.0;
+      worldPos.col(6 * i + 3) << particle->position.x, particle->position.y, particle->position.z, 1.0;
+      worldPos.col(6 * i + 4) << particle->position.x, particle->position.y, particle->position.z, 1.0;
+      worldPos.col(6 * i + 5) << particle->position.x, particle->position.y, particle->position.z, 1.0;
+
+      radii.col(6 * i + 0) << particle->radius;
+      radii.col(6 * i + 1) << particle->radius;
+      radii.col(6 * i + 2) << particle->radius;
+      radii.col(6 * i + 3) << particle->radius;
+      radii.col(6 * i + 4) << particle->radius;
+      radii.col(6 * i + 5) << particle->radius;
+
+      uvs.col(6 * i + 0) <<  0.0,  0.0;
+      uvs.col(6 * i + 1) <<  1.0,  0.0;
+      uvs.col(6 * i + 2) <<  1.0,  1.0;
+      uvs.col(6 * i + 3) <<  1.0,  1.0;
+      uvs.col(6 * i + 4) <<  0.0,  1.0;
+      uvs.col(6 * i + 5) <<  0.0,  0.0;
+
+      colourSystem cs =  { "CIE", 0.7355, 0.2645, 0.2658, 0.7243, 0.1669, 0.0085, 0.33333333, 0.33333333, 0 };
+
+      double r, g, b, x, y, z;
+      bbTemp = particle->temperature;
+      spectrum_to_xyz(bb_spectrum, &x, &y, &z);
+      xyz_to_rgb(&cs, x, y, z, &r, &g, &b);
+
+      nanogui::Color col = nanogui::Color(r, g, b, 1.0f);
+
+      if (particle->type == SOOT) {
+        col = nanogui::Color(0.05f, 0.05f, 0.05f, 1.0f);
+      }
+
+      color.col(6 * i + 0) << col.r(), col.g(), col.b(), 1.0;
+      color.col(6 * i + 1) << col.r(), col.g(), col.b(), 1.0;
+      color.col(6 * i + 2) << col.r(), col.g(), col.b(), 1.0;
+      color.col(6 * i + 3) << col.r(), col.g(), col.b(), 1.0;
+      color.col(6 * i + 4) << col.r(), col.g(), col.b(), 1.0;
+      color.col(6 * i + 5) << col.r(), col.g(), col.b(), 1.0;
+
   }
+  shader.uploadAttrib("in_position", positions, false);
+  shader.uploadAttrib("in_world_pos", worldPos, false);
+  shader.uploadAttrib("in_radius", radii, false);
+  shader.uploadAttrib("in_uv", uvs, false);
+  shader.uploadAttrib("in_color", color, false);
+
+  shader.drawArray(GL_TRIANGLES, 0, particles->size() * 6);
 
   for (CollisionObject *co : *collision_objects) {
     co->render(shader);
@@ -530,8 +725,12 @@ void Simulator::drawContents() {
   const UserShader& wireframe_shader = shaders[wireframe_shader_idx];
   GLShader &wireframeShader = *wireframe_shader.nanogui_shader;
   wireframeShader.bind();
+
+  Matrix4f model;
+  model.setIdentity();
   wireframeShader.setUniform("u_model", model);
-  wireframeShader.setUniform("u_view_projection", viewProjection);
+  Matrix4f view_projection = projection * view;
+  wireframeShader.setUniform("u_view_projection", view_projection);
   wireframeShader.setUniform("u_color", nanogui::Color(1.0f, 1.0f, 1.0f, 1.0f), false);
 
   if (display_field_velocity) {

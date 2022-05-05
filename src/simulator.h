@@ -88,11 +88,12 @@ private:
   double field_viscosity = 0;
 
   // Value of air
-  double field_density = 1.225; // kg / m^3
+  double field_density = 1.0; // kg / m^3
 
   double ambient_temperature = 300; // Kelvin
+  double field_base_temperature = ambient_temperature;
+  double particle_base_temperature = ambient_temperature;
   double max_temperature = 2000;
-  double base_pressure = 1;
   double initial_velocity = 0.5;
 
   GasField field;
@@ -101,40 +102,42 @@ private:
   int wireframe_shader_idx = 0;
 
   // TODO: Tune these values
-  double a_h = 15000;
-  double a_d = 550;
+  double a_h = 1;
+  double a_d = 10;
   double particle_mass_threshold = 0;
   double particle_thermal_mass_threshold = 0;
-  double ignition_temperature;
-  double burn_rate;
-  double b_h;
-  double b_s;
-  double b_g;
-  double mass_creation_threshold;
+  double ignition_temperature = 1000;
+  double burn_rate = 0.11;
+  double b_h = 20.0;
+  double b_s = 1;
+  double b_g = 1.0;
+  double mass_creation_threshold = 0.02;
 
   // Used for thermal buoyancy force
   double alpha = 0.05;
-  double beta = 0.05;
+  double beta = 0.005;
 
   // Used for vorticity confinement
   double epsilon = 0.1;
 
-  double c_r = 0;
-  double c_v = 1.005;
-
-  double diff = 0.01;   // not sure, should this be 0 or visc?
+  double c_r = 0.0001;
+  double c_v = 1.0;
+  double c_k = 5.0;
 
   // Explosion parameters
-  int num_particles = 0000;
-  double explosion_radius = 1;
+  int num_particles = 30000;
+  double explosion_radius = 0.2;
   double particle_radius = 0.01;
 
   double max_vel = 5;
   double min_vel = 5;
 
   // Values for gasoline
-  double fuel_density = 747; // kg / m^3
-  double fuel_specific_heat_capacity = 2.22 / 1000; // J / (kg K)
+  double fuel_density = 47; // kg / m^3
+  double fuel_specific_heat_capacity = 102.7; // J / (kg K)
+
+  double soot_density = 4774.65;
+  double soot_specific_heat_capacity = 693;
 
   double elapsed_time = 0;
 
