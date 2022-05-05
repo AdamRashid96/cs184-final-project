@@ -126,8 +126,8 @@ private:
 
   // Explosion parameters
   int num_particles = 10000;
-  double explosion_radius = 1;
-  double particle_radius = 0.01;
+  double explosion_radius = 0.1;
+  double particle_radius = 0.005;
 
   double max_vel = 5;
   double min_vel = 5;

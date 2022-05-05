@@ -134,27 +134,68 @@ void Simulator::time_step(double delta_time) {
     particle->force = particle->mass() * gravity;
   }
 
-  // Fluid Bouyancy and Vorticity Confinement
-  for (int i = 1; i <= field.width; i++) {
-    for (int j = 1; j <= field.height; j++) {
-      for (int k = 1; k <= field.depth; k++) {
-        FieldCell* cell = field.CellAt(field.cells, i, j, k);
+  // for (int i = 7; i < 12; i++) {
+  //   for (int z = 7; z < 12; z++) {
+  //     field.u[field.IDX(i, 2, z)] = 0;
+  //     field.u[field.IDX(i, 3, z)] = 0;
+  //     field.v[field.IDX(i, 2, z)] = 0.5;
+  //     field.v[field.IDX(i, 3, z)] = 0.5;
+  //     field.w[field.IDX(i, 2, z)] = 0;
+  //     field.w[field.IDX(i, 3, z)] = 0;
+  //   }
+  // }
 
-        // Thermal buoyancy force
-        cell->force = (-alpha * cell->pressure + beta * (cell->temperature - ambient_temperature)) * Vector3D(0, 1, 0);
+
+  //field.dens_temp_step();
+
+  elapsed_time += delta_time;
+
+  if (elapsed_time <= delta_time) {
+    for (int i = 1; i <= field.width; i++) {
+      for (int j = 1; j <= field.height; j++) {
+        for (int k = 1; k <= field.depth; k++) {
+          double distance = field.CellPos(i, j, k).norm();
+          if (distance < explosion_radius) {
+            // field.u[field.IDX(i, j, k)] = 0;
+            // field.u[field.IDX(i, j, k)] = 0;
+            // field.v[field.IDX(i, j, k)] = 0.5;
+            // field.v[field.IDX(i, j, k)] = 0.5;
+            // field.w[field.IDX(i, j, k)] = 0;
+            // field.w[field.IDX(i, j, k)] = 0;
+            field.d[field.IDX(i, j, k)] = 1.0;
+            field.T[field.IDX(i, j, k)] = 30.0;
+          }
+        }
       }
     }
   }
+    
+  field.vel_step(field.width, field.height, field.depth, field.u, field.v, field.w, field.u_prev, field.v_prev, field.w_prev, 0, delta_time);
+  field.dens_temp_step(field.width, field.height, field.depth, field.u, field.v, field.w, field.d, field.T, 0.00001, delta_time);
+  
+
+  // // Fluid Buoyancy and Vorticity Confinement
+  // for (int i = 1; i <= field.width; i++) {
+  //   for (int j = 1; j <= field.height; j++) {
+  //     for (int k = 1; k <= field.depth; k++) {
+  //       FieldCell* cell = field.CellAt(field.cells, i, j, k);
+
+  //       // Thermal buoyancy force
+  //       cell->force = (-alpha * cell->pressure + beta * (cell->temperature - ambient_temperature)) * Vector3D(0, 1, 0);
+  //     }
+  //   }
+  // }
 
   // Vorticity Confinement
-  field.vorticity_confinement(epsilon);
+  // field.vorticity_confinement(epsilon);
 
   // Particle Fluid Interaction
   for (int i = 0; i < particles->size(); i++) {
     Particle* particle = (*particles)[i];
     // Sample the fluid at the particle position to get interpolated cell values
-    FieldCell interpolatedCell = field.CellAtInterpolated(particle->position);
-    Vector3D velocityDifference = interpolatedCell.velocity - particle->velocity;
+    // FieldCell interpolatedCell = field.CellAtInterpolated(particle->position);
+    Vector3D cellVel = field.VelAt(particle->position);
+    Vector3D velocityDifference = cellVel - particle->velocity;
     double r2 = particle->radius * particle->radius;
 
     // Calculate force and heat transfer
@@ -165,24 +206,24 @@ void Simulator::time_step(double delta_time) {
       force = Vector3D(0);
     }
 
-    double heat_transfer;
-    if (particle->thermal_mass() >= particle_thermal_mass_threshold) {
-      heat_transfer = a_h * r2 * (interpolatedCell.temperature - particle->temperature);
-    } else {
-      heat_transfer = 0;
-    }
+    // double heat_transfer;
+    // if (particle->thermal_mass() >= particle_thermal_mass_threshold) {
+    //   heat_transfer = a_h * r2 * (interpolatedCell.temperature - particle->temperature);
+    // } else {
+    //   heat_transfer = 0;
+    // }
 
-    FieldCell* cell = field.CellAt(particle->position);
-    if (cell != NULL) {
-      cell->force -= force;
-      cell->heat_transfer -= heat_transfer;
-    }
+    // FieldCell* cell = field.CellAt(particle->position);
+    // if (cell != NULL) {
+    //   cell->force -= force;
+    //   cell->heat_transfer -= heat_transfer;
+    // }
     particle->force += force;
-    particle->heat_transfer += heat_transfer;
+    // particle->heat_transfer += heat_transfer;
   }
 
-  vector<int> deleted_particles;
-  vector<Particle *> created_particles;
+  // vector<int> deleted_particles;
+  // vector<Particle *> created_particles;
 
   // Fuel Particle Burning
   // for (int i = 0; i < particles->size(); i++) {
@@ -213,41 +254,43 @@ void Simulator::time_step(double delta_time) {
   // }
 
   // Delete the particles
-  for (int i = deleted_particles.size() - 1; i >= 0; i++) {
-    particles->erase(particles->begin() + deleted_particles[i]);
-  }
+  // for (int i = deleted_particles.size() - 1; i >= 0; i++) {
+  //   particles->erase(particles->begin() + deleted_particles[i]);
+  // }
 
-  // Create the particles
-  for (int i = 0; i < created_particles.size(); i++) {
-    Particle* particle = created_particles[i];
-    particles->push_back(particle);
-  }
+  // // Create the particles
+  // for (int i = 0; i < created_particles.size(); i++) {
+  //   Particle* particle = created_particles[i];
+  //   particles->push_back(particle);
+  // }
 
   // Explosion Time Step
-//  explosion_time_step(delta_time);
+  // explosion_time_step(delta_time);
 
   // Fluid Time Step
-  fluid_time_step(delta_time);
+  //fluid_time_step(delta_time);
 
   // Particle Time Step
   particle_time_step(delta_time);
 }
 
 void Simulator::explosion_time_step(double delta_time) {
-  elapsed_time += delta_time;
-  double phi = 100 * pow(2, - 8 * elapsed_time) * sin(10 * elapsed_time);
-  std::cout << phi << std::endl;
+  // elapsed_time += delta_time;
+  // double phi = 10 * pow(2, - 8 * elapsed_time) * sin(10 * elapsed_time);
+  // // double pressure = 100 * pow(2, - 8 * elapsed_time) * sin(10 * elapsed_time);
+  // std::cout << phi << std::endl;
 
-  for (int i = 1; i <= field.width; i++) {
-    for (int j = 1; j <= field.height; j++) {
-      for (int k = 1; k <= field.depth; k++) {
-        double distance = field.CellPos(i, j, k).norm();
-        if (distance < explosion_radius) {
-          field.CellAt(i, k, k)->phi = phi;
-        }
-      }
-    }
-  }
+  // for (int i = 1; i <= field.width; i++) {
+  //   for (int j = 1; j <= field.height; j++) {
+  //     for (int k = 1; k <= field.depth; k++) {
+  //       double distance = field.CellPos(i, j, k).norm();
+  //       if (distance < explosion_radius) {
+  //         // field.CellAt(i, k, k)->phi = 0;
+  //         field.CellAt(i, k, k)->pressure = 0;
+  //       }
+  //     }
+  //   }
+  // }
 }
 
 void Simulator::particle_time_step(double delta_time) {
@@ -269,19 +312,19 @@ void Simulator::particle_time_step(double delta_time) {
 }
 
 void Simulator::fluid_time_step(double delta_time) {
-  field.apply_heat(delta_time, ambient_temperature, max_temperature, c_v, c_r);
-  field.temperature_diffusion(diff, delta_time);
-  field.temperature_advection(delta_time);
+  //field.apply_heat(delta_time, ambient_temperature, max_temperature, c_v, c_r);
+  //field.temperature_diffusion(diff, delta_time);
+  //field.temperature_advection(delta_time);
 
 
-  field.apply_force(delta_time);
-  field.advect(delta_time);
-  field.project();
+  // field.apply_force(delta_time);
+  // field.advect(delta_time);
+  // field.project();
 
   // Pressure time step;
-  field.pressure_step(delta_time);
-  field.vel_pressure_step();
-  field.project();
+  // field.pressure_step(delta_time);
+  // field.vel_pressure_step();
+  // field.project();
 }
 
 void Simulator::load_shaders() {
@@ -348,7 +391,7 @@ void Simulator::load_shaders() {
 }
 
 Simulator::Simulator(std::string project_root, Screen *screen)
-: m_project_root(project_root), field(field_width, field_height, field_depth, field_cell_size,
+: m_project_root(project_root), field(field_width, field_cell_size,
                    field_density, ambient_temperature + 100, base_pressure, initial_velocity) {
   this->screen = screen;
   
@@ -519,8 +562,12 @@ void Simulator::drawContents() {
       for (int k = 0; k < field.depth + 2; k++) {
         Vector3D cellPos = field.CellPos(i, j, k);
         line_endpoints.push_back(cellPos);
-        Vector3D velocity = field.CellAt(field.cells, i, j, k)->velocity;
-        line_endpoints.push_back(cellPos + 0.03 * velocity);
+        // std::cout << cellPos;
+
+        Vector3D velocity = field.VelAt(i, j, k);
+        // std::cout << velocity << std::endl;
+
+        line_endpoints.push_back(cellPos + 0.1 * velocity);
       }
     }
   }
