@@ -664,7 +664,7 @@ void Simulator::drawContents() {
       worldPos.col(6 * i + 4) << particle->position.x, particle->position.y, particle->position.z, 1.0;
       worldPos.col(6 * i + 5) << particle->position.x, particle->position.y, particle->position.z, 1.0;
 
-      double radius_scalar = 2.0;
+      double radius_scalar = 3.0;
       radii.col(6 * i + 0) << radius_scalar * particle->radius;
       radii.col(6 * i + 1) << radius_scalar * particle->radius;
       radii.col(6 * i + 2) << radius_scalar * particle->radius;
@@ -962,25 +962,25 @@ void Simulator::initGUI(Screen *screen) {
 
   new Label(window, "Parameters", "sans-bold");
 
-  {
-    Widget *panel = new Widget(window);
-    GridLayout *layout =
-        new GridLayout(Orientation::Horizontal, 2, Alignment::Middle, 5, 5);
-    layout->setColAlignment({Alignment::Maximum, Alignment::Fill});
-    layout->setSpacing(0, 10);
-    panel->setLayout(layout);
+  // {
+  //   Widget *panel = new Widget(window);
+  //   GridLayout *layout =
+  //       new GridLayout(Orientation::Horizontal, 2, Alignment::Middle, 5, 5);
+  //   layout->setColAlignment({Alignment::Maximum, Alignment::Fill});
+  //   layout->setSpacing(0, 10);
+  //   panel->setLayout(layout);
 
-    new Label(panel, "density :", "sans-bold");
+  //   new Label(panel, "density :", "sans-bold");
 
-    FloatBox<double> *fb = new FloatBox<double>(panel);
-    fb->setEditable(true);
-    fb->setFixedSize(Vector2i(100, 20));
-    fb->setFontSize(14);
-    fb->setValue(1);
-    fb->setUnits("g/cm^2");
-    fb->setSpinnable(true);
-    // fb->setCallback([this](float value) { cp->density = (double)(value * 10); });
-  }
+  //   FloatBox<double> *fb = new FloatBox<double>(panel);
+  //   fb->setEditable(true);
+  //   fb->setFixedSize(Vector2i(100, 20));
+  //   fb->setFontSize(14);
+  //   fb->setValue(1);
+  //   fb->setUnits("g/cm^2");
+  //   fb->setSpinnable(true);
+  //   // fb->setCallback([this](float value) { cp->density = (double)(value * 10); });
+  // }
 
   // Simulation constants
 
@@ -1004,33 +1004,33 @@ void Simulator::initGUI(Screen *screen) {
     fsec->setSpinnable(true);
     fsec->setCallback([this](int value) { frames_per_sec = value; });
 
-    new Label(panel, "steps/frame :", "sans-bold");
+    // new Label(panel, "steps/frame :", "sans-bold");
 
-    IntBox<int> *num_steps = new IntBox<int>(panel);
-    num_steps->setEditable(true);
-    num_steps->setFixedSize(Vector2i(100, 20));
-    num_steps->setFontSize(14);
-    num_steps->setValue(simulation_steps);
-    num_steps->setSpinnable(true);
-    num_steps->setMinValue(0);
-    num_steps->setCallback([this](int value) { simulation_steps = value; });
+    // IntBox<int> *num_steps = new IntBox<int>(panel);
+    // num_steps->setEditable(true);
+    // num_steps->setFixedSize(Vector2i(100, 20));
+    // num_steps->setFontSize(14);
+    // num_steps->setValue(simulation_steps);
+    // num_steps->setSpinnable(true);
+    // num_steps->setMinValue(0);
+    // num_steps->setCallback([this](int value) { simulation_steps = value; });
   }
 
   // Damping slider and textbox
 
-  new Label(window, "Damping", "sans-bold");
+  // new Label(window, "Damping", "sans-bold");
 
-  {
-    Widget *panel = new Widget(window);
-    panel->setLayout(
-        new BoxLayout(Orientation::Horizontal, Alignment::Middle, 0, 5));
+  // {
+  //   Widget *panel = new Widget(window);
+  //   panel->setLayout(
+  //       new BoxLayout(Orientation::Horizontal, Alignment::Middle, 0, 5));
 
-    TextBox *percentage = new TextBox(panel);
-    percentage->setFixedWidth(75);
-    percentage->setValue(to_string(1));
-    percentage->setUnits("%");
-    percentage->setFontSize(14);
-  }
+  //   TextBox *percentage = new TextBox(panel);
+  //   percentage->setFixedWidth(75);
+  //   percentage->setValue(to_string(1));
+  //   percentage->setUnits("%");
+  //   percentage->setFontSize(14);
+  // }
 
   // Gravity
 
@@ -1078,61 +1078,61 @@ void Simulator::initGUI(Screen *screen) {
     fb->setCallback([this](float value) { gravity.z = value; });
   }
   
-  window = new Window(screen, "Appearance");
-  window->setPosition(Vector2i(15, 15));
-  window->setLayout(new GroupLayout(15, 6, 14, 5));
+  // window = new Window(screen, "Appearance");
+  // window->setPosition(Vector2i(15, 15));
+  // window->setLayout(new GroupLayout(15, 6, 14, 5));
 
-  // Appearance
+  // // Appearance
 
-  {
+  // {
     
     
-    ComboBox *cb = new ComboBox(window, shaders_combobox_names);
-    cb->setFontSize(14);
-    cb->setCallback(
-        [this, screen](int idx) { active_shader_idx = idx; });
-    cb->setSelectedIndex(active_shader_idx);
-  }
+  //   ComboBox *cb = new ComboBox(window, shaders_combobox_names);
+  //   cb->setFontSize(14);
+  //   cb->setCallback(
+  //       [this, screen](int idx) { active_shader_idx = idx; });
+  //   cb->setSelectedIndex(active_shader_idx);
+  // }
 
-  // Shader Parameters
+  // // Shader Parameters
 
-  new Label(window, "Color", "sans-bold");
+  // new Label(window, "Color", "sans-bold");
 
-  {
-    ColorWheel *cw = new ColorWheel(window, color);
-    cw->setColor(this->color);
-    cw->setCallback(
-        [this](const nanogui::Color &color) { this->color = color; });
-  }
+  // {
+  //   ColorWheel *cw = new ColorWheel(window, color);
+  //   cw->setColor(this->color);
+  //   cw->setCallback(
+  //       [this](const nanogui::Color &color) { this->color = color; });
+  // }
 
-  new Label(window, "Parameters", "sans-bold");
+  // new Label(window, "Parameters", "sans-bold");
 
-  {
-    Widget *panel = new Widget(window);
-    GridLayout *layout =
-        new GridLayout(Orientation::Horizontal, 2, Alignment::Middle, 5, 5);
-    layout->setColAlignment({Alignment::Maximum, Alignment::Fill});
-    layout->setSpacing(0, 10);
-    panel->setLayout(layout);
+  // {
+  //   Widget *panel = new Widget(window);
+  //   GridLayout *layout =
+  //       new GridLayout(Orientation::Horizontal, 2, Alignment::Middle, 5, 5);
+  //   layout->setColAlignment({Alignment::Maximum, Alignment::Fill});
+  //   layout->setSpacing(0, 10);
+  //   panel->setLayout(layout);
 
-    new Label(panel, "Normal :", "sans-bold");
+  //   new Label(panel, "Normal :", "sans-bold");
 
-    FloatBox<double> *fb = new FloatBox<double>(panel);
-    fb->setEditable(true);
-    fb->setFixedSize(Vector2i(100, 20));
-    fb->setFontSize(14);
-    fb->setValue(this->m_normal_scaling);
-    fb->setSpinnable(true);
-    fb->setCallback([this](float value) { this->m_normal_scaling = value; });
+  //   FloatBox<double> *fb = new FloatBox<double>(panel);
+  //   fb->setEditable(true);
+  //   fb->setFixedSize(Vector2i(100, 20));
+  //   fb->setFontSize(14);
+  //   fb->setValue(this->m_normal_scaling);
+  //   fb->setSpinnable(true);
+  //   fb->setCallback([this](float value) { this->m_normal_scaling = value; });
 
-    new Label(panel, "Height :", "sans-bold");
+  //   new Label(panel, "Height :", "sans-bold");
 
-    fb = new FloatBox<double>(panel);
-    fb->setEditable(true);
-    fb->setFixedSize(Vector2i(100, 20));
-    fb->setFontSize(14);
-    fb->setValue(this->m_height_scaling);
-    fb->setSpinnable(true);
-    fb->setCallback([this](float value) { this->m_height_scaling = value; });
-  }
+  //   fb = new FloatBox<double>(panel);
+  //   fb->setEditable(true);
+  //   fb->setFixedSize(Vector2i(100, 20));
+  //   fb->setFontSize(14);
+  //   fb->setValue(this->m_height_scaling);
+  //   fb->setSpinnable(true);
+  //   fb->setCallback([this](float value) { this->m_height_scaling = value; });
+  // }
 }
